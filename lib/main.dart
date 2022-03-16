@@ -1,4 +1,6 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:tava/utilities/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: Theme.themeData,
+      theme: FlexColorScheme.dark.toTheme,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('ThemeData Demo'),

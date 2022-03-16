@@ -18,8 +18,3 @@ FlexSchemeData tavaFlexScheme = const FlexSchemeData(
     secondaryVariant: Color(0xFF060912),
   ),
 );
-
-class ColorScheme {
-  // ColorScheme tavaColorScheme =  ColorScheme(brightness: Brightness.dark, primary: backgroundColor, onPrimary: primaryTextColor, secondary: cardBackgroundColor, onSecondary: primaryTextColor, error: statsRedColor, onError: primaryTextColor, background: backgroundColor, onBackground: primaryTextColor, surface: cardBackgroundColor, onSurface: primaryTextColor)
-
-}

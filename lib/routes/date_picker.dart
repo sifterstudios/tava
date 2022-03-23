@@ -24,7 +24,6 @@ class _DatePickerHorizontalState extends State<DatePickerHorizontal> {
         deactivatedColor: mainCardBackgroundColor,
         dateTextStyle: tavaTextTheme.bodyLarge!,
         dayTextStyle: tavaTextTheme.labelSmall!,
-        monthTextStyle: const TextStyle(color: Color(0x00FFFFFF)),
         width: 60,
         height: 80,
         onDateChange: (date) {

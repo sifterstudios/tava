@@ -1,24 +1,127 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tava/utilities/colors.dart';
+import 'package:tava/utilities/flex_scheme_data.dart';
 
-TextTheme tavaTextTheme = GoogleFonts.josefinSansTextTheme().copyWith(
-  labelLarge: GoogleFonts.firaSans(
-    textStyle: GoogleFonts.firaSansTextTheme().labelLarge,
-  ),
-  labelMedium: GoogleFonts.firaSans(
-      textStyle: GoogleFonts.firaSansTextTheme().labelMedium,
-      color: primaryTextColor),
-  labelSmall: GoogleFonts.firaSans(
-      textStyle: GoogleFonts.firaSansTextTheme().labelSmall,
-      color: primaryTextColor),
-  bodyLarge: GoogleFonts.firaSans(
-      textStyle: GoogleFonts.firaSansTextTheme().bodyLarge,
-      color: primaryTextColor),
-  bodyMedium: GoogleFonts.firaSans(
-      textStyle: GoogleFonts.firaSansTextTheme().bodyMedium,
-      color: primaryTextColor),
-  bodySmall: GoogleFonts.firaSans(
-      textStyle: GoogleFonts.firaSansTextTheme().bodySmall,
-      color: primaryTextColor),
-);
+TextTheme tavaTextTheme = ThemeData.dark().textTheme.copyWith(
+      displayLarge: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 96,
+        fontWeight: FontWeight.w300,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: -1.5,
+      ),
+      displayMedium: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 60,
+        fontWeight: FontWeight.w300,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: -0.5,
+      ),
+      displaySmall: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 48,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: -0.0,
+      ),
+      headlineLarge: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 40,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.25,
+      ),
+      headlineMedium: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 34,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.25,
+      ),
+      headlineSmall: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 24,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.0,
+      ),
+      titleLarge: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.15,
+      ),
+      titleMedium: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.15,
+      ),
+      titleSmall: TextStyle(
+        fontFamily: GoogleFonts.josefinSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.1,
+      ),
+      bodyLarge: TextStyle(
+        fontFamily: GoogleFonts.firaSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.5,
+      ),
+      bodyMedium: TextStyle(
+        fontFamily: GoogleFonts.firaSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.25,
+      ),
+      bodySmall: TextStyle(
+        fontFamily: GoogleFonts.firaSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 0.4,
+      ),
+      labelLarge: TextStyle(
+        fontFamily: GoogleFonts.firaSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 1.25,
+      ),
+      labelMedium: TextStyle(
+        fontFamily: GoogleFonts.firaSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 11,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 1.5,
+      ),
+      labelSmall: TextStyle(
+        fontFamily: GoogleFonts.firaSans().fontFamily,
+        color: tavaFlexScheme.dark.primary,
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        textBaseline: TextBaseline.alphabetic,
+        letterSpacing: 1.5,
+      ),
+    );

@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: FlexThemeData.dark(
-          colors: tavaFlexScheme.dark, textTheme: tavaTextTheme),
+          colors: tavaFlexScheme.dark,
+          textTheme: tavaTextTheme,
+          primaryTextTheme: tavaTextTheme),
       home: const HomeRoute(),
     );
   }

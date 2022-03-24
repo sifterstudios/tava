@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tava/utilities/colors.dart';
-import 'package:tava/utilities/flex_scheme_data.dart';
-import 'package:tava/utilities/main_text_theme.dart';
 
 class StatsMiniCardPanel extends StatelessWidget {
   final Color gaugeColor;

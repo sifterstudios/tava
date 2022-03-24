@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tava/utilities/colors.dart';
 import 'package:tava/utilities/flex_scheme_data.dart';
 
 TextTheme tavaTextTheme = ThemeData.dark().textTheme.copyWith(

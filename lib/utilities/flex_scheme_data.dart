@@ -1,6 +1,5 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:tava/utilities/main_text_theme.dart';
 
 FlexSchemeData tavaFlexScheme = const FlexSchemeData(
   name: 'TAVA',

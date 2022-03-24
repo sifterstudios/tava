@@ -11,7 +11,7 @@ const Color primaryTextColor = Color(0xFFFFFFFF);
 const Color secondaryTextColor = Color(0xFFFAFAFD);
 const Color thirdTextColor = Color(0xFFADB4C1);
 
-const Color statsBlue = Color(0xFF46a8ff);
+const Color statsBlueColor = Color(0xFF46a8ff);
 const Color statsRedColor = Color(0xFFf93b3d);
 const Color statsYellowColor = Color(0xFFffcc28);
 const Color statsGreenColor = Color(0xFF89ed4b);

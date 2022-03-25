@@ -1,8 +1,8 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tava/routes/date_picker.dart';
 import 'package:tava/utilities/colors.dart';
 
+import '../widgets/bottom_navigation.dart';
 import '../widgets/stats_mini_card_panel.dart';
 
 class HomeRoute extends StatefulWidget {
@@ -15,43 +15,9 @@ class HomeRoute extends StatefulWidget {
 class _HomeRouteState extends State<HomeRoute> {
   @override
   Widget build(BuildContext context) {
-    var _currentIndex = 0;
     return Scaffold(
-      bottomNavigationBar: BottomNavyBar(
-        selectedIndex: _currentIndex,
-        showElevation: true,
-        itemCornerRadius: 5,
-        curve: Curves.easeIn,
-        onItemSelected: (index) => setState(() => _currentIndex = index),
-        items: <BottomNavyBarItem>[
-          BottomNavyBarItem(
-            icon: Icon(Icons.apps),
-            title: Text('Home'),
-            activeColor: statsRedColor,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: Icon(Icons.people),
-            title: Text('Users'),
-            activeColor: statsGreenColor,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: Icon(Icons.message),
-            title: Text(
-              'Messages test for mes teset test test ',
-            ),
-            activeColor: statsBlueColor,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('Settings'),
-            activeColor: statsYellowColor,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+      backgroundColor: mainCardBackgroundColor,
+      bottomNavigationBar: const TavaBottomNavigationBar(),
       drawer: const Drawer(
         backgroundColor: fabColor,
         // TODO: Add menu names to DRAWER

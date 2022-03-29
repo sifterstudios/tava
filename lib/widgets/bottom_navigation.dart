@@ -20,6 +20,8 @@ class _TavaBottomNavigationBarState extends State<TavaBottomNavigationBar> {
       selectedIndex: _currentIndex,
       showElevation: true,
       itemCornerRadius: 5,
+      animationDuration: const Duration(milliseconds: 200),
+      backgroundColor: backgroundColor,
       curve: Curves.easeIn,
       onItemSelected: (index) => setState(() => _currentIndex = index),
       items: <BottomNavyBarItem>[
@@ -31,14 +33,22 @@ class _TavaBottomNavigationBarState extends State<TavaBottomNavigationBar> {
         ),
         BottomNavyBarItem(
           icon: const Icon(Icons.people),
-          title: const Text('Users'),
+          title: const Text('Categories'),
           activeColor: statsGreenColor,
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
           icon: const Icon(Icons.message),
           title: const Text(
-            'Messages test for mes test test test ',
+            'TAVA',
+          ),
+          activeColor: fabColor,
+          textAlign: TextAlign.center,
+        ),
+        BottomNavyBarItem(
+          icon: const Icon(Icons.message),
+          title: const Text(
+            'Journey',
           ),
           activeColor: statsBlueColor,
           textAlign: TextAlign.center,

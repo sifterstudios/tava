@@ -12,8 +12,6 @@ import '../widgets/home_today.dart';
 import '../widgets/stats_mini_card_panel.dart';
 
 class HomeRoute extends StatefulWidget {
-  const HomeRoute({Key? key}) : super(key: key);
-
   @override
   State<HomeRoute> createState() => _HomeRouteState();
 }

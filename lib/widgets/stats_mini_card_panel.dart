@@ -16,7 +16,7 @@ class StatsMiniCardPanel extends StatelessWidget {
         color: mainCardBackgroundColor,
       ),
       height: 80,
-      width: 85,
+      width: 95,
       padding: const EdgeInsets.all(10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

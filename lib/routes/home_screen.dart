@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tava/widgets/date_picker.dart';
 import 'package:tava/utilities/colors.dart';
 import 'package:tava/utilities/svg_icons.dart';
@@ -11,12 +12,14 @@ import '../widgets/home_stats.dart';
 import '../widgets/home_today.dart';
 import '../widgets/stats_mini_card_panel.dart';
 
-class HomeRoute extends StatefulWidget {
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
-  State<HomeRoute> createState() => _HomeRouteState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomeRouteState extends State<HomeRoute> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,17 +46,18 @@ class _HomeRouteState extends State<HomeRoute> {
         ],
       ),
       body: Column(
-        children: const [
-          SizedBox(
+        children: [
+          const SizedBox(
             height: 5,
           ),
-          DatePickerHorizontal(),
-          SizedBox(
+          const DatePickerHorizontal(),
+          const SizedBox(
             height: 5,
           ),
-          HomeStats(),
-          HomeToday(),
-          HomeMood(),
+          const HomeStats(),
+          const HomeToday(),
+          const HomeMood(),
+          FloatingActionButton(onPressed: () => context.push('/tava'))
         ],
       ),
     );

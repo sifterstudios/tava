@@ -40,14 +40,6 @@ class _TavaBottomNavigationBarState extends State<TavaBottomNavigationBar> {
         BottomNavyBarItem(
           icon: const Icon(Icons.message),
           title: const Text(
-            'TAVA',
-          ),
-          activeColor: fabColor,
-          textAlign: TextAlign.center,
-        ),
-        BottomNavyBarItem(
-          icon: const Icon(Icons.message),
-          title: const Text(
             'Journey',
           ),
           activeColor: statsBlueColor,

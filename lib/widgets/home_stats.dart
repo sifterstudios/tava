@@ -22,17 +22,25 @@ class HomeStats extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: const [
-              StatsMiniCardPanel(
-                gaugeColor: statsRedColor,
+              Expanded(
+                child: StatsMiniCardPanel(
+                  gaugeColor: statsRedColor,
+                ),
               ),
-              StatsMiniCardPanel(
-                gaugeColor: statsGreenColor,
+              Expanded(
+                child: StatsMiniCardPanel(
+                  gaugeColor: statsGreenColor,
+                ),
               ),
-              StatsMiniCardPanel(
-                gaugeColor: statsBlueColor,
+              Expanded(
+                child: StatsMiniCardPanel(
+                  gaugeColor: statsBlueColor,
+                ),
               ),
-              StatsMiniCardPanel(
-                gaugeColor: statsYellowColor,
+              Expanded(
+                child: StatsMiniCardPanel(
+                  gaugeColor: statsYellowColor,
+                ),
               ),
             ],
           ),

@@ -5,25 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tava/routes/categories_screen.dart';
-import 'package:tava/routes/home_screen.dart';
 import 'package:tava/routes/journey_screen.dart';
 import 'package:tava/routes/notifications_screen.dart';
 import 'package:tava/routes/settings_screen.dart';
 import 'package:tava/routes/tava_screen.dart';
 import 'package:tava/utilities/flex_scheme_data.dart';
 import 'package:tava/utilities/main_text_theme.dart';
+import 'package:tava/widgets/main_app_shell.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(TavaApp());
+  runApp(ProviderScope(child: TavaApp()));
 }
 
 class TavaApp extends StatelessWidget {
   TavaApp({Key? key}) : super(key: key);
   static final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
 
-  final _router = GoRouter(routes: [
+  final router = GoRouter(routes: [
     GoRoute(
       path: '/',
       builder: (context, state) => FutureBuilder(
@@ -35,7 +35,7 @@ class TavaApp extends StatelessWidget {
             }
             return const Text('Something went wrong!');
           } else if (snapshot.hasData) {
-            return const Home();
+            return const MainAppShell();
           } else {
             return const Center(
               child: CircularProgressIndicator(),
@@ -59,16 +59,14 @@ class TavaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp.router(
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
-        debugShowCheckedModeBanner: false,
-        theme: FlexThemeData.dark(
-            colors: tavaFlexScheme.dark,
-            textTheme: tavaTextTheme,
-            primaryTextTheme: tavaTextTheme),
-      ),
+    return MaterialApp.router(
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
+      debugShowCheckedModeBanner: false,
+      theme: FlexThemeData.dark(
+          colors: tavaFlexScheme.dark,
+          textTheme: tavaTextTheme,
+          primaryTextTheme: tavaTextTheme),
     );
   }
 }

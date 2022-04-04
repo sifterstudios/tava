@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../utilities/colors.dart';
 
 class Categories extends StatelessWidget {
@@ -12,7 +11,7 @@ class Categories extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'TAVA',
+            'CATEGORIES',
             textAlign: TextAlign.center,
             textScaleFactor: 1.8,
           ),

@@ -12,7 +12,7 @@ class Settings extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'TAVA',
+            'SETTINGS',
             textAlign: TextAlign.center,
             textScaleFactor: 1.8,
           ),

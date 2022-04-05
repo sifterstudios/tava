@@ -81,7 +81,22 @@ class _TavaBottomNavigationBarState extends State<TavaBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Navigation Bar Demo')),
+      appBar: AppBar(
+        title: const Center(
+          child: Text(
+            'TAVA',
+            textAlign: TextAlign.center,
+            textScaleFactor: 1.8,
+          ),
+        ),
+        actions: const [
+          Icon(Icons.notifications_none_outlined),
+          SizedBox(
+            width: 15,
+            height: 15,
+          )
+        ],
+      ),
       drawer: Drawer(
         child: Center(
           child: Column(

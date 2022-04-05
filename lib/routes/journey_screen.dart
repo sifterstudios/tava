@@ -11,7 +11,7 @@ class Journey extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'TAVA',
+            'JOURNEY',
             textAlign: TextAlign.center,
             textScaleFactor: 1.8,
           ),

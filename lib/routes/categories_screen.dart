@@ -11,7 +11,7 @@ class Categories extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'CATEGORIES',
+            'EXERCISES',
             textAlign: TextAlign.center,
             textScaleFactor: 1.8,
           ),

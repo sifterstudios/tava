@@ -13,11 +13,18 @@ import 'package:tava/routes/tava_screen.dart';
 import 'package:tava/utilities/flex_scheme_data.dart';
 import 'package:tava/utilities/main_text_theme.dart';
 import 'package:tava/widgets/main_app_shell.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(ProviderScope(child: TavaApp()));
+  await SentryFlutter.init((options) {
+    options.dsn =
+        'https://245c7e355fe2458088dabf045e2004ab@o1191596.ingest.sentry.io/6313047';
+    // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+    // We recommend adjusting this value in production.
+    options.tracesSampleRate = 1.0;
+  }, appRunner: () => runApp(ProviderScope(child: TavaApp())));
 }
 
 class TavaApp extends StatelessWidget {

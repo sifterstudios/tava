@@ -53,6 +53,7 @@ dependencies:
   flutter_hooks: ^0.18.2+1
   flutter_riverpod: ^1.0.3
   persistent_bottom_nav_bar: ^4.0.2
+  sentry_flutter: ^6.4.0
 
 
 dev_dependencies:

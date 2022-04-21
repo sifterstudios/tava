@@ -1,0 +1,19 @@
+<ProjectInfo Version="1">
+  <Signature>7EE59C48B4D9ED0E1C54B4821A88F7FB0A7C4A65058E09761675FC1909B805A2</Signature>
+  <Content>
+    <Project Guid="67308694-d5a9-474b-9ff7-ce039d163d6d">
+      <DisplayName Value="TAVA"/>
+      <DetailName Value=""/>
+      <MainProjectGuid Value="34379327-f80c-46f5-a77d-dab8aa109dde"/>
+      <IconType Value="0"/>
+      <IdProjectIcon Value="00000000-0000-0000-0000-000000000000"/>
+      <ScmProviderGuid Value="0745c2ee-abe3-451b-934e-7f597f56c0d7"/>
+      <ScmConfiguration Value=""/>
+      <CreationTimeStamp Value="637861512829359207"/>
+      <PartitionHash Value="3CDF5836C1350B4247B79D0103500646BA2758BC8B8213EE69730CD42F0AB421"/>
+      <SaveFileVersion Value="55"/>
+      <ProjectType Value="0"/>
+      <IsOnlineProject Value="False"/>
+    </Project>
+  </Content>
+</ProjectInfo>

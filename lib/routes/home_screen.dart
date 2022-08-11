@@ -10,7 +10,7 @@ import '../widgets/home_today.dart';
 class Home extends ConsumerWidget {
   const Home({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context, WidgetRef watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         const SizedBox(

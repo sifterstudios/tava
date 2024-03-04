@@ -2,15 +2,6 @@
 
 A practice journal for musicians
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+As a learning journey, I want to try to recreate an app that I enjoyed a lot when studying music called MusicJournal.
+It has since been deprecated, and other subscription-based apps have taken it's place, however I want to try to make
+an app that will be affordable with a one time purchase.

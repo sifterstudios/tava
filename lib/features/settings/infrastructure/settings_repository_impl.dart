@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tava/core/error/failures.dart';
@@ -38,7 +39,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
       await _saveMetronomeSound(settings.metronomeSound);
       await _saveTrackWeather(settings.trackWeather);
 
-      return const Right(unit);
+      return right(unit);
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }

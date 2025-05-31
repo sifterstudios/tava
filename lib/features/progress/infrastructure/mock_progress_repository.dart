@@ -5,7 +5,7 @@ import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 import 'package:tava/features/progress/domain/usecases/get_practice_stats.dart';
 
-@LazySingleton(as: ProgressRepository)
+@Injectable()
 class MockProgressRepository implements ProgressRepository {
   @override
   FutureEitherResult<PracticeStats?> getPracticeStats() async {

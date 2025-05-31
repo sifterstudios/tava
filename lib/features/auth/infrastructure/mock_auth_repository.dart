@@ -5,7 +5,7 @@ import 'package:tava/core/utils/either.dart';
 import 'package:tava/features/auth/domain/entities/user.dart';
 import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
-@LazySingleton(as: AuthRepository)
+@Injectable()
 class MockAuthRepository implements AuthRepository {
   User? _currentUser;
 

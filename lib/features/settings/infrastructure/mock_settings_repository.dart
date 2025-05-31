@@ -5,7 +5,8 @@ import 'package:tava/features/settings/domain/entities/app_settings.dart';
 import 'package:tava/features/settings/domain/repositories/settings_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-@Injectable()
+@dev
+@LazySingleton(as: SettingsRepository)
 class MockSettingsRepository implements SettingsRepository {
   // In-memory storage for settings
   ThemeMode _themeMode = ThemeMode.system;

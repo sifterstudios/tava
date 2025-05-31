@@ -7,6 +7,7 @@ import 'package:tava/core/utils/either.dart';
 import 'package:tava/features/settings/domain/entities/app_settings.dart';
 import 'package:tava/features/settings/domain/repositories/settings_repository.dart';
 
+@prod
 @LazySingleton(as: SettingsRepository)
 class SettingsRepositoryImpl implements SettingsRepository {
   final SharedPreferences _sharedPreferences;

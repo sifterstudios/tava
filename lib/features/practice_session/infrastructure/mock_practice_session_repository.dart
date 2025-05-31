@@ -5,7 +5,8 @@ import 'package:tava/features/practice_session/domain/entities/practice_session.
 import 'package:tava/features/practice_session/domain/entities/weather_info.dart';
 import 'package:tava/features/practice_session/domain/usecases/get_active_session.dart';
 
-@Injectable()
+@dev
+@LazySingleton(as: PracticeSessionRepository)
 class MockPracticeSessionRepository implements PracticeSessionRepository {
   @override
   FutureEitherResult<PracticeSession?> getActiveSession() async {

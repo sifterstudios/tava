@@ -6,8 +6,8 @@ import 'package:tava/core/utils/either.dart';
 import 'package:tava/features/auth/domain/entities/user.dart';
 import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
-@LazySingleton(as: AuthRepository)
 @prod
+@LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final SupabaseClient _supabaseClient;
 

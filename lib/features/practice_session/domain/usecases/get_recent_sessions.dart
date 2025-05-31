@@ -1,3 +1,4 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tava/core/usecase/usecase.dart';
 import 'package:tava/core/utils/either.dart';
@@ -13,6 +14,6 @@ class GetRecentSessions implements UseCase<List<PracticeSession>, NoParams> {
   @override
   FutureEitherResult<List<PracticeSession>> call([NoParams? params]) async {
     // This would normally call a repository method, but for now we'll return mock data
-    return const Right([]);
+    return Right([]); // Using Right from fpdart
   }
 }

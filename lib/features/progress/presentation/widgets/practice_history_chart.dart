@@ -44,7 +44,7 @@ class PracticeHistoryChart extends StatelessWidget {
         barTouchData: BarTouchData(
           enabled: true,
           touchTooltipData: BarTouchTooltipData(
-            tooltipBgColor: theme.colorScheme.surface,
+            // tooltipBgColor: theme.colorScheme.surface,
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               final date = sortedData[groupIndex].date;
               final minutes = sortedData[groupIndex].duration.inMinutes;

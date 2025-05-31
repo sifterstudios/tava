@@ -14,6 +14,6 @@ class MockPracticeSessionRepository implements PracticeSessionRepository {
     await Future.delayed(const Duration(milliseconds: 500));
     
     // For demo purposes, return null (no active session)
-    return const Right(null);
+    return right(null);
   }
 }

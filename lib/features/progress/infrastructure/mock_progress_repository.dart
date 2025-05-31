@@ -14,7 +14,7 @@ class MockProgressRepository implements ProgressRepository {
     await Future.delayed(const Duration(milliseconds: 800));
     
     // Return mock data
-    return Right(
+    return right(
       PracticeStats(
         totalPracticeTime: const Duration(hours: 10, minutes: 30),
         totalSessions: 15,

@@ -14,6 +14,6 @@ class GetRecentSessions implements UseCase<List<PracticeSession>, NoParams> {
   @override
   FutureEitherResult<List<PracticeSession>> call([NoParams? params]) async {
     // This would normally call a repository method, but for now we'll return mock data
-    return Right([]); // Using Right from fpdart
+    return right([]); // Using right from fpdart
   }
 }

@@ -29,16 +29,21 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   // Initialize Hive for local storage
   await Hive.initFlutter();
 
-  // Initialize Supabase
-  await Supabase.initialize(
-    url: const String.fromEnvironment('SUPABASE_URL',
-        defaultValue: 'https://your-supabase-url.supabase.co'),
-    anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY',
-        defaultValue: 'your-anon-key'),
-  );
-
-  // Initialize dependency injection
+  // Initialize dependency injection first
   await configureDependencies();
+
+  try {
+    // Initialize Supabase
+    await Supabase.initialize(
+      url: const String.fromEnvironment('SUPABASE_URL',
+          defaultValue: 'https://your-supabase-url.supabase.co'),
+      anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY',
+          defaultValue: 'your-anon-key'),
+    );
+  } catch (e) {
+    print('Warning: Failed to initialize Supabase: $e');
+    // Continue app initialization even if Supabase fails
+  }
 
   // Set up bloc observer for debugging
   Bloc.observer = const AppBlocObserver();

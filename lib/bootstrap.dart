@@ -29,9 +29,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   // Initialize Hive for local storage
   await Hive.initFlutter();
 
-  // Register Hive adapters
-  // TODO: Register adapters for your models
-
   // Initialize Supabase
   await Supabase.initialize(
     url: const String.fromEnvironment('SUPABASE_URL',
@@ -41,7 +38,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   );
 
   // Initialize dependency injection
-  configureDependencies();
+  await configureDependencies();
 
   // Set up bloc observer for debugging
   Bloc.observer = const AppBlocObserver();

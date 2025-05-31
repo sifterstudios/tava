@@ -38,12 +38,12 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
       duration: Duration.zero,
       exercises: const [],
       isActive: true,
-      weatherInfo: const WeatherInfo(
+      weatherInfo: WeatherInfo(
         condition: WeatherCondition.clear,
         temperature: 22.5,
         humidity: 65,
         pressure: 1013.2,
-        recordedAt: null,
+        recordedAt: DateTime.now(),
       ),
     );
     
@@ -137,6 +137,7 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
     if (state.session == null) return;
     
     final now = DateTime.now();
+    PracticeSessionState updatedState = state;
     
     // If there's a current exercise, complete it first
     if (state.currentExercise != null && state.currentExerciseStartTime != null) {
@@ -151,21 +152,23 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
         notes: 'Incomplete',
       );
       
-      state = state.copyWith(
-        completedExercises: List<ExerciseRecord>.from(state.completedExercises)..add(exerciseRecord),
+      final updatedExercises = List<ExerciseRecord>.from(state.completedExercises)..add(exerciseRecord);
+      
+      updatedState = state.copyWith(
+        completedExercises: updatedExercises,
         currentExercise: null,
         currentExerciseStartTime: null,
       );
     }
     
-    final updatedSession = state.session!.copyWith(
+    final updatedSession = updatedState.session!.copyWith(
       endTime: now,
       isActive: false,
     );
     
     // This would normally call a repository method to save the session
     
-    emit(state.copyWith(
+    emit(updatedState.copyWith(
       status: PracticeSessionStatus.saved,
       session: updatedSession,
       isRunning: false,

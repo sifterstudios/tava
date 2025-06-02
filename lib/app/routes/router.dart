@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tava/features/auth/presentation/pages/login_page.dart';
 import 'package:tava/features/auth/presentation/pages/signup_page.dart';
+import 'package:tava/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:tava/features/exercise_library/presentation/pages/exercise_library_page.dart';
+import 'package:tava/features/metronome/presentation/pages/metronome_page.dart';
+import 'package:tava/features/progress/presentation/pages/progress_page.dart';
 import 'package:tava/features/settings/presentation/pages/settings_page.dart';
 import 'package:tava/features/splash/presentation/pages/splash_page.dart';
 
@@ -30,41 +34,29 @@ final appRouter = GoRouter(
     // Main app shell with bottom navigation
     GoRoute(
       path: '/dashboard',
-      builder: (context, state) => const Scaffold(
-        body: Center(
-          child: Text('Dashboard Page - Under Construction'),
-        ),
-      ),
+      builder: (context, state) => const DashboardPage(),
     ),
-    
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const DashboardPage(),
+    ),
+
     // Library tab
     GoRoute(
       path: '/library',
-      builder: (context, state) => const Scaffold(
-        body: Center(
-          child: Text('Exercise Library - Under Construction'),
-        ),
-      ),
+      builder: (context, state) => const ExerciseLibraryPage(),
     ),
 
     // Metronome tab
     GoRoute(
       path: '/metronome',
-      builder: (context, state) => const Scaffold(
-        body: Center(
-          child: Text('Metronome - Under Construction'),
-        ),
-      ),
+      builder: (context, state) => const MetronomePage(),
     ),
 
     // Progress tab
     GoRoute(
       path: '/progress',
-      builder: (context, state) => const Scaffold(
-        body: Center(
-          child: Text('Progress - Under Construction'),
-        ),
-      ),
+      builder: (context, state) => const ProgressPage(),
     ),
 
     // Settings tab
@@ -113,10 +105,12 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         },
         backgroundColor: theme.colorScheme.surface,
         destinations: _tabs
-            .map((tab) => NavigationDestination(
-                  icon: Icon(tab.$2),
-                  label: tab.$3,
-                ))
+            .map(
+              (tab) => NavigationDestination(
+                icon: Icon(tab.$2),
+                label: tab.$3,
+              ),
+            )
             .toList(),
       ),
       floatingActionButton: _currentIndex == 0

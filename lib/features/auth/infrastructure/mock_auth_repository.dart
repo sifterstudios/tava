@@ -2,16 +2,16 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tava/core/error/failures.dart';
 import 'package:tava/core/utils/either.dart';
-import 'package:tava/features/auth/domain/entities/user.dart';
+import 'package:tava/features/auth/domain/entities/tava_user.dart';
 import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
 @dev
-@LazySingleton(as: AuthRepository)
+@Injectable()
 class MockAuthRepository implements AuthRepository {
-  User? _currentUser;
+  TavaUser? _currentUser;
 
   @override
-  FutureEitherResult<User> getCurrentUser() async {
+  FutureEitherResult<TavaUser> getCurrentUser() async {
     await Future.delayed(const Duration(milliseconds: 500));
     
     if (_currentUser == null) {
@@ -22,7 +22,7 @@ class MockAuthRepository implements AuthRepository {
   }
 
   @override
-  FutureEitherResult<User> login({
+  FutureEitherResult<TavaUser> login({
     required String email,
     required String password,
   }) async {
@@ -34,7 +34,7 @@ class MockAuthRepository implements AuthRepository {
     }
     
     // For demo purposes, accept any credentials
-    _currentUser = User(
+    _currentUser = TavaUser(
       id: 'user-123',
       email: email,
       name: email.split('@').first,
@@ -46,7 +46,7 @@ class MockAuthRepository implements AuthRepository {
   }
 
   @override
-  FutureEitherResult<User> register({
+  FutureEitherResult<TavaUser> register({
     required String email,
     required String password,
     required String name,
@@ -59,7 +59,7 @@ class MockAuthRepository implements AuthRepository {
     }
     
     // For demo purposes, accept any registration
-    _currentUser = User(
+    _currentUser = TavaUser(
       id: 'user-${DateTime.now().millisecondsSinceEpoch}',
       email: email,
       name: name,

@@ -2,5 +2,5 @@ import 'package:tava/app/app.dart';
 import 'package:tava/bootstrap.dart';
 
 void main() {
-  bootstrap(() => const App(), 'dev');
+  bootstrap(() => const App(), 'prod');
 }

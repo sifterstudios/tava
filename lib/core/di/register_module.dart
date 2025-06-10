@@ -1,3 +1,14 @@
-// This file is intentionally left empty.
-// We're removing the RegisterModule class as it's causing duplicate registrations.
-// All repository registrations are now handled directly in their respective files.
+import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+@module
+abstract class RegisterModule {
+  @lazySingleton // Or @singleton if you initialize it eagerly
+  SupabaseClient get supabaseClient => Supabase.instance.client;
+
+  @preResolve // Important for async initialization
+  @lazySingleton
+  Future<SharedPreferences> get sharedPreferences =>
+      SharedPreferences.getInstance();
+}

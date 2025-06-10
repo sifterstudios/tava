@@ -27,7 +27,7 @@ class ProgressView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Progress'),
@@ -45,7 +45,7 @@ class ProgressView extends StatelessWidget {
           if (state.status == ProgressStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }
-
+          
           if (state.status == ProgressStatus.failure) {
             return Center(
               child: Column(
@@ -65,7 +65,7 @@ class ProgressView extends StatelessWidget {
               ),
             );
           }
-
+          
           if (state.practiceStats == null) {
             return Center(
               child: Column(
@@ -86,7 +86,7 @@ class ProgressView extends StatelessWidget {
               ),
             );
           }
-
+          
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -112,9 +112,9 @@ class ProgressView extends StatelessWidget {
                     ),
                   ],
                 ),
-
+                
                 const SizedBox(height: 24),
-
+                
                 // Practice time chart
                 Text(
                   'Practice History',
@@ -127,9 +127,9 @@ class ProgressView extends StatelessWidget {
                     dailyPracticeTimes: state.practiceStats!.dailyPracticeTimes,
                   ),
                 ),
-
+                
                 const SizedBox(height: 24),
-
+                
                 // Category breakdown
                 Text(
                   'Practice by Category',
@@ -142,9 +142,9 @@ class ProgressView extends StatelessWidget {
                     categoryData: state.practiceStats!.timeByCategory,
                   ),
                 ),
-
+                
                 const SizedBox(height: 24),
-
+                
                 // BPM progress
                 Text(
                   'Average BPM Progress',
@@ -152,9 +152,9 @@ class ProgressView extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _buildBpmProgressChart(state),
-
+                
                 const SizedBox(height: 24),
-
+                
                 // Top exercises
                 Text(
                   'Most Practiced Exercises',
@@ -173,7 +173,7 @@ class ProgressView extends StatelessWidget {
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
-
+    
     if (hours > 0) {
       return '$hours h $minutes min';
     } else {
@@ -224,7 +224,7 @@ class ProgressView extends StatelessWidget {
   Widget _buildTopExercises(ProgressState state, ThemeData theme) {
     // This would normally use state.practiceStats!.timeByExercise
     // but for this example we'll use mock data
-
+    
     final mockTopExercises = {
       'C Major Scale': const Duration(hours: 2, minutes: 15),
       'Bach Prelude': const Duration(hours: 1, minutes: 45),
@@ -232,15 +232,15 @@ class ProgressView extends StatelessWidget {
       'Improvisation': const Duration(hours: 1, minutes: 15),
       'Sight Reading': const Duration(minutes: 45),
     };
-
+    
     return Column(
       children: mockTopExercises.entries.map((entry) {
-        final percent = entry.value.inMinutes /
+        final percent = entry.value.inMinutes / 
             mockTopExercises.values.fold<int>(
-                0,
-                    (sum, duration) => sum + duration.inMinutes
+              0, 
+              (sum, duration) => sum + duration.inMinutes
             ) * 100;
-
+        
         return Padding(
           padding: const EdgeInsets.only(bottom: 8),
           child: Row(

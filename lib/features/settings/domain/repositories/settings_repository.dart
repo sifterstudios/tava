@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:tava/core/utils/either.dart';
 import 'package:tava/features/settings/domain/entities/app_settings.dart';
 

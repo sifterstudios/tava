@@ -1,4 +1,3 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -14,6 +13,10 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
+import '../../features/auth/data/datasources/auth_remote_datasource.dart'
+    as _i161;
+import '../../features/auth/data/repositories/auth_repository_impl.dart'
+    as _i153;
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
 import '../../features/auth/domain/usecases/check_auth.dart' as _i1011;
 import '../../features/auth/domain/usecases/login_user.dart' as _i778;
@@ -50,78 +53,96 @@ import '../../features/settings/infrastructure/mock_settings_repository.dart'
 import '../../features/settings/infrastructure/settings_repository_impl.dart'
     as _i569;
 import '../../features/settings/presentation/bloc/settings_bloc.dart' as _i585;
+import 'register_module.dart' as _i291;
 
-const String _prod = 'prod';
 const String _dev = 'dev';
+const String _prod = 'prod';
 
+extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
-_i174.GetIt init(
-  _i174.GetIt getIt, {
-  String? environment,
-  _i526.EnvironmentFilter? environmentFilter,
-}) {
-  final gh = _i526.GetItHelper(
-    getIt,
-    environment,
-    environmentFilter,
-  );
-  gh.factory<_i652.DashboardBloc>(() => _i652.DashboardBloc());
-  gh.factory<_i1021.PracticeSessionBloc>(() => _i1021.PracticeSessionBloc());
-  gh.factory<_i804.ExerciseLibraryBloc>(() => _i804.ExerciseLibraryBloc());
-  gh.factory<_i544.MetronomeBloc>(() => _i544.MetronomeBloc());
-  gh.lazySingleton<_i787.AuthRepository>(
-    () => _i420.AuthRepositoryImpl(gh<_i454.SupabaseClient>()),
-    registerFor: {_prod},
-  );
-  gh.lazySingleton<_i879.PracticeSessionRepository>(
-    () => _i341.MockPracticeSessionRepository(),
-    registerFor: {_dev},
-  );
-  gh.factory<_i419.LogoutUser>(
-      () => _i419.LogoutUser(gh<_i787.AuthRepository>()));
-  gh.factory<_i198.RegisterUser>(
-      () => _i198.RegisterUser(gh<_i787.AuthRepository>()));
-  gh.factory<_i1011.CheckAuth>(
-      () => _i1011.CheckAuth(gh<_i787.AuthRepository>()));
-  gh.factory<_i778.LoginUser>(
-      () => _i778.LoginUser(gh<_i787.AuthRepository>()));
-  gh.lazySingleton<_i1058.ProgressRepository>(
-    () => _i251.MockProgressRepository(),
-    registerFor: {_dev},
-  );
-  gh.lazySingleton<_i674.SettingsRepository>(
-    () => _i473.MockSettingsRepository(),
-    registerFor: {_dev},
-  );
-  gh.lazySingleton<_i787.AuthRepository>(
-    () => _i560.MockAuthRepository(),
-    registerFor: {_dev},
-  );
-  gh.factory<_i558.GetSettings>(
-      () => _i558.GetSettings(gh<_i674.SettingsRepository>()));
-  gh.factory<_i986.UpdateSettings>(
-      () => _i986.UpdateSettings(gh<_i674.SettingsRepository>()));
-  gh.lazySingleton<_i674.SettingsRepository>(
-    () => _i569.SettingsRepositoryImpl(gh<_i460.SharedPreferences>()),
-    registerFor: {_prod},
-  );
-  gh.factory<_i760.GetRecentSessions>(
-      () => _i760.GetRecentSessions(gh<_i879.PracticeSessionRepository>()));
-  gh.factory<_i879.GetActiveSession>(
-      () => _i879.GetActiveSession(gh<_i879.PracticeSessionRepository>()));
-  gh.factory<_i585.SettingsBloc>(() => _i585.SettingsBloc(
-        getSettings: gh<_i558.GetSettings>(),
-        updateSettings: gh<_i986.UpdateSettings>(),
-      ));
-  gh.factory<_i1058.GetPracticeStats>(
-      () => _i1058.GetPracticeStats(gh<_i1058.ProgressRepository>()));
-  gh.factory<_i797.AuthBloc>(() => _i797.AuthBloc(
-        checkAuth: gh<_i1011.CheckAuth>(),
-        loginUser: gh<_i778.LoginUser>(),
-        logoutUser: gh<_i419.LogoutUser>(),
-        registerUser: gh<_i198.RegisterUser>(),
-      ));
-  gh.factory<_i522.ProgressBloc>(() =>
-      _i522.ProgressBloc(getPracticeStats: gh<_i1058.GetPracticeStats>()));
-  return getIt;
+  Future<_i174.GetIt> init({
+    String? environment,
+    _i526.EnvironmentFilter? environmentFilter,
+  }) async {
+    final gh = _i526.GetItHelper(
+      this,
+      environment,
+      environmentFilter,
+    );
+    final registerModule = _$RegisterModule();
+    gh.factory<_i804.ExerciseLibraryBloc>(() => _i804.ExerciseLibraryBloc());
+    gh.factory<_i544.MetronomeBloc>(() => _i544.MetronomeBloc());
+    gh.factory<_i1021.PracticeSessionBloc>(() => _i1021.PracticeSessionBloc());
+    gh.lazySingleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
+    await gh.lazySingletonAsync<_i460.SharedPreferences>(
+      () => registerModule.sharedPreferences,
+      preResolve: true,
+    );
+    gh.factory<_i560.MockAuthRepository>(
+      () => _i560.MockAuthRepository(),
+      registerFor: {_dev},
+    );
+    gh.factory<_i420.AuthRepositoryImpl>(
+      () => _i420.AuthRepositoryImpl(gh<_i454.SupabaseClient>()),
+      registerFor: {_prod},
+    );
+    gh.lazySingleton<_i879.PracticeSessionRepository>(
+      () => _i341.MockPracticeSessionRepository(),
+      registerFor: {_dev},
+    );
+    gh.lazySingleton<_i1058.ProgressRepository>(
+      () => _i251.MockProgressRepository(),
+      registerFor: {_dev},
+    );
+    gh.lazySingleton<_i674.SettingsRepository>(
+      () => _i473.MockSettingsRepository(),
+      registerFor: {_dev},
+    );
+    gh.factory<_i558.GetSettings>(
+        () => _i558.GetSettings(gh<_i674.SettingsRepository>()));
+    gh.factory<_i986.UpdateSettings>(
+        () => _i986.UpdateSettings(gh<_i674.SettingsRepository>()));
+    gh.factory<_i674.SettingsRepository>(
+      () => _i569.SettingsRepositoryImpl(gh<_i460.SharedPreferences>()),
+      registerFor: {_prod},
+    );
+    gh.factory<_i879.GetActiveSession>(
+        () => _i879.GetActiveSession(gh<_i879.PracticeSessionRepository>()));
+    gh.factory<_i760.GetRecentSessions>(
+        () => _i760.GetRecentSessions(gh<_i879.PracticeSessionRepository>()));
+    gh.factory<_i161.AuthRemoteDataSource>(() => _i161.AuthRemoteDataSourceImpl(
+        supabaseClient: gh<_i454.SupabaseClient>()));
+    gh.factory<_i585.SettingsBloc>(() => _i585.SettingsBloc(
+          getSettings: gh<_i558.GetSettings>(),
+          updateSettings: gh<_i986.UpdateSettings>(),
+        ));
+    gh.factory<_i1058.GetPracticeStats>(
+        () => _i1058.GetPracticeStats(gh<_i1058.ProgressRepository>()));
+    gh.factory<_i787.AuthRepository>(() => _i153.AuthRepositoryImpl(
+        remoteDataSource: gh<_i161.AuthRemoteDataSource>()));
+    gh.factory<_i522.ProgressBloc>(() =>
+        _i522.ProgressBloc(getPracticeStats: gh<_i1058.GetPracticeStats>()));
+    gh.factory<_i652.DashboardBloc>(() => _i652.DashboardBloc(
+          getActiveSession: gh<_i879.GetActiveSession>(),
+          getRecentSessions: gh<_i760.GetRecentSessions>(),
+          getPracticeStats: gh<_i1058.GetPracticeStats>(),
+        ));
+    gh.factory<_i1011.CheckAuth>(
+        () => _i1011.CheckAuth(gh<_i787.AuthRepository>()));
+    gh.factory<_i778.LoginUser>(
+        () => _i778.LoginUser(gh<_i787.AuthRepository>()));
+    gh.factory<_i419.LogoutUser>(
+        () => _i419.LogoutUser(gh<_i787.AuthRepository>()));
+    gh.factory<_i198.RegisterUser>(
+        () => _i198.RegisterUser(gh<_i787.AuthRepository>()));
+    gh.factory<_i797.AuthBloc>(() => _i797.AuthBloc(
+          checkAuth: gh<_i1011.CheckAuth>(),
+          loginUser: gh<_i778.LoginUser>(),
+          logoutUser: gh<_i419.LogoutUser>(),
+          registerUser: gh<_i198.RegisterUser>(),
+        ));
+    return this;
+  }
 }
+
+class _$RegisterModule extends _i291.RegisterModule {}

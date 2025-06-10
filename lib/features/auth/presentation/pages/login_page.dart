@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tava/core/di/injection.dart';
 import 'package:tava/features/auth/presentation/bloc/auth_bloc.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => getIt<AuthBloc>(),
+      child: const LoginView(),
+    );
+  }
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -24,110 +40,255 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthAuthenticated) {
-            context.go('/dashboard');
-          } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: theme.colorScheme.error,
-              ),
-            );
-          }
-        },
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthAuthenticated) {
+          context.go('/dashboard');
+        } else if (state is AuthError) {
+          _showErrorDialog(context, state.message);
+        }
+      },
+      builder: (context, state) {
+        return PlatformScaffold(
+          appBar: PlatformAppBar(
+            title: const Text('Sign In'),
+            automaticallyImplyLeading: false,
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
               child: Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      'Welcome Back',
-                      style: theme.textTheme.headlineMedium,
-                      textAlign: TextAlign.center,
+                    const Spacer(),
+                    
+                    // Logo/Title
+                    Column(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF00FFFF).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: PlatformWidget(
+                            material: (_, __) => const Icon(
+                              Icons.music_note,
+                              size: 40,
+                              color: Color(0xFF00FFFF),
+                            ),
+                            cupertino: (_, __) => const Icon(
+                              CupertinoIcons.music_note,
+                              size: 40,
+                              color: Color(0xFF00FFFF),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        PlatformText(
+                          'TAVA',
+                          style: platformThemeData(
+                            context,
+                            material: (data) => data.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            cupertino: (data) => data.textTheme.navLargeTitleTextStyle.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        PlatformText(
+                          'Track your practice journey',
+                          style: platformThemeData(
+                            context,
+                            material: (data) => data.textTheme.bodyLarge?.copyWith(
+                              color: data.colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                            cupertino: (data) => data.textTheme.textStyle.copyWith(
+                              color: CupertinoColors.secondaryLabel,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Sign in to continue',
-                      style: theme.textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 32),
-                    TextFormField(
+                    
+                    const SizedBox(height: 48),
+                    
+                    // Email field
+                    PlatformTextFormField(
                       controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'Enter your email',
-                      ),
                       keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      hintText: 'Email',
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email';
                         }
+                        if (!value.contains('@')) {
+                          return 'Please enter a valid email';
+                        }
                         return null;
                       },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'Enter your password',
+                      material: (_, __) => MaterialTextFormFieldData(
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          prefixIcon: const Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                       ),
-                      obscureText: true,
+                      cupertino: (_, __) => CupertinoTextFormFieldData(
+                        decoration: BoxDecoration(
+                          color: CupertinoColors.systemGrey6,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefix: const Padding(
+                          padding: EdgeInsets.only(left: 12),
+                          child: Icon(CupertinoIcons.mail),
+                        ),
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Password field
+                    PlatformTextFormField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      textInputAction: TextInputAction.done,
+                      hintText: 'Password',
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
                         }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
                         return null;
                       },
+                      onFieldSubmitted: (_) => _handleLogin(),
+                      material: (_, __) => MaterialTextFormFieldData(
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          prefixIcon: const Icon(Icons.lock_outlined),
+                          suffixIcon: IconButton(
+                            icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      cupertino: (_, __) => CupertinoTextFormFieldData(
+                        decoration: BoxDecoration(
+                          color: CupertinoColors.systemGrey6,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefix: CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                          child: Icon(_obscurePassword ? CupertinoIcons.eye : CupertinoIcons.eye_slash),
+                        ),
+                      ),
                     ),
+                    
                     const SizedBox(height: 24),
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        return FilledButton(
-                          onPressed: state is AuthLoading
-                              ? null
-                              : () {
-                                  if (_formKey.currentState!.validate()) {
-                                    context.read<AuthBloc>().add(
-                                          LoginRequested(
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                          ),
-                                        );
-                                  }
-                                },
-                          child: state is AuthLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(),
-                                )
-                              : const Text('Sign In'),
-                        );
-                      },
+                    
+                    // Login button
+                    PlatformElevatedButton(
+                      onPressed: state is AuthLoading ? null : _handleLogin,
+                      material: (_, __) => MaterialElevatedButtonData(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF00FFFF),
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      cupertino: (_, __) => CupertinoElevatedButtonData(
+                        color: const Color(0xFF00FFFF),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: state is AuthLoading
+                          ? PlatformCircularProgressIndicator()
+                          : const Text(
+                              'Sign In',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                     ),
+                    
                     const SizedBox(height: 16),
-                    TextButton(
-                      onPressed: () => context.go('/signup'),
-                      child: const Text('Don\'t have an account? Sign up'),
+                    
+                    // Sign up link
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PlatformText(
+                          "Don't have an account? ",
+                          style: platformThemeData(
+                            context,
+                            material: (data) => data.textTheme.bodyMedium,
+                            cupertino: (data) => data.textTheme.textStyle,
+                          ),
+                        ),
+                        PlatformTextButton(
+                          onPressed: () => context.go('/signup'),
+                          child: const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Color(0xFF00FFFF),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    
+                    const Spacer(),
                   ],
                 ),
               ),
             ),
           ),
-        ),
+        );
+      },
+    );
+  }
+
+  void _handleLogin() {
+    if (_formKey.currentState?.validate() ?? false) {
+      context.read<AuthBloc>().add(
+            LoginRequested(
+              email: _emailController.text.trim(),
+              password: _passwordController.text,
+            ),
+          );
+    }
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showPlatformDialog(
+      context: context,
+      builder: (_) => PlatformAlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: [
+          PlatformDialogAction(
+            child: const Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
       ),
     );
   }

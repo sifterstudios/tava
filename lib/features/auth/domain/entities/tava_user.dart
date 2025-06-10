@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
+class TavaUser extends Equatable {
   final String id;
   final String email;
   final String? name;
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  const User({
+  const TavaUser({
     required this.id,
     required this.email,
+    this.name,
     required this.createdAt,
     required this.updatedAt,
-    this.name,
   });
 
   @override

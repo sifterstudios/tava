@@ -1,57 +1,83 @@
 name: tava
-description: A Very Good Project created by Very Good CLI.
-version: 1.0.0+1
+description: A musician's practice journal with customizable metronome and progress tracking.
+version: 0.1.0+1
 publish_to: none
 
 environment:
-  sdk: ^3.5.0
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  audio_session: ^0.2.2
-  bloc: ^9.0.0
-  bloc_concurrency: ^0.3.0
-  connectivity_plus: ^6.1.4
-  device_info_plus: ^11.4.0
-  equatable: ^2.0.7
-  fl_chart: ^1.0.0
-  flex_color_scheme: ^8.2.0
+  # Flutter packages
   flutter:
     sdk: flutter
-  flutter_animate: ^4.5.2
-  flutter_bloc: ^9.1.1
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.1.0
-  fpdart: ^1.1.1
-  geolocator: ^14.0.1
+
+  # State management
+  flutter_bloc: ^9.1.1
+  bloc_concurrency: ^0.3.0
+  equatable: ^2.0.7
+  
+  # DI
   get_it: ^8.0.3
-  go_router: ^15.1.3
+  injectable: ^2.5.0
+
+  # UI
+  flutter_svg: ^2.1.0
   google_fonts: ^6.2.1
+  fl_chart: ^1.0.0
+  intl: ^0.20.2
+  lottie: ^3.3.1
+  flutter_animate: ^4.5.2
+  flex_color_scheme: ^8.2.0
+  
+  # Cross-platform UI
+  flutter_platform_widgets: ^9.0.0
+  
+  # Functional programming
+  fpdart: ^1.1.0
+  rxdart: ^0.27.7
+  
+  # Storage
+  shared_preferences: ^2.2.0
+  path_provider: ^2.1.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  injectable: ^2.5.0
-  intl: ^0.20.2
-  just_audio: ^0.10.4
-  logger: ^2.5.0
-  lottie: ^3.3.1
-  package_info_plus: ^8.3.0
-  path_provider: ^2.1.5
-  rxdart: ^0.28.0
-  shared_preferences: ^2.5.3
+
+  # Backend
   supabase_flutter: ^2.9.0
-  uuid: ^4.5.1
+  connectivity_plus: ^6.1.4
+  
+  # Metronome
+  just_audio: ^0.10.4
+  audio_session: ^0.2.2
+  
+  # Weather API
   weather: ^3.2.1
+  geolocator: ^14.0.1
+  
+  # Other utilities
+  logger: ^2.5.0
+  uuid: ^4.5.1
+  device_info_plus: ^11.4.0
+  package_info_plus: ^8.3.0
+  go_router: ^15.1.3
 
 dev_dependencies:
-  bloc_test: ^10.0.0
-  build_runner: ^2.4.15
-  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  injectable_generator: ^2.7.0
+  bloc_test: ^10.0.0
   mocktail: ^1.0.4
   very_good_analysis: ^9.0.0
+  injectable_generator: ^2.3.0
+  build_runner: ^2.4.15
+  hive_generator: ^2.0.1
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - assets/images/
+    - assets/animations/
+    - assets/audio/

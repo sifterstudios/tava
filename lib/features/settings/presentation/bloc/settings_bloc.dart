@@ -7,6 +7,7 @@ import 'package:tava/features/settings/domain/usecases/get_settings.dart';
 import 'package:tava/features/settings/domain/usecases/update_settings.dart';
 
 part 'settings_event.dart';
+
 part 'settings_state.dart';
 
 @injectable
@@ -27,19 +28,19 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _onLoadSettings(
-      LoadSettings event,
-      Emitter<SettingsState> emit,
-      ) async {
+    LoadSettings event,
+    Emitter<SettingsState> emit,
+  ) async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
     final result = await _getSettings();
 
     result.fold(
-          (failure) => emit(state.copyWith(
+      (failure) => emit(state.copyWith(
         status: SettingsStatus.failure,
         errorMessage: failure.message,
       )),
-          (settings) => emit(state.copyWith(
+      (settings) => emit(state.copyWith(
         status: SettingsStatus.success,
         themeMode: settings.themeMode,
         metronomeSound: settings.metronomeSound,
@@ -49,9 +50,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _onUpdateThemeMode(
-      UpdateThemeMode event,
-      Emitter<SettingsState> emit,
-      ) async {
+    UpdateThemeMode event,
+    Emitter<SettingsState> emit,
+  ) async {
     final updatedSettings = AppSettings(
       themeMode: event.themeMode,
       metronomeSound: state.metronomeSound,
@@ -63,11 +64,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
 
     result.fold(
-          (failure) => emit(state.copyWith(
+      (failure) => emit(state.copyWith(
         status: SettingsStatus.failure,
         errorMessage: failure.message,
       )),
-          (_) => emit(state.copyWith(
+      (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         themeMode: event.themeMode,
       )),
@@ -75,9 +76,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _onUpdateMetronomeSound(
-      UpdateMetronomeSound event,
-      Emitter<SettingsState> emit,
-      ) async {
+    UpdateMetronomeSound event,
+    Emitter<SettingsState> emit,
+  ) async {
     final updatedSettings = AppSettings(
       themeMode: state.themeMode,
       metronomeSound: event.sound,
@@ -89,11 +90,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
 
     result.fold(
-          (failure) => emit(state.copyWith(
+      (failure) => emit(state.copyWith(
         status: SettingsStatus.failure,
         errorMessage: failure.message,
       )),
-          (_) => emit(state.copyWith(
+      (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         metronomeSound: event.sound,
       )),
@@ -101,9 +102,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _onUpdateWeatherTracking(
-      UpdateWeatherTracking event,
-      Emitter<SettingsState> emit,
-      ) async {
+    UpdateWeatherTracking event,
+    Emitter<SettingsState> emit,
+  ) async {
     final updatedSettings = AppSettings(
       themeMode: state.themeMode,
       metronomeSound: state.metronomeSound,
@@ -115,11 +116,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
 
     result.fold(
-          (failure) => emit(state.copyWith(
+      (failure) => emit(state.copyWith(
         status: SettingsStatus.failure,
         errorMessage: failure.message,
       )),
-          (_) => emit(state.copyWith(
+      (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         trackWeather: event.trackWeather,
       )),

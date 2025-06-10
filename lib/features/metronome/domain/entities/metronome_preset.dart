@@ -53,15 +53,15 @@ class MetronomePreset extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    name,
-    bpm,
-    beatsPerMeasure,
-    beatUnit,
-    accentPattern,
-    soundType,
-    isFavorite,
-    createdAt,
-    updatedAt,
-  ];
+        id,
+        name,
+        bpm,
+        beatsPerMeasure,
+        beatUnit,
+        accentPattern,
+        soundType,
+        isFavorite,
+        createdAt,
+        updatedAt,
+      ];
 }

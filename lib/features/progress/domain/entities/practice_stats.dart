@@ -22,14 +22,14 @@ class PracticeStats extends Equatable {
 
   @override
   List<Object> get props => [
-    totalPracticeTime,
-    totalSessions,
-    averageBpm,
-    timeByCategory,
-    timeByExercise,
-    dailyPracticeTimes,
-    weeklyPracticeTimes,
-  ];
+        totalPracticeTime,
+        totalSessions,
+        averageBpm,
+        timeByCategory,
+        timeByExercise,
+        dailyPracticeTimes,
+        weeklyPracticeTimes,
+      ];
 }
 
 class DailyPracticeTime extends Equatable {

@@ -1,77 +1,124 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:tava/features/practice_session/domain/entities/practice_session.dart';
 
 class RecentSessionCard extends StatelessWidget {
   final PracticeSession session;
 
-  const RecentSessionCard({super.key, required this.session});
+  const RecentSessionCard({
+    super.key,
+    required this.session,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final date = session.startTime;
-    final formattedDate =
-        '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: platformThemeData(
+          context,
+          material: (data) => data.colorScheme.surface,
+          cupertino: (data) => CupertinoColors.systemBackground,
+        ),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: platformThemeData(
+            context,
+            material: (data) => data.colorScheme.outline.withOpacity(0.2),
+            cupertino: (data) => CupertinoColors.separator,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF00FFFF).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: PlatformWidget(
+              material: (_, __) => const Icon(
+                Icons.music_note,
+                color: Color(0xFF00FFFF),
+                size: 20,
+              ),
+              cupertino: (_, __) => const Icon(
+                CupertinoIcons.music_note,
+                color: Color(0xFF00FFFF),
+                size: 20,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.music_note),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    formattedDate,
-                    style: theme.textTheme.titleMedium,
+                PlatformText(
+                  _formatDate(session.startTime),
+                  style: platformThemeData(
+                    context,
+                    material: (data) => data.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    cupertino: (data) => data.textTheme.textStyle.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-                Text(
-                  _formatDuration(session.duration),
-                  style: theme.textTheme.bodyMedium,
+                const SizedBox(height: 4),
+                PlatformText(
+                  '${_formatDuration(session.duration)} • ${session.exercises.length} exercises',
+                  style: platformThemeData(
+                    context,
+                    material: (data) => data.textTheme.bodySmall?.copyWith(
+                      color: data.colorScheme.onSurface.withOpacity(0.6),
+                    ),
+                    cupertino: (data) => data.textTheme.textStyle.copyWith(
+                      color: CupertinoColors.secondaryLabel,
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ],
             ),
-            if (session.exercises.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text(
-                '${session.exercises.length} exercises',
-                style: theme.textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                session.exercises.map((e) => e.name).join(', '),
-                style: theme.textTheme.bodySmall,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-            if (session.notes != null && session.notes!.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text(
-                session.notes!,
-                style: theme.textTheme.bodySmall,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ],
-        ),
+          ),
+          PlatformWidget(
+            material: (_, __) => Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+            ),
+            cupertino: (_, __) => const Icon(
+              CupertinoIcons.chevron_right,
+              color: CupertinoColors.tertiaryLabel,
+              size: 16,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  String _formatDuration(Duration duration) {
-    final hours = duration.inHours;
-    final minutes = duration.inMinutes.remainder(60);
-
-    if (hours > 0) {
-      return '$hours h $minutes min';
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date).inDays;
+    
+    if (difference == 0) {
+      return 'Today';
+    } else if (difference == 1) {
+      return 'Yesterday';
+    } else if (difference < 7) {
+      return '$difference days ago';
     } else {
-      return '$minutes min';
+      return '${date.day}/${date.month}/${date.year}';
     }
+  }
+
+  String _formatDuration(Duration duration) {
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 }

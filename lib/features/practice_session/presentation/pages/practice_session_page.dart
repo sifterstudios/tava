@@ -27,10 +27,10 @@ class PracticeSessionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    
     return BlocConsumer<PracticeSessionBloc, PracticeSessionState>(
-      listenWhen: (previous, current) =>
-      previous.status != current.status,
+      listenWhen: (previous, current) => 
+          previous.status != current.status,
       listener: (context, state) {
         if (state.status == PracticeSessionStatus.saved) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -49,7 +49,7 @@ class PracticeSessionView extends StatelessWidget {
             body: const Center(child: CircularProgressIndicator()),
           );
         }
-
+        
         if (state.status == PracticeSessionStatus.failure) {
           return Scaffold(
             appBar: AppBar(title: const Text('Practice Session')),
@@ -72,7 +72,7 @@ class PracticeSessionView extends StatelessWidget {
             ),
           );
         }
-
+        
         return Scaffold(
           appBar: AppBar(
             title: const Text('Practice Session'),
@@ -137,7 +137,7 @@ class PracticeSessionView extends StatelessWidget {
                   ],
                 ),
               ),
-
+              
               // Active exercise (if any)
               if (state.currentExercise != null) ...[
                 Padding(
@@ -160,7 +160,7 @@ class PracticeSessionView extends StatelessWidget {
                   ),
                 ),
               ],
-
+              
               // Exercise list
               Expanded(
                 child: Padding(
@@ -176,42 +176,42 @@ class PracticeSessionView extends StatelessWidget {
                       Expanded(
                         child: state.completedExercises.isEmpty
                             ? Center(
-                          child: Text(
-                            'No exercises completed yet',
-                            style: theme.textTheme.bodyLarge,
-                          ),
-                        )
-                            : ListView.builder(
-                          itemCount: state.completedExercises.length,
-                          itemBuilder: (context, index) {
-                            final exercise =
-                            state.completedExercises[index];
-                            return ListTile(
-                              title: Text(exercise.name),
-                              subtitle: Text(
-                                'Duration: ${_formatDuration(exercise.duration)}' +
-                                    (exercise.bpm != null
-                                        ? ' • ${exercise.bpm} BPM'
-                                        : ''),
-                              ),
-                              trailing: exercise.rating != null
-                                  ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: List.generate(
-                                  5,
-                                      (i) => Icon(
-                                    i < exercise.rating!
-                                        ? Icons.star
-                                        : Icons.star_border,
-                                    color: theme.colorScheme.primary,
-                                    size: 18,
-                                  ),
+                                child: Text(
+                                  'No exercises completed yet',
+                                  style: theme.textTheme.bodyLarge,
                                 ),
                               )
-                                  : null,
-                            );
-                          },
-                        ),
+                            : ListView.builder(
+                                itemCount: state.completedExercises.length,
+                                itemBuilder: (context, index) {
+                                  final exercise =
+                                      state.completedExercises[index];
+                                  return ListTile(
+                                    title: Text(exercise.name),
+                                    subtitle: Text(
+                                      'Duration: ${_formatDuration(exercise.duration)}' +
+                                          (exercise.bpm != null
+                                              ? ' • ${exercise.bpm} BPM'
+                                              : ''),
+                                    ),
+                                    trailing: exercise.rating != null
+                                        ? Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: List.generate(
+                                              5,
+                                              (i) => Icon(
+                                                i < exercise.rating!
+                                                    ? Icons.star
+                                                    : Icons.star_border,
+                                                color: theme.colorScheme.primary,
+                                                size: 18,
+                                              ),
+                                            ),
+                                          )
+                                        : null,
+                                  );
+                                },
+                              ),
                       ),
                     ],
                   ),
@@ -221,10 +221,10 @@ class PracticeSessionView extends StatelessWidget {
           ),
           floatingActionButton: state.currentExercise == null
               ? FloatingActionButton.extended(
-            onPressed: () => _showExerciseSelector(context),
-            icon: const Icon(Icons.add),
-            label: const Text('Start Exercise'),
-          )
+                  onPressed: () => _showExerciseSelector(context),
+                  icon: const Icon(Icons.add),
+                  label: const Text('Start Exercise'),
+                )
               : null,
         );
       },

@@ -1,4 +1,28 @@
-include: package:very_good_analysis/analysis_options.6.0.0.yaml
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.config.dart"
+  
 linter:
   rules:
-    public_member_api_docs: false
+    # Disable rules that conflict with our architecture
+    prefer_relative_imports: false
+    avoid_print: false
+    
+    # Enable additional rules for better code quality
+    always_declare_return_types: true
+    avoid_empty_else: true
+    cancel_subscriptions: true
+    close_sinks: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_fields: true
+    prefer_final_in_for_each: true
+    prefer_final_locals: true
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    unawaited_futures: true
+    use_key_in_widget_constructors: true

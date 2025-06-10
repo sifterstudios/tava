@@ -4,90 +4,81 @@ import 'package:injectable/injectable.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 import 'package:tava/features/practice_session/domain/entities/practice_session.dart';
 import 'package:tava/features/practice_session/domain/entities/weather_info.dart';
+import 'package:tava/features/practice_session/domain/usecases/get_active_session.dart';
+import 'package:tava/features/practice_session/domain/usecases/get_recent_sessions.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
+import 'package:tava/features/progress/domain/usecases/get_practice_stats.dart';
 
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
 @injectable
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  DashboardBloc() : super(const DashboardState.initial()) {
+  final GetActiveSession _getActiveSession;
+  final GetRecentSessions _getRecentSessions;
+  final GetPracticeStats _getPracticeStats;
+
+  DashboardBloc({
+    required GetActiveSession getActiveSession,
+    required GetRecentSessions getRecentSessions,
+    required GetPracticeStats getPracticeStats,
+  })  : _getActiveSession = getActiveSession,
+        _getRecentSessions = getRecentSessions,
+        _getPracticeStats = getPracticeStats,
+        super(const DashboardState.initial()) {
     on<LoadDashboardData>(_onLoadDashboardData);
   }
 
   Future<void> _onLoadDashboardData(
-      LoadDashboardData event,
-      Emitter<DashboardState> emit,
-      ) async {
+    LoadDashboardData event,
+    Emitter<DashboardState> emit,
+  ) async {
     emit(state.copyWith(status: DashboardStatus.loading));
 
-    // In a real app, we'd fetch data from repositories
-    // For now, we'll use mock data
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    final mockPracticeStats = PracticeStats(
-      totalPracticeTime: const Duration(hours: 10, minutes: 30),
-      totalSessions: 15,
-      averageBpm: 95,
-      timeByCategory: {
-        ExerciseCategory.scales: const Duration(hours: 3, minutes: 15),
-        ExerciseCategory.technique: const Duration(hours: 2, minutes: 45),
-        ExerciseCategory.repertoire: const Duration(hours: 4, minutes: 30),
-      },
-      timeByExercise: {
-        'C Major Scale': const Duration(hours: 2, minutes: 15),
-        'Bach Prelude': const Duration(hours: 1, minutes: 45),
-      },
-      dailyPracticeTimes: [
-        DailyPracticeTime(
-          date: DateTime.now().subtract(const Duration(days: 6)),
-          duration: const Duration(minutes: 45),
-        ),
-        DailyPracticeTime(
-          date: DateTime.now().subtract(const Duration(days: 5)),
-          duration: const Duration(minutes: 30),
-        ),
-        DailyPracticeTime(
-          date: DateTime.now().subtract(const Duration(days: 4)),
-          duration: const Duration(hours: 1, minutes: 15),
-        ),
-        DailyPracticeTime(
-          date: DateTime.now().subtract(const Duration(days: 3)),
-          duration: const Duration(minutes: 45),
-        ),
-        DailyPracticeTime(
-          date: DateTime.now().subtract(const Duration(days: 2)),
-          duration: const Duration(hours: 1)),
-        DailyPracticeTime(
-          date: DateTime.now().subtract(const Duration(days: 1)),
-          duration: const Duration(minutes: 30),
-        ),
-        DailyPracticeTime(
-          date: DateTime.now(),
-          duration: const Duration(hours: 1, minutes: 15),
-        ),
-      ],
-      weeklyPracticeTimes: [
-        WeeklyPracticeTime(
-          weekStart: DateTime.now().subtract(const Duration(days: 21)),
-          duration: const Duration(hours: 3, minutes: 30),
-        ),
-        WeeklyPracticeTime(
-          weekStart: DateTime.now().subtract(const Duration(days: 14)),
-          duration: const Duration(hours: 4, minutes: 15),
-        ),
-        WeeklyPracticeTime(
-          weekStart: DateTime.now().subtract(const Duration(days: 7)),
-          duration: const Duration(hours: 5, minutes: 45),
-        ),
-      ],
+    // Get active session if exists
+    final activeSessionResult = await _getActiveSession();
+    PracticeSession? activeSession;
+    
+    activeSessionResult.fold(
+      (failure) => null, // Ignore failures for active session
+      (session) => activeSession = session,
     );
 
-    emit(state.copyWith(
-      status: DashboardStatus.success,
-      practiceStats: mockPracticeStats,
-      suggestedExercises: _getDummySuggestedExercises(),
-    ));
+    // Get recent sessions
+    final recentSessionsResult = await _getRecentSessions();
+    List<PracticeSession> recentSessions = [];
+    
+    recentSessionsResult.fold(
+      (failure) => emit(state.copyWith(
+        status: DashboardStatus.failure,
+        errorMessage: failure.message,
+      )),
+      (sessions) => recentSessions = sessions,
+    );
+
+    // Get practice stats
+    final practiceStatsResult = await _getPracticeStats();
+    PracticeStats? practiceStats;
+    
+    practiceStatsResult.fold(
+      (failure) => emit(state.copyWith(
+        status: DashboardStatus.failure,
+        errorMessage: failure.message,
+      )),
+      (stats) => practiceStats = stats,
+    );
+
+    if (state.status != DashboardStatus.failure) {
+      emit(state.copyWith(
+        status: DashboardStatus.success,
+        activeSession: activeSession,
+        recentSessions: recentSessions,
+        practiceStats: practiceStats,
+        weatherInfo: activeSession?.weatherInfo,
+        // In a real app, we'd fetch suggested exercises based on practice history
+        suggestedExercises: _getDummySuggestedExercises(),
+      ));
+    }
   }
 
   // Temporary method to generate dummy data

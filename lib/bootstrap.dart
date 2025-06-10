@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:tava/core/di/injection.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tava/core/di/injection.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -23,27 +23,25 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+Future<void> bootstrap(FutureOr<Widget> Function() builder, String env) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Hive for local storage
   await Hive.initFlutter();
 
-  // Initialize dependency injection first
-  await configureDependencies();
+  // Register Hive adapters
+  // TODO: Register adapters for your models
 
-  try {
-    // Initialize Supabase
-    await Supabase.initialize(
-      url: const String.fromEnvironment('SUPABASE_URL',
-          defaultValue: 'https://your-supabase-url.supabase.co'),
-      anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY',
-          defaultValue: 'your-anon-key'),
-    );
-  } catch (e) {
-    print('Warning: Failed to initialize Supabase: $e');
-    // Continue app initialization even if Supabase fails
-  }
+  // Initialize Supabase
+  await Supabase.initialize(
+    url: const String.fromEnvironment('SUPABASE_URL',
+        defaultValue: 'https://your-supabase-url.supabase.co'),
+    anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY',
+        defaultValue: 'your-anon-key'),
+  );
+
+  // Initialize dependency injection
+  await configureDependencies(env);
 
   // Set up bloc observer for debugging
   Bloc.observer = const AppBlocObserver();

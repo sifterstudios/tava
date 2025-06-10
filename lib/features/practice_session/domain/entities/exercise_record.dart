@@ -21,12 +21,12 @@ class ExerciseRecord extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    exerciseId,
-    name,
-    bpm,
-    duration,
-    rating,
-    notes,
-  ];
+        id,
+        exerciseId,
+        name,
+        bpm,
+        duration,
+        rating,
+        notes,
+      ];
 }

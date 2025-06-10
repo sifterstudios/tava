@@ -1,30 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 
 class PracticeStatsCard extends StatelessWidget {
   final PracticeStats? stats;
 
-  const PracticeStatsCard({super.key, this.stats});
+  const PracticeStatsCard({
+    super.key,
+    this.stats,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (stats == null) {
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+      return Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: platformThemeData(
+            context,
+            material: (data) => data.colorScheme.surface,
+            cupertino: (data) => CupertinoColors.systemBackground,
+          ),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: platformThemeData(
+              context,
+              material: (data) => data.colorScheme.outline.withOpacity(0.2),
+              cupertino: (data) => CupertinoColors.separator,
+            ),
+          ),
+        ),
+        child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'No practice data yet',
-                style: theme.textTheme.titleMedium,
+              PlatformWidget(
+                material: (_, __) => const Icon(
+                  Icons.music_note,
+                  size: 48,
+                  color: Colors.grey,
+                ),
+                cupertino: (_, __) => const Icon(
+                  CupertinoIcons.music_note,
+                  size: 48,
+                  color: CupertinoColors.inactiveGray,
+                ),
               ),
               const SizedBox(height: 8),
-              Text(
-                'Start practicing to see your stats',
-                style: theme.textTheme.bodyMedium,
+              PlatformText(
+                'No practice data yet',
+                style: platformThemeData(
+                  context,
+                  material: (data) => data.textTheme.bodyLarge?.copyWith(
+                    color: data.colorScheme.onSurface.withOpacity(0.6),
+                  ),
+                  cupertino: (data) => data.textTheme.textStyle.copyWith(
+                    color: CupertinoColors.secondaryLabel,
+                  ),
+                ),
               ),
             ],
           ),
@@ -32,39 +65,77 @@ class PracticeStatsCard extends StatelessWidget {
       );
     }
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: _StatItem(
-                    label: 'Total Time',
-                    value: _formatDuration(stats!.totalPracticeTime),
-                    icon: Icons.timer,
-                  ),
-                ),
-                Expanded(
-                  child: _StatItem(
-                    label: 'Sessions',
-                    value: stats!.totalSessions.toString(),
-                    icon: Icons.calendar_today,
-                  ),
-                ),
-                Expanded(
-                  child: _StatItem(
-                    label: 'Avg. BPM',
-                    value: stats!.averageBpm.toString(),
-                    icon: Icons.speed,
-                  ),
-                ),
-              ],
-            ),
-          ],
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: platformThemeData(
+          context,
+          material: (data) => data.colorScheme.surface,
+          cupertino: (data) => CupertinoColors.systemBackground,
         ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: platformThemeData(
+            context,
+            material: (data) => data.colorScheme.outline.withOpacity(0.2),
+            cupertino: (data) => CupertinoColors.separator,
+          ),
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: _StatItem(
+                  icon: PlatformWidget(
+                    material: (_, __) => const Icon(Icons.timer, color: Color(0xFF00FFFF)),
+                    cupertino: (_, __) => const Icon(CupertinoIcons.timer, color: Color(0xFF00FFFF)),
+                  ),
+                  label: 'Total Time',
+                  value: _formatDuration(stats!.totalPracticeTime),
+                ),
+              ),
+              Container(
+                width: 1,
+                height: 40,
+                color: platformThemeData(
+                  context,
+                  material: (data) => data.colorScheme.outline.withOpacity(0.2),
+                  cupertino: (data) => CupertinoColors.separator,
+                ),
+              ),
+              Expanded(
+                child: _StatItem(
+                  icon: PlatformWidget(
+                    material: (_, __) => const Icon(Icons.calendar_today, color: Color(0xFF00FFFF)),
+                    cupertino: (_, __) => const Icon(CupertinoIcons.calendar, color: Color(0xFF00FFFF)),
+                  ),
+                  label: 'Sessions',
+                  value: stats!.totalSessions.toString(),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Container(
+            height: 1,
+            color: platformThemeData(
+              context,
+              material: (data) => data.colorScheme.outline.withOpacity(0.2),
+              cupertino: (data) => CupertinoColors.separator,
+            ),
+          ),
+          const SizedBox(height: 16),
+          _StatItem(
+            icon: PlatformWidget(
+              material: (_, __) => const Icon(Icons.speed, color: Color(0xFF00FFFF)),
+              cupertino: (_, __) => const Icon(CupertinoIcons.metronome, color: Color(0xFF00FFFF)),
+            ),
+            label: 'Average BPM',
+            value: stats!.averageBpm.toString(),
+          ),
+        ],
       ),
     );
   }
@@ -72,41 +143,58 @@ class PracticeStatsCard extends StatelessWidget {
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
-
+    
     if (hours > 0) {
-      return '$hours h $minutes min';
+      return '${hours}h ${minutes}m';
     } else {
-      return '$minutes min';
+      return '${minutes}m';
     }
   }
 }
 
 class _StatItem extends StatelessWidget {
+  final Widget icon;
   final String label;
   final String value;
-  final IconData icon;
 
   const _StatItem({
+    required this.icon,
     required this.label,
     required this.value,
-    required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Column(
       children: [
-        Icon(icon, color: theme.colorScheme.primary),
+        icon,
         const SizedBox(height: 8),
-        Text(
+        PlatformText(
           value,
-          style: theme.textTheme.titleMedium,
+          style: platformThemeData(
+            context,
+            material: (data) => data.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+            cupertino: (data) => data.textTheme.navLargeTitleTextStyle.copyWith(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
-        Text(
+        const SizedBox(height: 4),
+        PlatformText(
           label,
-          style: theme.textTheme.bodySmall,
+          style: platformThemeData(
+            context,
+            material: (data) => data.textTheme.bodySmall?.copyWith(
+              color: data.colorScheme.onSurface.withOpacity(0.6),
+            ),
+            cupertino: (data) => data.textTheme.textStyle.copyWith(
+              color: CupertinoColors.secondaryLabel,
+              fontSize: 12,
+            ),
+          ),
         ),
       ],
     );

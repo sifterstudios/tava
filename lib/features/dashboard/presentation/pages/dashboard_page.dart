@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tava/core/di/injection.dart';
 import 'package:tava/features/dashboard/presentation/bloc/dashboard_bloc.dart';
@@ -26,35 +28,48 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: const Text('Practice Journal'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_outline),
+        material: (_, __) => MaterialAppBarData(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person_outline),
+              onPressed: () => context.go('/settings'),
+            ),
+          ],
+        ),
+        cupertino: (_, __) => CupertinoNavigationBarData(
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: const Icon(CupertinoIcons.person),
             onPressed: () => context.go('/settings'),
           ),
-        ],
+        ),
       ),
       body: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state.status == DashboardStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: PlatformCircularProgressIndicator(),
+            );
           }
-
+          
           if (state.status == DashboardStatus.failure) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  PlatformText(
                     'Failed to load dashboard',
-                    style: theme.textTheme.titleLarge,
+                    style: platformThemeData(
+                      context,
+                      material: (data) => data.textTheme.titleLarge,
+                      cupertino: (data) => data.textTheme.navTitleTextStyle,
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
+                  PlatformElevatedButton(
                     onPressed: () => context.read<DashboardBloc>()
                       ..add(LoadDashboardData()),
                     child: const Text('Retry'),
@@ -63,7 +78,7 @@ class DashboardView extends StatelessWidget {
               ),
             );
           }
-
+          
           return RefreshIndicator(
             onRefresh: () async {
               context.read<DashboardBloc>().add(LoadDashboardData());
@@ -78,26 +93,34 @@ class DashboardView extends StatelessWidget {
                         const _ActiveSessionBanner(),
                         const SizedBox(height: 16),
                       ],
-
+                      
                       const QuickStartCard(),
-
+                      
                       const SizedBox(height: 16),
-                      Text(
+                      PlatformText(
                         'Practice Stats',
-                        style: theme.textTheme.titleLarge,
+                        style: platformThemeData(
+                          context,
+                          material: (data) => data.textTheme.titleLarge,
+                          cupertino: (data) => data.textTheme.navTitleTextStyle,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       PracticeStatsCard(stats: state.practiceStats),
-
+                      
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          Text(
+                          PlatformText(
                             'Recent Sessions',
-                            style: theme.textTheme.titleLarge,
+                            style: platformThemeData(
+                              context,
+                              material: (data) => data.textTheme.titleLarge,
+                              cupertino: (data) => data.textTheme.navTitleTextStyle,
+                            ),
                           ),
                           const Spacer(),
-                          TextButton(
+                          PlatformTextButton(
                             onPressed: () => context.go('/progress'),
                             child: const Text('See All'),
                           ),
@@ -108,16 +131,20 @@ class DashboardView extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 8),
                         child: RecentSessionCard(session: session),
                       )),
-
+                      
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          Text(
+                          PlatformText(
                             'Suggested Exercises',
-                            style: theme.textTheme.titleLarge,
+                            style: platformThemeData(
+                              context,
+                              material: (data) => data.textTheme.titleLarge,
+                              cupertino: (data) => data.textTheme.navTitleTextStyle,
+                            ),
                           ),
                           const Spacer(),
-                          TextButton(
+                          PlatformTextButton(
                             onPressed: () => context.go('/library'),
                             child: const Text('See All'),
                           ),
@@ -147,7 +174,7 @@ class DashboardView extends StatelessWidget {
                           },
                         ),
                       ),
-
+                      
                       if (state.weatherInfo != null) ...[
                         const SizedBox(height: 16),
                         WeatherCard(weatherInfo: state.weatherInfo!),
@@ -169,46 +196,71 @@ class _ActiveSessionBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer,
+        color: platformThemeData(
+          context,
+          material: (data) => data.colorScheme.primaryContainer,
+          cupertino: (data) => const Color(0xFF00FFFF).withOpacity(0.1),
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.music_note,
-            color: theme.colorScheme.onPrimaryContainer,
+          PlatformWidget(
+            material: (_, __) => Icon(
+              Icons.music_note,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+            cupertino: (_, __) => const Icon(
+              CupertinoIcons.music_note,
+              color: Color(0xFF00FFFF),
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                PlatformText(
                   'Practice in progress',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer,
+                  style: platformThemeData(
+                    context,
+                    material: (data) => data.textTheme.titleMedium?.copyWith(
+                      color: data.colorScheme.onPrimaryContainer,
+                    ),
+                    cupertino: (data) => data.textTheme.navTitleTextStyle.copyWith(
+                      color: const Color(0xFF00FFFF),
+                    ),
                   ),
                 ),
-                Text(
+                PlatformText(
                   'Tap to continue',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer,
+                  style: platformThemeData(
+                    context,
+                    material: (data) => data.textTheme.bodyMedium?.copyWith(
+                      color: data.colorScheme.onPrimaryContainer,
+                    ),
+                    cupertino: (data) => data.textTheme.textStyle.copyWith(
+                      color: CupertinoColors.secondaryLabel,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          ElevatedButton(
+          PlatformElevatedButton(
             onPressed: () => context.go('/dashboard/start-session'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colorScheme.onPrimaryContainer,
-              foregroundColor: theme.colorScheme.primaryContainer,
+            material: (_, __) => MaterialElevatedButtonData(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                foregroundColor: Theme.of(context).colorScheme.primaryContainer,
+              ),
+            ),
+            cupertino: (_, __) => CupertinoElevatedButtonData(
+              color: const Color(0xFF00FFFF),
             ),
             child: const Text('Continue'),
           ),

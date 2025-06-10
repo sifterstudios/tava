@@ -23,7 +23,7 @@ class ExerciseLibraryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Exercise Library'),
@@ -60,7 +60,7 @@ class ExerciseLibraryView extends StatelessWidget {
           if (state.status == ExerciseLibraryStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }
-
+          
           if (state.status == ExerciseLibraryStatus.failure) {
             return Center(
               child: Column(
@@ -80,7 +80,7 @@ class ExerciseLibraryView extends StatelessWidget {
               ),
             );
           }
-
+          
           if (state.exercises.isEmpty) {
             return Center(
               child: Column(
@@ -107,7 +107,7 @@ class ExerciseLibraryView extends StatelessWidget {
               ),
             );
           }
-
+          
           return Column(
             children: [
               // Category tabs
@@ -121,8 +121,8 @@ class ExerciseLibraryView extends StatelessWidget {
                     final isSelected = index == 0
                         ? state.selectedCategory == null
                         : state.selectedCategory ==
-                        ExerciseCategory.values[index - 1];
-
+                            ExerciseCategory.values[index - 1];
+                    
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: ChoiceChip(
@@ -130,18 +130,18 @@ class ExerciseLibraryView extends StatelessWidget {
                           index == 0
                               ? 'All'
                               : _getCategoryName(
-                              ExerciseCategory.values[index - 1]),
+                                  ExerciseCategory.values[index - 1]),
                         ),
                         selected: isSelected,
                         onSelected: (selected) {
                           if (selected) {
                             context.read<ExerciseLibraryBloc>().add(
-                              FilterByCategory(
-                                index == 0
-                                    ? null
-                                    : ExerciseCategory.values[index - 1],
-                              ),
-                            );
+                                  FilterByCategory(
+                                    index == 0
+                                        ? null
+                                        : ExerciseCategory.values[index - 1],
+                                  ),
+                                );
                           }
                         },
                       ),
@@ -149,7 +149,7 @@ class ExerciseLibraryView extends StatelessWidget {
                   },
                 ),
               ),
-
+              
               // Exercise list
               Expanded(
                 child: ListView.builder(
@@ -220,15 +220,15 @@ class ExerciseLibraryView extends StatelessWidget {
           children: ExerciseCategory.values
               .map(
                 (category) => ListTile(
-              title: Text(_getCategoryName(category)),
-              onTap: () {
-                context
-                    .read<ExerciseLibraryBloc>()
-                    .add(FilterByCategory(category));
-                Navigator.of(context).pop();
-              },
-            ),
-          )
+                  title: Text(_getCategoryName(category)),
+                  onTap: () {
+                    context
+                        .read<ExerciseLibraryBloc>()
+                        .add(FilterByCategory(category));
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
               .toList(),
         ),
         actions: [
@@ -270,7 +270,7 @@ class ExerciseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: Padding(

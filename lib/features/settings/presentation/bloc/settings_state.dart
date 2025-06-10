@@ -42,10 +42,10 @@ class SettingsState extends Equatable {
 
   @override
   List<Object?> get props => [
-    status,
-    themeMode,
-    metronomeSound,
-    trackWeather,
-    errorMessage,
-  ];
+        status,
+        themeMode,
+        metronomeSound,
+        trackWeather,
+        errorMessage,
+      ];
 }

@@ -26,7 +26,7 @@ class MetronomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Metronome'),
@@ -69,7 +69,7 @@ class MetronomeView extends StatelessWidget {
                   ],
                 ),
               ),
-
+              
               // BPM Slider
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -83,7 +83,7 @@ class MetronomeView extends StatelessWidget {
                       .add(ChangeBpm(value.toInt())),
                 ),
               ),
-
+              
               // Tap tempo and time signature
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -105,14 +105,14 @@ class MetronomeView extends StatelessWidget {
                   ],
                 ),
               ),
-
+              
               const SizedBox(height: 24),
-
+              
               // Metronome control
               const MetronomeControl(),
-
+              
               const SizedBox(height: 24),
-
+              
               // Presets section
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -131,7 +131,7 @@ class MetronomeView extends StatelessWidget {
                   ],
                 ),
               ),
-
+              
               // Preset list
               Expanded(
                 child: PresetSelector(
@@ -173,7 +173,7 @@ class MetronomeView extends StatelessWidget {
                       child: Text('No BPM history available'),
                     );
                   }
-
+                  
                   return ListView.builder(
                     itemCount: state.bpmHistory.length,
                     itemBuilder: (context, index) {
@@ -211,7 +211,7 @@ class MetronomeView extends StatelessWidget {
 
   void _showSavePresetDialog(BuildContext context) {
     final TextEditingController nameController = TextEditingController();
-
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -233,8 +233,8 @@ class MetronomeView extends StatelessWidget {
             onPressed: () {
               if (nameController.text.trim().isNotEmpty) {
                 context.read<MetronomeBloc>().add(
-                  SavePreset(nameController.text.trim()),
-                );
+                      SavePreset(nameController.text.trim()),
+                    );
                 Navigator.of(context).pop();
               }
             },

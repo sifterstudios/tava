@@ -3,18 +3,18 @@ import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 import 'package:tava/core/error/failures.dart';
 import 'package:tava/core/utils/either.dart';
-import 'package:tava/features/auth/domain/entities/user.dart';
+import 'package:tava/features/auth/domain/entities/tava_user.dart';
 import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
 @prod
-@LazySingleton(as: AuthRepository)
+@Injectable()
 class AuthRepositoryImpl implements AuthRepository {
   final SupabaseClient _supabaseClient;
 
   AuthRepositoryImpl(this._supabaseClient);
 
   @override
-  FutureEitherResult<User> getCurrentUser() async {
+  FutureEitherResult<TavaUser> getCurrentUser() async {
     try {
       final session = _supabaseClient.auth.currentSession;
       if (session == null) {
@@ -23,7 +23,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       // For now, just return a mock user
       return Right(
-        User(
+        TavaUser(
           id: session.user.id,
           email: session.user.email ?? 'user@example.com',
           name: 'Test User',
@@ -37,7 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  FutureEitherResult<User> login({
+  FutureEitherResult<TavaUser> login({
     required String email,
     required String password,
   }) async {
@@ -52,7 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
       }
 
       return Right(
-        User(
+        TavaUser(
           id: response.user!.id,
           email: email,
           name: 'Test User',
@@ -66,7 +66,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  FutureEitherResult<User> register({
+  FutureEitherResult<TavaUser> register({
     required String email,
     required String password,
     required String name,
@@ -82,7 +82,7 @@ class AuthRepositoryImpl implements AuthRepository {
       }
 
       return Right(
-        User(
+        TavaUser(
           id: response.user!.id,
           email: email,
           name: name,

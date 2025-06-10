@@ -52,14 +52,14 @@ class PracticeSession extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    startTime,
-    endTime,
-    duration,
-    notes,
-    exercises,
-    moodMetrics,
-    weatherInfo,
-    isActive,
-  ];
+        id,
+        startTime,
+        endTime,
+        duration,
+        notes,
+        exercises,
+        moodMetrics,
+        weatherInfo,
+        isActive,
+      ];
 }

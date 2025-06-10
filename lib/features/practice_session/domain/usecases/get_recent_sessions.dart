@@ -7,9 +7,9 @@ import 'package:tava/features/practice_session/domain/usecases/get_active_sessio
 
 @injectable
 class GetRecentSessions implements UseCase<List<PracticeSession>, NoParams> {
-  final PracticeSessionRepository repository;
 
   GetRecentSessions(this.repository);
+  final PracticeSessionRepository repository;
 
   @override
   FutureEitherResult<List<PracticeSession>> call([NoParams? params]) async {

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 class BpmSlider extends StatelessWidget {
-  final double value;
-  final ValueChanged<double> onChanged;
 
   const BpmSlider({
-    super.key,
-    required this.value,
-    required this.onChanged,
+    required this.value, required this.onChanged, super.key,
   });
+  final double value;
+  final ValueChanged<double> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +62,14 @@ class BpmSlider extends StatelessWidget {
 }
 
 class _BpmButton extends StatelessWidget {
-  final IconData icon;
-  final String? label;
-  final VoidCallback onPressed;
 
   const _BpmButton({
     required this.icon,
-    this.label,
-    required this.onPressed,
+    required this.onPressed, this.label,
   });
+  final IconData icon;
+  final String? label;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {

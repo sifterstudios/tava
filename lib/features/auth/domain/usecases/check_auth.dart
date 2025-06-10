@@ -6,9 +6,9 @@ import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
 @injectable
 class CheckAuth implements UseCase<User, NoParams> {
-  final AuthRepository repository;
 
   CheckAuth(this.repository);
+  final AuthRepository repository;
 
   @override
   FutureEitherResult<User> call([NoParams? params]) {

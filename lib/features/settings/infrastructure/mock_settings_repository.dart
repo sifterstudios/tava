@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tava/core/utils/either.dart';
 import 'package:tava/features/settings/domain/entities/app_settings.dart';
 import 'package:tava/features/settings/domain/repositories/settings_repository.dart';
-import 'package:fpdart/fpdart.dart';
 
 @dev
 @LazySingleton(as: SettingsRepository)

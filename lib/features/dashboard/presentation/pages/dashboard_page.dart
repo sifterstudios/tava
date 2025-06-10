@@ -107,7 +107,7 @@ class DashboardView extends StatelessWidget {
                       ...state.recentSessions.map((session) => Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: RecentSessionCard(session: session),
-                      )),
+                      ),),
 
                       const SizedBox(height: 16),
                       Row(

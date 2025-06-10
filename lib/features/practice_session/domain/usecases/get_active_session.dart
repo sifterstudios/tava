@@ -9,9 +9,9 @@ abstract class PracticeSessionRepository {
 
 @injectable
 class GetActiveSession implements UseCase<PracticeSession?, NoParams> {
-  final PracticeSessionRepository repository;
 
   GetActiveSession(this.repository);
+  final PracticeSessionRepository repository;
 
   @override
   FutureEitherResult<PracticeSession?> call([NoParams? params]) {

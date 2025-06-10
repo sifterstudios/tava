@@ -2,8 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tava/core/di/injection.dart';
-import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
-import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 import 'package:tava/features/progress/presentation/bloc/progress_bloc.dart';
 import 'package:tava/features/progress/presentation/widgets/category_breakdown_chart.dart';
 import 'package:tava/features/progress/presentation/widgets/practice_history_chart.dart';
@@ -238,7 +236,7 @@ class ProgressView extends StatelessWidget {
         final percent = entry.value.inMinutes /
             mockTopExercises.values.fold<int>(
                 0,
-                    (sum, duration) => sum + duration.inMinutes
+                    (sum, duration) => sum + duration.inMinutes,
             ) * 100;
 
         return Padding(

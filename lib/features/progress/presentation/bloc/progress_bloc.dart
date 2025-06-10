@@ -10,7 +10,6 @@ part 'progress_state.dart';
 
 @injectable
 class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
-  final GetPracticeStats _getPracticeStats;
 
   ProgressBloc({
     required GetPracticeStats getPracticeStats,
@@ -18,6 +17,7 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
         super(const ProgressState.initial()) {
     on<LoadProgressData>(_onLoadProgressData);
   }
+  final GetPracticeStats _getPracticeStats;
 
   Future<void> _onLoadProgressData(
     LoadProgressData event,
@@ -31,11 +31,11 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
       (failure) => emit(state.copyWith(
         status: ProgressStatus.failure,
         errorMessage: failure.message,
-      )),
+      ),),
       (stats) => emit(state.copyWith(
         status: ProgressStatus.success,
         practiceStats: stats,
-      )),
+      ),),
     );
   }
 }

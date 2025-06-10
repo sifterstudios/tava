@@ -10,19 +10,19 @@ abstract class MetronomeEvent extends Equatable {
 class LoadMetronomePresets extends MetronomeEvent {}
 
 class ChangeBpm extends MetronomeEvent {
-  final int bpm;
 
   const ChangeBpm(this.bpm);
+  final int bpm;
 
   @override
   List<Object> get props => [bpm];
 }
 
 class ChangeTimeSignature extends MetronomeEvent {
-  final int beatsPerMeasure;
-  final int beatUnit;
 
   const ChangeTimeSignature(this.beatsPerMeasure, this.beatUnit);
+  final int beatsPerMeasure;
+  final int beatUnit;
 
   @override
   List<Object> get props => [beatsPerMeasure, beatUnit];
@@ -33,27 +33,27 @@ class StartMetronome extends MetronomeEvent {}
 class StopMetronome extends MetronomeEvent {}
 
 class SavePreset extends MetronomeEvent {
-  final String name;
 
   const SavePreset(this.name);
+  final String name;
 
   @override
   List<Object> get props => [name];
 }
 
 class DeletePreset extends MetronomeEvent {
-  final String presetId;
 
   const DeletePreset(this.presetId);
+  final String presetId;
 
   @override
   List<Object> get props => [presetId];
 }
 
 class SelectPreset extends MetronomeEvent {
-  final MetronomePreset preset;
 
   const SelectPreset(this.preset);
+  final MetronomePreset preset;
 
   @override
   List<Object> get props => [preset];

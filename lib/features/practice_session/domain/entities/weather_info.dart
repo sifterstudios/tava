@@ -11,11 +11,6 @@ enum WeatherCondition {
 }
 
 class WeatherInfo extends Equatable {
-  final WeatherCondition condition;
-  final double temperature;
-  final int humidity;
-  final double pressure;
-  final DateTime recordedAt;
 
   const WeatherInfo({
     required this.condition,
@@ -24,6 +19,11 @@ class WeatherInfo extends Equatable {
     required this.pressure,
     required this.recordedAt,
   });
+  final WeatherCondition condition;
+  final double temperature;
+  final int humidity;
+  final double pressure;
+  final DateTime recordedAt;
 
   @override
   List<Object> get props => [

@@ -15,7 +15,7 @@ class MockAuthRepository implements AuthRepository {
     await Future.delayed(const Duration(milliseconds: 500));
     
     if (_currentUser == null) {
-      return Left(AuthFailure(message: 'No user logged in'));
+      return const Left(AuthFailure(message: 'No user logged in'));
     }
     
     return Right(_currentUser!);
@@ -30,7 +30,7 @@ class MockAuthRepository implements AuthRepository {
     
     // Simple validation
     if (email.isEmpty || password.isEmpty) {
-      return Left(AuthFailure(message: 'Email and password cannot be empty'));
+      return const Left(AuthFailure(message: 'Email and password cannot be empty'));
     }
     
     // For demo purposes, accept any credentials
@@ -55,7 +55,7 @@ class MockAuthRepository implements AuthRepository {
     
     // Simple validation
     if (email.isEmpty || password.isEmpty || name.isEmpty) {
-      return Left(AuthFailure(message: 'All fields are required'));
+      return const Left(AuthFailure(message: 'All fields are required'));
     }
     
     // For demo purposes, accept any registration

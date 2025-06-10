@@ -89,7 +89,7 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                             index == 0
                                 ? 'All'
                                 : _getCategoryName(
-                                    ExerciseCategory.values[index - 1]),
+                                    ExerciseCategory.values[index - 1],),
                           ),
                           selected: isSelected,
                           onSelected: (selected) {

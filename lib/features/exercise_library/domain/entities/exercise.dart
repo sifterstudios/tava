@@ -11,6 +11,15 @@ enum ExerciseCategory {
 }
 
 class Exercise extends Equatable {
+
+  const Exercise({
+    required this.id,
+    required this.name,
+    required this.category, required this.tags, required this.isFavorite, required this.createdAt, required this.updatedAt, required this.isArchived, this.description,
+    this.targetBpm,
+    this.targetDuration,
+    this.source,
+  });
   final String id;
   final String name;
   final String? description;
@@ -23,21 +32,6 @@ class Exercise extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool isArchived;
-
-  const Exercise({
-    required this.id,
-    required this.name,
-    this.description,
-    required this.category,
-    this.targetBpm,
-    this.targetDuration,
-    this.source,
-    required this.tags,
-    required this.isFavorite,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.isArchived,
-  });
 
   Exercise copyWith({
     String? id,

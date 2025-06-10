@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
 class StatsCard extends StatelessWidget {
+
+  const StatsCard({
+    required this.title, required this.value, required this.icon, super.key,
+  });
   final String title;
   final String value;
   final IconData icon;
-
-  const StatsCard({
-    super.key,
-    required this.title,
-    required this.value,
-    required this.icon,
-  });
 
   @override
   Widget build(BuildContext context) {

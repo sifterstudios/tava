@@ -10,54 +10,54 @@ abstract class ExerciseLibraryEvent extends Equatable {
 class LoadExercises extends ExerciseLibraryEvent {}
 
 class AddExercise extends ExerciseLibraryEvent {
-  final Exercise exercise;
 
   const AddExercise(this.exercise);
+  final Exercise exercise;
 
   @override
   List<Object> get props => [exercise];
 }
 
 class UpdateExercise extends ExerciseLibraryEvent {
-  final Exercise exercise;
 
   const UpdateExercise(this.exercise);
+  final Exercise exercise;
 
   @override
   List<Object> get props => [exercise];
 }
 
 class DeleteExercise extends ExerciseLibraryEvent {
-  final String exerciseId;
 
   const DeleteExercise(this.exerciseId);
+  final String exerciseId;
 
   @override
   List<Object> get props => [exerciseId];
 }
 
 class ToggleExerciseFavorite extends ExerciseLibraryEvent {
-  final Exercise exercise;
 
   const ToggleExerciseFavorite(this.exercise);
+  final Exercise exercise;
 
   @override
   List<Object> get props => [exercise];
 }
 
 class FilterByCategory extends ExerciseLibraryEvent {
-  final ExerciseCategory? category;
 
   const FilterByCategory(this.category);
+  final ExerciseCategory? category;
 
   @override
   List<Object?> get props => [category];
 }
 
 class SearchExercises extends ExerciseLibraryEvent {
-  final String query;
 
   const SearchExercises(this.query);
+  final String query;
 
   @override
   List<Object> get props => [query];

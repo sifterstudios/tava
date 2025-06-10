@@ -6,13 +6,13 @@ import 'package:tava/features/auth/domain/entities/user.dart';
 import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
 class LoginParams extends Equatable {
-  final String email;
-  final String password;
 
   const LoginParams({
     required this.email,
     required this.password,
   });
+  final String email;
+  final String password;
 
   @override
   List<Object> get props => [email, password];
@@ -20,9 +20,9 @@ class LoginParams extends Equatable {
 
 @injectable
 class LoginUser implements UseCase<User, LoginParams> {
-  final AuthRepository repository;
 
   LoginUser(this.repository);
+  final AuthRepository repository;
 
   @override
   FutureEitherResult<User> call(LoginParams params) {

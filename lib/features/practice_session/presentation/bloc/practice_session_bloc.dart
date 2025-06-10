@@ -51,7 +51,7 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
       status: PracticeSessionStatus.success,
       session: session,
       isRunning: true,
-    ));
+    ),);
   }
 
   void _onStartExercise(
@@ -63,7 +63,7 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
     emit(state.copyWith(
       currentExercise: event.exercise,
       currentExerciseStartTime: DateTime.now(),
-    ));
+    ),);
   }
 
   void _onCompleteExercise(
@@ -97,10 +97,8 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
     
     emit(state.copyWith(
       session: updatedSession,
-      currentExercise: null,
-      currentExerciseStartTime: null,
       completedExercises: updatedCompletedExercises,
-    ));
+    ),);
   }
 
   void _onPauseSession(
@@ -137,7 +135,7 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
     if (state.session == null) return;
     
     final now = DateTime.now();
-    PracticeSessionState updatedState = state;
+    var updatedState = state;
     
     // If there's a current exercise, complete it first
     if (state.currentExercise != null && state.currentExerciseStartTime != null) {
@@ -156,8 +154,6 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
       
       updatedState = state.copyWith(
         completedExercises: updatedExercises,
-        currentExercise: null,
-        currentExerciseStartTime: null,
       );
     }
     
@@ -172,6 +168,6 @@ class PracticeSessionBloc extends Bloc<PracticeSessionEvent, PracticeSessionStat
       status: PracticeSessionStatus.saved,
       session: updatedSession,
       isRunning: false,
-    ));
+    ),);
   }
 }

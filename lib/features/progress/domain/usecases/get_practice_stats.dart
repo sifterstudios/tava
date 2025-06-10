@@ -9,9 +9,9 @@ abstract class ProgressRepository {
 
 @injectable
 class GetPracticeStats implements UseCase<PracticeStats?, NoParams> {
-  final ProgressRepository repository;
 
   GetPracticeStats(this.repository);
+  final ProgressRepository repository;
 
   @override
   FutureEitherResult<PracticeStats?> call([NoParams? params]) {

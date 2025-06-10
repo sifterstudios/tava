@@ -2,13 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 
 class PracticeStats extends Equatable {
-  final Duration totalPracticeTime;
-  final int totalSessions;
-  final int averageBpm;
-  final Map<ExerciseCategory, Duration> timeByCategory;
-  final Map<String, Duration> timeByExercise;
-  final List<DailyPracticeTime> dailyPracticeTimes;
-  final List<WeeklyPracticeTime> weeklyPracticeTimes;
 
   const PracticeStats({
     required this.totalPracticeTime,
@@ -19,6 +12,13 @@ class PracticeStats extends Equatable {
     required this.dailyPracticeTimes,
     required this.weeklyPracticeTimes,
   });
+  final Duration totalPracticeTime;
+  final int totalSessions;
+  final int averageBpm;
+  final Map<ExerciseCategory, Duration> timeByCategory;
+  final Map<String, Duration> timeByExercise;
+  final List<DailyPracticeTime> dailyPracticeTimes;
+  final List<WeeklyPracticeTime> weeklyPracticeTimes;
 
   @override
   List<Object> get props => [
@@ -33,26 +33,26 @@ class PracticeStats extends Equatable {
 }
 
 class DailyPracticeTime extends Equatable {
-  final DateTime date;
-  final Duration duration;
 
   const DailyPracticeTime({
     required this.date,
     required this.duration,
   });
+  final DateTime date;
+  final Duration duration;
 
   @override
   List<Object> get props => [date, duration];
 }
 
 class WeeklyPracticeTime extends Equatable {
-  final DateTime weekStart;
-  final Duration duration;
 
   const WeeklyPracticeTime({
     required this.weekStart,
     required this.duration,
   });
+  final DateTime weekStart;
+  final Duration duration;
 
   @override
   List<Object> get props => [weekStart, duration];

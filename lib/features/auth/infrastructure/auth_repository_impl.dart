@@ -9,16 +9,16 @@ import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 @prod
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  final SupabaseClient _supabaseClient;
 
   AuthRepositoryImpl(this._supabaseClient);
+  final SupabaseClient _supabaseClient;
 
   @override
   FutureEitherResult<User> getCurrentUser() async {
     try {
       final session = _supabaseClient.auth.currentSession;
       if (session == null) {
-        return Left(AuthFailure(message: 'No active session found'));
+        return const Left(AuthFailure(message: 'No active session found'));
       }
 
       // For now, just return a mock user
@@ -48,7 +48,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       if (response.user == null) {
-        return Left(const AuthFailure(message: 'Login failed'));
+        return const Left(AuthFailure(message: 'Login failed'));
       }
 
       return Right(
@@ -78,7 +78,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       if (response.user == null) {
-        return Left(const AuthFailure(message: 'Registration failed'));
+        return const Left(AuthFailure(message: 'Registration failed'));
       }
 
       return Right(

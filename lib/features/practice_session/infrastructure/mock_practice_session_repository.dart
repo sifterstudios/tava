@@ -2,7 +2,6 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tava/core/utils/either.dart';
 import 'package:tava/features/practice_session/domain/entities/practice_session.dart';
-import 'package:tava/features/practice_session/domain/entities/weather_info.dart';
 import 'package:tava/features/practice_session/domain/usecases/get_active_session.dart';
 
 @dev

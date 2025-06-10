@@ -60,13 +60,13 @@ class MetronomeControl extends StatelessWidget {
 }
 
 class _MetronomeVisualizer extends StatelessWidget {
-  final int beatsPerMeasure;
-  final int currentBeat;
 
   const _MetronomeVisualizer({
     required this.beatsPerMeasure,
     required this.currentBeat,
   });
+  final int beatsPerMeasure;
+  final int currentBeat;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class _MetronomeVisualizer extends StatelessWidget {
               shape: BoxShape.circle,
               color: index + 1 == currentBeat
                   ? theme.colorScheme.primary
-                  : theme.colorScheme.surfaceVariant,
+                  : theme.colorScheme.surfaceContainerHighest,
             ),
           ),
         ),

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tava/core/di/injection.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 import 'package:tava/features/exercise_library/presentation/bloc/exercise_library_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 class ExerciseForm extends StatefulWidget {
-  final Exercise? exercise;
 
   const ExerciseForm({super.key, this.exercise});
+  final Exercise? exercise;
 
   @override
   State<ExerciseForm> createState() => _ExerciseFormState();

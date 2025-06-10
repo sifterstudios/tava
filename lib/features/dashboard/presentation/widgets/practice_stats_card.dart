@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 
 class PracticeStatsCard extends StatelessWidget {
-  final PracticeStats? stats;
 
   const PracticeStatsCard({super.key, this.stats});
+  final PracticeStats? stats;
 
   @override
   Widget build(BuildContext context) {
@@ -82,15 +82,15 @@ class PracticeStatsCard extends StatelessWidget {
 }
 
 class _StatItem extends StatelessWidget {
-  final String label;
-  final String value;
-  final IconData icon;
 
   const _StatItem({
     required this.label,
     required this.value,
     required this.icon,
   });
+  final String label;
+  final String value;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {

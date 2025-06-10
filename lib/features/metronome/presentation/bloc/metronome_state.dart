@@ -3,28 +3,19 @@ part of 'metronome_bloc.dart';
 enum MetronomeStatus { initial, loading, success, failure }
 
 class BpmHistoryEntry extends Equatable {
-  final int bpm;
-  final DateTime dateTime;
 
   const BpmHistoryEntry({
     required this.bpm,
     required this.dateTime,
   });
+  final int bpm;
+  final DateTime dateTime;
 
   @override
   List<Object> get props => [bpm, dateTime];
 }
 
 class MetronomeState extends Equatable {
-  final MetronomeStatus status;
-  final int currentBpm;
-  final int beatsPerMeasure;
-  final int beatUnit;
-  final String soundType;
-  final bool isPlaying;
-  final List<MetronomePreset> presets;
-  final List<BpmHistoryEntry> bpmHistory;
-  final String? errorMessage;
 
   const MetronomeState({
     required this.status,
@@ -48,6 +39,15 @@ class MetronomeState extends Equatable {
         presets = const [],
         bpmHistory = const [],
         errorMessage = null;
+  final MetronomeStatus status;
+  final int currentBpm;
+  final int beatsPerMeasure;
+  final int beatUnit;
+  final String soundType;
+  final bool isPlaying;
+  final List<MetronomePreset> presets;
+  final List<BpmHistoryEntry> bpmHistory;
+  final String? errorMessage;
 
   MetronomeState copyWith({
     MetronomeStatus? status,

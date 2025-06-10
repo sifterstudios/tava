@@ -69,8 +69,7 @@ final appRouter = GoRouter(
 
 class ScaffoldWithBottomNavBar extends StatefulWidget {
   const ScaffoldWithBottomNavBar({
-    super.key,
-    required this.child,
+    required this.child, super.key,
   });
 
   final Widget child;

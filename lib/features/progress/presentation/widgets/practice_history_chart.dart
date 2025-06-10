@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 
 class PracticeHistoryChart extends StatelessWidget {
-  final List<DailyPracticeTime> dailyPracticeTimes;
 
   const PracticeHistoryChart({
-    super.key,
-    required this.dailyPracticeTimes,
+    required this.dailyPracticeTimes, super.key,
   });
+  final List<DailyPracticeTime> dailyPracticeTimes;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class PracticeHistoryChart extends StatelessWidget {
         .map((entry) => FlSpot(
               entry.key.toDouble(),
               entry.value.duration.inMinutes.toDouble(),
-            ))
+            ),)
         .toList();
 
     return BarChart(
@@ -56,7 +55,6 @@ class PracticeHistoryChart extends StatelessWidget {
           ),
         ),
         titlesData: FlTitlesData(
-          show: true,
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -77,19 +75,13 @@ class PracticeHistoryChart extends StatelessWidget {
             ),
           ),
           leftTitles: const AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
+            
           ),
           topTitles: const AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
+            
           ),
           rightTitles: const AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: false,
-            ),
+            
           ),
         ),
         gridData: const FlGridData(show: false),

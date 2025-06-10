@@ -3,20 +3,11 @@ part of 'dashboard_bloc.dart';
 enum DashboardStatus { initial, loading, success, failure }
 
 class DashboardState extends Equatable {
-  final DashboardStatus status;
-  final PracticeSession? activeSession;
-  final List<PracticeSession> recentSessions;
-  final PracticeStats? practiceStats;
-  final List<Exercise> suggestedExercises;
-  final WeatherInfo? weatherInfo;
-  final String? errorMessage;
 
   const DashboardState({
     required this.status,
-    this.activeSession,
-    required this.recentSessions,
+    required this.recentSessions, required this.suggestedExercises, this.activeSession,
     this.practiceStats,
-    required this.suggestedExercises,
     this.weatherInfo,
     this.errorMessage,
   });
@@ -29,6 +20,13 @@ class DashboardState extends Equatable {
         suggestedExercises = const [],
         weatherInfo = null,
         errorMessage = null;
+  final DashboardStatus status;
+  final PracticeSession? activeSession;
+  final List<PracticeSession> recentSessions;
+  final PracticeStats? practiceStats;
+  final List<Exercise> suggestedExercises;
+  final WeatherInfo? weatherInfo;
+  final String? errorMessage;
 
   DashboardState copyWith({
     DashboardStatus? status,

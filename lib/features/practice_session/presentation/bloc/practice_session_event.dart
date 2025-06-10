@@ -10,19 +10,19 @@ abstract class PracticeSessionEvent extends Equatable {
 class LoadPracticeSession extends PracticeSessionEvent {}
 
 class StartExercise extends PracticeSessionEvent {
-  final Exercise exercise;
 
   const StartExercise(this.exercise);
+  final Exercise exercise;
 
   @override
   List<Object> get props => [exercise];
 }
 
 class CompleteExercise extends PracticeSessionEvent {
-  final int? rating;
-  final String? notes;
 
   const CompleteExercise({this.rating, this.notes});
+  final int? rating;
+  final String? notes;
 
   @override
   List<Object?> get props => [rating, notes];
@@ -33,9 +33,9 @@ class PauseSession extends PracticeSessionEvent {}
 class ResumeSession extends PracticeSessionEvent {}
 
 class AddMoodMetrics extends PracticeSessionEvent {
-  final MoodMetrics moodMetrics;
 
   const AddMoodMetrics(this.moodMetrics);
+  final MoodMetrics moodMetrics;
 
   @override
   List<Object> get props => [moodMetrics];

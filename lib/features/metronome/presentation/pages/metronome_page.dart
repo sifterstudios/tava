@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tava/core/di/injection.dart';
-import 'package:tava/features/metronome/domain/entities/metronome_preset.dart';
 import 'package:tava/features/metronome/presentation/bloc/metronome_bloc.dart';
 import 'package:tava/features/metronome/presentation/widgets/bpm_slider.dart';
 import 'package:tava/features/metronome/presentation/widgets/metronome_control.dart';
@@ -210,7 +209,7 @@ class MetronomeView extends StatelessWidget {
   }
 
   void _showSavePresetDialog(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
+    final nameController = TextEditingController();
 
     showDialog(
       context: context,

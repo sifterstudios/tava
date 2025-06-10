@@ -3,12 +3,6 @@ part of 'exercise_library_bloc.dart';
 enum ExerciseLibraryStatus { initial, loading, success, failure }
 
 class ExerciseLibraryState extends Equatable {
-  final ExerciseLibraryStatus status;
-  final List<Exercise> exercises;
-  final List<Exercise> filteredExercises;
-  final ExerciseCategory? selectedCategory;
-  final String? searchQuery;
-  final String? errorMessage;
 
   const ExerciseLibraryState({
     required this.status,
@@ -26,6 +20,12 @@ class ExerciseLibraryState extends Equatable {
         selectedCategory = null,
         searchQuery = null,
         errorMessage = null;
+  final ExerciseLibraryStatus status;
+  final List<Exercise> exercises;
+  final List<Exercise> filteredExercises;
+  final ExerciseCategory? selectedCategory;
+  final String? searchQuery;
+  final String? errorMessage;
 
   ExerciseLibraryState copyWith({
     ExerciseLibraryStatus? status,

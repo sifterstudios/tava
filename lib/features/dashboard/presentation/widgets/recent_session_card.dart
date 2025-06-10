@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/practice_session/domain/entities/practice_session.dart';
 
 class RecentSessionCard extends StatelessWidget {
-  final PracticeSession session;
 
-  const RecentSessionCard({super.key, required this.session});
+  const RecentSessionCard({required this.session, super.key});
+  final PracticeSession session;
 
   @override
   Widget build(BuildContext context) {

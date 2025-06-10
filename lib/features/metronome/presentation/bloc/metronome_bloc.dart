@@ -34,7 +34,7 @@ class MetronomeBloc extends Bloc<MetronomeEvent, MetronomeState> {
     emit(state.copyWith(
       status: MetronomeStatus.success,
       presets: presets,
-    ));
+    ),);
   }
 
   void _onChangeBpm(
@@ -64,7 +64,7 @@ class MetronomeBloc extends Bloc<MetronomeEvent, MetronomeState> {
     emit(state.copyWith(
       currentBpm: bpm,
       bpmHistory: updatedHistory,
-    ));
+    ),);
   }
 
   void _onChangeTimeSignature(
@@ -74,7 +74,7 @@ class MetronomeBloc extends Bloc<MetronomeEvent, MetronomeState> {
     emit(state.copyWith(
       beatsPerMeasure: event.beatsPerMeasure,
       beatUnit: event.beatUnit,
-    ));
+    ),);
   }
 
   void _onStartMetronome(
@@ -133,7 +133,7 @@ class MetronomeBloc extends Bloc<MetronomeEvent, MetronomeState> {
       beatsPerMeasure: event.preset.beatsPerMeasure,
       beatUnit: event.preset.beatUnit,
       soundType: event.preset.soundType,
-    ));
+    ),);
   }
 
   List<MetronomePreset> _getMockPresets() {
@@ -144,7 +144,7 @@ class MetronomeBloc extends Bloc<MetronomeEvent, MetronomeState> {
         bpm: 80,
         beatsPerMeasure: 4,
         beatUnit: 4,
-        accentPattern: [2, 1, 1, 1],
+        accentPattern: const [2, 1, 1, 1],
         soundType: 'click',
         isFavorite: true,
         createdAt: DateTime.now().subtract(const Duration(days: 30)),
@@ -156,7 +156,7 @@ class MetronomeBloc extends Bloc<MetronomeEvent, MetronomeState> {
         bpm: 120,
         beatsPerMeasure: 4,
         beatUnit: 4,
-        accentPattern: [2, 1, 1, 1],
+        accentPattern: const [2, 1, 1, 1],
         soundType: 'click',
         isFavorite: false,
         createdAt: DateTime.now().subtract(const Duration(days: 20)),
@@ -168,7 +168,7 @@ class MetronomeBloc extends Bloc<MetronomeEvent, MetronomeState> {
         bpm: 90,
         beatsPerMeasure: 3,
         beatUnit: 4,
-        accentPattern: [2, 1, 1],
+        accentPattern: const [2, 1, 1],
         soundType: 'wood',
         isFavorite: true,
         createdAt: DateTime.now().subtract(const Duration(days: 15)),

@@ -33,7 +33,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
       status: ExerciseLibraryStatus.success,
       exercises: exercises,
       filteredExercises: exercises,
-    ));
+    ),);
   }
 
   void _onAddExercise(
@@ -50,7 +50,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
         state.selectedCategory,
         state.searchQuery,
       ),
-    ));
+    ),);
   }
 
   void _onUpdateExercise(
@@ -70,7 +70,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
           state.selectedCategory,
           state.searchQuery,
         ),
-      ));
+      ),);
     }
   }
 
@@ -88,7 +88,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
         state.selectedCategory,
         state.searchQuery,
       ),
-    ));
+    ),);
   }
 
   void _onToggleExerciseFavorite(
@@ -110,7 +110,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
           state.selectedCategory,
           state.searchQuery,
         ),
-      ));
+      ),);
     }
   }
 
@@ -125,7 +125,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
         event.category,
         state.searchQuery,
       ),
-    ));
+    ),);
   }
 
   void _onSearchExercises(
@@ -139,7 +139,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
         state.selectedCategory,
         event.query,
       ),
-    ));
+    ),);
   }
 
   List<Exercise> _applyFilters(
@@ -175,7 +175,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
         description: 'Basic C major scale practice',
         category: ExerciseCategory.scales,
         targetBpm: 120,
-        tags: ['scale', 'beginner'],
+        tags: const ['scale', 'beginner'],
         isFavorite: true,
         createdAt: DateTime.now().subtract(const Duration(days: 30)),
         updatedAt: DateTime.now().subtract(const Duration(days: 2)),
@@ -187,7 +187,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
         description: 'Finger independence exercise',
         category: ExerciseCategory.technique,
         targetBpm: 90,
-        tags: ['technique', 'intermediate'],
+        tags: const ['technique', 'intermediate'],
         isFavorite: false,
         createdAt: DateTime.now().subtract(const Duration(days: 25)),
         updatedAt: DateTime.now().subtract(const Duration(days: 3)),
@@ -199,7 +199,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
         description: 'Bach Prelude in C Major',
         category: ExerciseCategory.repertoire,
         targetBpm: 72,
-        tags: ['classical', 'advanced'],
+        tags: const ['classical', 'advanced'],
         isFavorite: true,
         createdAt: DateTime.now().subtract(const Duration(days: 15)),
         updatedAt: DateTime.now().subtract(const Duration(days: 1)),
@@ -211,7 +211,7 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
         description: 'Intermediate sight reading exercise',
         category: ExerciseCategory.sightReading,
         targetBpm: 60,
-        tags: ['sight reading', 'intermediate'],
+        tags: const ['sight reading', 'intermediate'],
         isFavorite: false,
         createdAt: DateTime.now().subtract(const Duration(days: 10)),
         updatedAt: DateTime.now(),

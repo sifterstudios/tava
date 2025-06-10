@@ -11,8 +11,6 @@ part 'settings_state.dart';
 
 @injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  final GetSettings _getSettings;
-  final UpdateSettings _updateSettings;
 
   SettingsBloc({
     required GetSettings getSettings,
@@ -25,6 +23,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<UpdateMetronomeSound>(_onUpdateMetronomeSound);
     on<UpdateWeatherTracking>(_onUpdateWeatherTracking);
   }
+  final GetSettings _getSettings;
+  final UpdateSettings _updateSettings;
 
   Future<void> _onLoadSettings(
       LoadSettings event,
@@ -38,13 +38,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (failure) => emit(state.copyWith(
         status: SettingsStatus.failure,
         errorMessage: failure.message,
-      )),
+      ),),
           (settings) => emit(state.copyWith(
         status: SettingsStatus.success,
         themeMode: settings.themeMode,
         metronomeSound: settings.metronomeSound,
         trackWeather: settings.trackWeather,
-      )),
+      ),),
     );
   }
 
@@ -66,11 +66,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (failure) => emit(state.copyWith(
         status: SettingsStatus.failure,
         errorMessage: failure.message,
-      )),
+      ),),
           (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         themeMode: event.themeMode,
-      )),
+      ),),
     );
   }
 
@@ -92,11 +92,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (failure) => emit(state.copyWith(
         status: SettingsStatus.failure,
         errorMessage: failure.message,
-      )),
+      ),),
           (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         metronomeSound: event.sound,
-      )),
+      ),),
     );
   }
 
@@ -118,11 +118,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (failure) => emit(state.copyWith(
         status: SettingsStatus.failure,
         errorMessage: failure.message,
-      )),
+      ),),
           (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         trackWeather: event.trackWeather,
-      )),
+      ),),
     );
   }
 }

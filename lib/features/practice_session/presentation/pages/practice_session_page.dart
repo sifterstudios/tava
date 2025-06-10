@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tava/core/di/injection.dart';
-import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 import 'package:tava/features/practice_session/presentation/bloc/practice_session_bloc.dart';
 import 'package:tava/features/practice_session/presentation/widgets/active_exercise_card.dart';
 import 'package:tava/features/practice_session/presentation/widgets/exercise_selector.dart';
@@ -154,7 +153,7 @@ class PracticeSessionView extends StatelessWidget {
                         exercise: state.currentExercise!,
                         onComplete: () => context
                             .read<PracticeSessionBloc>()
-                            .add(CompleteExercise()),
+                            .add(const CompleteExercise()),
                       ),
                     ],
                   ),
@@ -189,10 +188,9 @@ class PracticeSessionView extends StatelessWidget {
                             return ListTile(
                               title: Text(exercise.name),
                               subtitle: Text(
-                                'Duration: ${_formatDuration(exercise.duration)}' +
-                                    (exercise.bpm != null
+                                'Duration: ${_formatDuration(exercise.duration)}${exercise.bpm != null
                                         ? ' • ${exercise.bpm} BPM'
-                                        : ''),
+                                        : ''}',
                               ),
                               trailing: exercise.rating != null
                                   ? Row(
@@ -251,7 +249,7 @@ class PracticeSessionView extends StatelessWidget {
       builder: (context) => AlertDialog(
         title: const Text('End Practice Session'),
         content: const Text(
-            'Would you like to add mood and wellness metrics before ending?'),
+            'Would you like to add mood and wellness metrics before ending?',),
         actions: [
           TextButton(
             onPressed: () {

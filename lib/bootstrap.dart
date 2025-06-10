@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:tava/core/di/injection.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tava/core/di/injection.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -36,9 +36,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     // Initialize Supabase
     await Supabase.initialize(
       url: const String.fromEnvironment('SUPABASE_URL',
-          defaultValue: 'https://your-supabase-url.supabase.co'),
+          defaultValue: 'https://your-supabase-url.supabase.co',),
       anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY',
-          defaultValue: 'your-anon-key'),
+          defaultValue: 'your-anon-key',),
     );
   } catch (e) {
     print('Warning: Failed to initialize Supabase: $e');

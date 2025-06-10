@@ -12,10 +12,6 @@ part 'auth_state.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final CheckAuth _checkAuth;
-  final LoginUser _loginUser;
-  final LogoutUser _logoutUser;
-  final RegisterUser _registerUser;
 
   AuthBloc({
     required CheckAuth checkAuth,
@@ -32,6 +28,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogoutRequested>(_onLogoutRequested);
     on<RegisterRequested>(_onRegisterRequested);
   }
+  final CheckAuth _checkAuth;
+  final LoginUser _loginUser;
+  final LogoutUser _logoutUser;
+  final RegisterUser _registerUser;
 
   Future<void> _onCheckAuthStatus(
       CheckAuthStatus event,

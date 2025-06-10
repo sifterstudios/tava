@@ -3,21 +3,12 @@ part of 'practice_session_bloc.dart';
 enum PracticeSessionStatus { initial, loading, success, failure, saved }
 
 class PracticeSessionState extends Equatable {
-  final PracticeSessionStatus status;
-  final PracticeSession? session;
-  final Exercise? currentExercise;
-  final DateTime? currentExerciseStartTime;
-  final List<ExerciseRecord> completedExercises;
-  final bool isRunning;
-  final String? errorMessage;
 
   const PracticeSessionState({
     required this.status,
-    this.session,
+    required this.completedExercises, required this.isRunning, this.session,
     this.currentExercise,
     this.currentExerciseStartTime,
-    required this.completedExercises,
-    required this.isRunning,
     this.errorMessage,
   });
 
@@ -29,6 +20,13 @@ class PracticeSessionState extends Equatable {
         completedExercises = const [],
         isRunning = false,
         errorMessage = null;
+  final PracticeSessionStatus status;
+  final PracticeSession? session;
+  final Exercise? currentExercise;
+  final DateTime? currentExerciseStartTime;
+  final List<ExerciseRecord> completedExercises;
+  final bool isRunning;
+  final String? errorMessage;
 
   PracticeSessionState copyWith({
     PracticeSessionStatus? status,

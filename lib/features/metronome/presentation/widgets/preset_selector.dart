@@ -4,14 +4,12 @@ import 'package:tava/features/metronome/domain/entities/metronome_preset.dart';
 import 'package:tava/features/metronome/presentation/bloc/metronome_bloc.dart';
 
 class PresetSelector extends StatelessWidget {
-  final List<MetronomePreset> presets;
-  final Function(MetronomePreset) onSelectPreset;
 
   const PresetSelector({
-    super.key,
-    required this.presets,
-    required this.onSelectPreset,
+    required this.presets, required this.onSelectPreset, super.key,
   });
+  final List<MetronomePreset> presets;
+  final Function(MetronomePreset) onSelectPreset;
 
   @override
   Widget build(BuildContext context) {

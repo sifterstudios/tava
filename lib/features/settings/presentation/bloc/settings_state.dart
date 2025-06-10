@@ -3,11 +3,6 @@ part of 'settings_bloc.dart';
 enum SettingsStatus { initial, loading, success, failure }
 
 class SettingsState extends Equatable {
-  final SettingsStatus status;
-  final ThemeMode themeMode;
-  final String metronomeSound;
-  final bool trackWeather;
-  final String? errorMessage;
 
   const SettingsState({
     required this.status,
@@ -23,6 +18,11 @@ class SettingsState extends Equatable {
         metronomeSound = 'click',
         trackWeather = true,
         errorMessage = null;
+  final SettingsStatus status;
+  final ThemeMode themeMode;
+  final String metronomeSound;
+  final bool trackWeather;
+  final String? errorMessage;
 
   SettingsState copyWith({
     SettingsStatus? status,

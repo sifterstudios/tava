@@ -6,9 +6,9 @@ import 'package:tava/features/settings/domain/entities/app_settings.dart';
 import 'package:tava/features/settings/domain/repositories/settings_repository.dart';
 
 class UpdateSettingsParams extends Equatable {
-  final AppSettings settings;
 
   const UpdateSettingsParams({required this.settings});
+  final AppSettings settings;
 
   @override
   List<Object> get props => [settings];
@@ -16,9 +16,9 @@ class UpdateSettingsParams extends Equatable {
 
 @injectable
 class UpdateSettings implements UseCase<void, UpdateSettingsParams> {
-  final SettingsRepository repository;
 
   UpdateSettings(this.repository);
+  final SettingsRepository repository;
 
   @override
   FutureEitherUnit call(UpdateSettingsParams params) {

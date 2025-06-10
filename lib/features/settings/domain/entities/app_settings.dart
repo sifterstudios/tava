@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AppSettings {
-  final ThemeMode themeMode;
-  final String metronomeSound;
-  final bool trackWeather;
 
   const AppSettings({
     required this.themeMode,
     required this.metronomeSound,
     required this.trackWeather,
   });
+  final ThemeMode themeMode;
+  final String metronomeSound;
+  final bool trackWeather;
 
   AppSettings copyWith({
     ThemeMode? themeMode,

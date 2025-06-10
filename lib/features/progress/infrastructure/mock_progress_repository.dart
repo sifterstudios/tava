@@ -19,14 +19,14 @@ class MockProgressRepository implements ProgressRepository {
         totalPracticeTime: const Duration(hours: 10, minutes: 30),
         totalSessions: 15,
         averageBpm: 95,
-        timeByCategory: {
-          ExerciseCategory.scales: const Duration(hours: 3, minutes: 15),
-          ExerciseCategory.technique: const Duration(hours: 2, minutes: 45),
-          ExerciseCategory.repertoire: const Duration(hours: 4, minutes: 30),
+        timeByCategory: const {
+          ExerciseCategory.scales: Duration(hours: 3, minutes: 15),
+          ExerciseCategory.technique: Duration(hours: 2, minutes: 45),
+          ExerciseCategory.repertoire: Duration(hours: 4, minutes: 30),
         },
-        timeByExercise: {
-          'C Major Scale': const Duration(hours: 2, minutes: 15),
-          'Bach Prelude': const Duration(hours: 1, minutes: 45),
+        timeByExercise: const {
+          'C Major Scale': Duration(hours: 2, minutes: 15),
+          'Bach Prelude': Duration(hours: 1, minutes: 45),
         },
         dailyPracticeTimes: [
           DailyPracticeTime(
@@ -47,7 +47,7 @@ class MockProgressRepository implements ProgressRepository {
           ),
           DailyPracticeTime(
             date: DateTime.now().subtract(const Duration(days: 2)),
-            duration: const Duration(hours: 1)),
+            duration: const Duration(hours: 1),),
           DailyPracticeTime(
             date: DateTime.now().subtract(const Duration(days: 1)),
             duration: const Duration(minutes: 30),

@@ -4,6 +4,15 @@ import 'package:tava/features/practice_session/domain/entities/mood_metrics.dart
 import 'package:tava/features/practice_session/domain/entities/weather_info.dart';
 
 class PracticeSession extends Equatable {
+
+  const PracticeSession({
+    required this.id,
+    required this.startTime,
+    required this.duration, required this.exercises, required this.isActive, this.endTime,
+    this.notes,
+    this.moodMetrics,
+    this.weatherInfo,
+  });
   final String id;
   final DateTime startTime;
   final DateTime? endTime;
@@ -13,18 +22,6 @@ class PracticeSession extends Equatable {
   final MoodMetrics? moodMetrics;
   final WeatherInfo? weatherInfo;
   final bool isActive;
-
-  const PracticeSession({
-    required this.id,
-    required this.startTime,
-    this.endTime,
-    required this.duration,
-    this.notes,
-    required this.exercises,
-    this.moodMetrics,
-    this.weatherInfo,
-    required this.isActive,
-  });
 
   PracticeSession copyWith({
     String? id,

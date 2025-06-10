@@ -1,16 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class MetronomePreset extends Equatable {
-  final String id;
-  final String name;
-  final int bpm;
-  final int beatsPerMeasure;
-  final int beatUnit;
-  final List<int> accentPattern;
-  final String soundType;
-  final bool isFavorite;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   const MetronomePreset({
     required this.id,
@@ -24,6 +14,16 @@ class MetronomePreset extends Equatable {
     required this.createdAt,
     required this.updatedAt,
   });
+  final String id;
+  final String name;
+  final int bpm;
+  final int beatsPerMeasure;
+  final int beatUnit;
+  final List<int> accentPattern;
+  final String soundType;
+  final bool isFavorite;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   MetronomePreset copyWith({
     String? id,

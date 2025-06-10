@@ -130,7 +130,7 @@ class ExerciseLibraryView extends StatelessWidget {
                           index == 0
                               ? 'All'
                               : _getCategoryName(
-                              ExerciseCategory.values[index - 1]),
+                              ExerciseCategory.values[index - 1],),
                         ),
                         selected: isSelected,
                         onSelected: (selected) {
@@ -256,16 +256,13 @@ class ExerciseLibraryView extends StatelessWidget {
 }
 
 class ExerciseCard extends StatelessWidget {
+
+  const ExerciseCard({
+    required this.exercise, required this.onEdit, required this.onToggleFavorite, super.key,
+  });
   final Exercise exercise;
   final VoidCallback onEdit;
   final VoidCallback onToggleFavorite;
-
-  const ExerciseCard({
-    super.key,
-    required this.exercise,
-    required this.onEdit,
-    required this.onToggleFavorite,
-  });
 
   @override
   Widget build(BuildContext context) {

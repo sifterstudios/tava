@@ -46,7 +46,7 @@ dependencies:
 
   # Backend
   connectivity_plus: ^6.1.4
-  supabase_flutter: ^2.9.0
+  supabase_flutter: ^2.9.1
 
   # Metronome
   audio_session: ^0.2.2

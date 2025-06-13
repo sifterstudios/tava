@@ -4,6 +4,7 @@ import 'package:tava/core/di/injection.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 import 'package:tava/features/exercise_library/presentation/bloc/exercise_library_bloc.dart';
 import 'package:tava/features/exercise_library/presentation/widgets/exercise_form.dart';
+import 'package:tava/features/practice_session/domain/entities/exercise_category.dart';
 
 class ExerciseLibraryPage extends StatelessWidget {
   const ExerciseLibraryPage({super.key});
@@ -23,7 +24,7 @@ class ExerciseLibraryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Exercise Library'),
@@ -60,7 +61,7 @@ class ExerciseLibraryView extends StatelessWidget {
           if (state.status == ExerciseLibraryStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }
-          
+
           if (state.status == ExerciseLibraryStatus.failure) {
             return Center(
               child: Column(
@@ -80,7 +81,7 @@ class ExerciseLibraryView extends StatelessWidget {
               ),
             );
           }
-          
+
           if (state.exercises.isEmpty) {
             return Center(
               child: Column(
@@ -107,7 +108,15 @@ class ExerciseLibraryView extends StatelessWidget {
               ),
             );
           }
-          
+
+          // Get unique categories from exercises, filter out nulls to avoid null issues
+          final categories = state.exercises
+              .map((e) => e.category)
+              .where((category) => category != null)
+              .cast<ExerciseCategory>() // Cast to non-nullable type after filtering
+              .toSet()
+              .toList();
+
           return Column(
             children: [
               // Category tabs
@@ -116,30 +125,24 @@ class ExerciseLibraryView extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: ExerciseCategory.values.length + 1, // +1 for "All" tab
+                  itemCount: categories.length + 1, // +1 for "All" tab
                   itemBuilder: (context, index) {
                     final isSelected = index == 0
                         ? state.selectedCategory == null
-                        : state.selectedCategory ==
-                            ExerciseCategory.values[index - 1];
-                    
+                        : state.selectedCategory?.id == categories[index - 1].id;
+
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: ChoiceChip(
                         label: Text(
-                          index == 0
-                              ? 'All'
-                              : _getCategoryName(
-                                  ExerciseCategory.values[index - 1]),
+                          index == 0 ? 'All' : categories[index - 1].name,
                         ),
                         selected: isSelected,
                         onSelected: (selected) {
                           if (selected) {
                             context.read<ExerciseLibraryBloc>().add(
                                   FilterByCategory(
-                                    index == 0
-                                        ? null
-                                        : ExerciseCategory.values[index - 1],
+                                    index == 0 ? null : categories[index - 1],
                                   ),
                                 );
                           }
@@ -149,7 +152,7 @@ class ExerciseLibraryView extends StatelessWidget {
                   },
                 ),
               ),
-              
+
               // Exercise list
               Expanded(
                 child: ListView.builder(
@@ -178,25 +181,6 @@ class ExerciseLibraryView extends StatelessWidget {
     );
   }
 
-  String _getCategoryName(ExerciseCategory category) {
-    switch (category) {
-      case ExerciseCategory.technique:
-        return 'Technique';
-      case ExerciseCategory.repertoire:
-        return 'Repertoire';
-      case ExerciseCategory.scales:
-        return 'Scales';
-      case ExerciseCategory.etudes:
-        return 'Etudes';
-      case ExerciseCategory.sightReading:
-        return 'Sight Reading';
-      case ExerciseCategory.improvisation:
-        return 'Improvisation';
-      case ExerciseCategory.other:
-        return 'Other';
-    }
-  }
-
   void _showExerciseForm(BuildContext context, [Exercise? exercise]) {
     showModalBottomSheet(
       context: context,
@@ -211,32 +195,39 @@ class ExerciseLibraryView extends StatelessWidget {
   }
 
   void _showCategoriesDialog(BuildContext context) {
+    final bloc = context.read<ExerciseLibraryBloc>();
+    // Get unique categories from all exercises, filter out nulls
+    final List<ExerciseCategory> categories = bloc.state.exercises
+        .map((e) => e.category)
+        .whereType<ExerciseCategory>() // Use whereType instead of where + cast
+        .toSet()
+        .toList();
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Filter by Category'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: ExerciseCategory.values
-              .map(
-                (category) => ListTile(
-                  title: Text(_getCategoryName(category)),
-                  onTap: () {
-                    context
-                        .read<ExerciseLibraryBloc>()
-                        .add(FilterByCategory(category));
-                    Navigator.of(context).pop();
-                  },
-                ),
-              )
-              .toList(),
-        ),
+        content: categories.isEmpty
+            ? const Text('No categories available')
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: categories
+                    .map(
+                      (category) => ListTile(
+                        title: Text(category.name),
+                        onTap: () {
+                          bloc.add(FilterByCategory(category));
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
         actions: [
           TextButton(
             onPressed: () {
-              context
-                  .read<ExerciseLibraryBloc>()
-                  .add(const FilterByCategory(null));
+              // Remove const to fix lint warning with null parameter
+              bloc.add(FilterByCategory(null));
               Navigator.of(context).pop();
             },
             child: const Text('Show All'),
@@ -270,7 +261,7 @@ class ExerciseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: Padding(
@@ -304,10 +295,16 @@ class ExerciseCard extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                Chip(
-                  label: Text(_getCategoryName(exercise.category)),
-                  backgroundColor: theme.colorScheme.primaryContainer,
-                ),
+                if (exercise.category != null)
+                  Chip(
+                    label: Text(exercise.category!.name),
+                    backgroundColor: _getCategoryColor(exercise.category, theme),
+                  )
+                else
+                  Chip(
+                    label: const Text('Uncategorized'),
+                    backgroundColor: theme.colorScheme.primaryContainer,
+                  ),
                 const Spacer(),
                 if (exercise.targetBpm != null)
                   Text('${exercise.targetBpm} BPM'),
@@ -324,22 +321,20 @@ class ExerciseCard extends StatelessWidget {
     );
   }
 
-  String _getCategoryName(ExerciseCategory category) {
-    switch (category) {
-      case ExerciseCategory.technique:
-        return 'Technique';
-      case ExerciseCategory.repertoire:
-        return 'Repertoire';
-      case ExerciseCategory.scales:
-        return 'Scales';
-      case ExerciseCategory.etudes:
-        return 'Etudes';
-      case ExerciseCategory.sightReading:
-        return 'Sight Reading';
-      case ExerciseCategory.improvisation:
-        return 'Improvisation';
-      case ExerciseCategory.other:
-        return 'Other';
+  Color _getCategoryColor(ExerciseCategory? category, ThemeData theme) {
+    // Simplify the null checking and color parsing
+    if (category != null && category.color != null) {
+      try {
+        // Use a safe parse approach
+        final colorString = category.color!.replaceFirst('#', '');
+        final colorValue = int.tryParse('0xFF$colorString');
+        if (colorValue != null) {
+          return Color(colorValue);
+        }
+      } catch (_) {
+        // Silently handle parsing errors and return default color
+      }
     }
+    return theme.colorScheme.primaryContainer;
   }
 }

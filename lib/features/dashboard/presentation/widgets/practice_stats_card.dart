@@ -1,15 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 
+/// A card widget that displays practice statistics.
 class PracticeStatsCard extends StatelessWidget {
-  final PracticeStats? stats;
-
+  /// Creates a [PracticeStatsCard] widget.
   const PracticeStatsCard({
     super.key,
     this.stats,
   });
+
+  /// The practice statistics to display. If null, a placeholder is shown.
+  final PracticeStats? stats;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,8 @@ class PracticeStatsCard extends StatelessWidget {
           border: Border.all(
             color: platformThemeData(
               context,
-              material: (data) => data.colorScheme.outline.withOpacity(0.2),
+              material: (data) =>
+                  data.colorScheme.outline.withValues(alpha: 0.2),
               cupertino: (data) => CupertinoColors.separator,
             ),
           ),
@@ -52,7 +56,7 @@ class PracticeStatsCard extends StatelessWidget {
                 style: platformThemeData(
                   context,
                   material: (data) => data.textTheme.bodyLarge?.copyWith(
-                    color: data.colorScheme.onSurface.withOpacity(0.6),
+                    color: data.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   cupertino: (data) => data.textTheme.textStyle.copyWith(
                     color: CupertinoColors.secondaryLabel,
@@ -77,7 +81,7 @@ class PracticeStatsCard extends StatelessWidget {
         border: Border.all(
           color: platformThemeData(
             context,
-            material: (data) => data.colorScheme.outline.withOpacity(0.2),
+            material: (data) => data.colorScheme.outline.withValues(alpha: 0.2),
             cupertino: (data) => CupertinoColors.separator,
           ),
         ),
@@ -89,8 +93,10 @@ class PracticeStatsCard extends StatelessWidget {
               Expanded(
                 child: _StatItem(
                   icon: PlatformWidget(
-                    material: (_, __) => const Icon(Icons.timer, color: Color(0xFF00FFFF)),
-                    cupertino: (_, __) => const Icon(CupertinoIcons.timer, color: Color(0xFF00FFFF)),
+                    material: (_, __) =>
+                        const Icon(Icons.timer, color: Color(0xFF00FFFF)),
+                    cupertino: (_, __) => const Icon(CupertinoIcons.timer,
+                        color: Color(0xFF00FFFF)),
                   ),
                   label: 'Total Time',
                   value: _formatDuration(stats!.totalPracticeTime),
@@ -101,15 +107,18 @@ class PracticeStatsCard extends StatelessWidget {
                 height: 40,
                 color: platformThemeData(
                   context,
-                  material: (data) => data.colorScheme.outline.withOpacity(0.2),
+                  material: (data) =>
+                      data.colorScheme.outline.withValues(alpha: 0.2),
                   cupertino: (data) => CupertinoColors.separator,
                 ),
               ),
               Expanded(
                 child: _StatItem(
                   icon: PlatformWidget(
-                    material: (_, __) => const Icon(Icons.calendar_today, color: Color(0xFF00FFFF)),
-                    cupertino: (_, __) => const Icon(CupertinoIcons.calendar, color: Color(0xFF00FFFF)),
+                    material: (_, __) => const Icon(Icons.calendar_today,
+                        color: Color(0xFF00FFFF)),
+                    cupertino: (_, __) => const Icon(CupertinoIcons.calendar,
+                        color: Color(0xFF00FFFF)),
                   ),
                   label: 'Sessions',
                   value: stats!.totalSessions.toString(),
@@ -122,15 +131,18 @@ class PracticeStatsCard extends StatelessWidget {
             height: 1,
             color: platformThemeData(
               context,
-              material: (data) => data.colorScheme.outline.withOpacity(0.2),
+              material: (data) =>
+                  data.colorScheme.outline.withValues(alpha: 0.2),
               cupertino: (data) => CupertinoColors.separator,
             ),
           ),
           const SizedBox(height: 16),
           _StatItem(
             icon: PlatformWidget(
-              material: (_, __) => const Icon(Icons.speed, color: Color(0xFF00FFFF)),
-              cupertino: (_, __) => const Icon(CupertinoIcons.metronome, color: Color(0xFF00FFFF)),
+              material: (_, __) =>
+                  const Icon(Icons.speed, color: Color(0xFF00FFFF)),
+              cupertino: (_, __) => const Icon(CupertinoIcons.metronome,
+                  color: Color(0xFF00FFFF)),
             ),
             label: 'Average BPM',
             value: stats!.averageBpm.toString(),
@@ -143,7 +155,7 @@ class PracticeStatsCard extends StatelessWidget {
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
-    
+
     if (hours > 0) {
       return '${hours}h ${minutes}m';
     } else {
@@ -153,15 +165,15 @@ class PracticeStatsCard extends StatelessWidget {
 }
 
 class _StatItem extends StatelessWidget {
-  final Widget icon;
-  final String label;
-  final String value;
-
   const _StatItem({
     required this.icon,
     required this.label,
     required this.value,
   });
+
+  final Widget icon;
+  final String label;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +200,7 @@ class _StatItem extends StatelessWidget {
           style: platformThemeData(
             context,
             material: (data) => data.textTheme.bodySmall?.copyWith(
-              color: data.colorScheme.onSurface.withOpacity(0.6),
+              color: data.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             cupertino: (data) => data.textTheme.textStyle.copyWith(
               color: CupertinoColors.secondaryLabel,

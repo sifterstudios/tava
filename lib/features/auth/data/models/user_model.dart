@@ -1,15 +1,18 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tava/features/auth/domain/entities/tava_user.dart';
 
+/// Represents a user in the Tava application.
 class UserModel extends TavaUser {
+  /// Creates a new instance of [UserModel].
   const UserModel({
     required super.id,
     required super.email,
-    super.name,
     required super.createdAt,
     required super.updatedAt,
+    super.name,
   });
 
+  /// Creates a new instance of [UserModel] from a Supabase user.
   factory UserModel.fromSupabaseUser(User supabaseUser) {
     return UserModel(
       id: supabaseUser.id,
@@ -21,6 +24,7 @@ class UserModel extends TavaUser {
     );
   }
 
+  /// Creates a new instance of [UserModel] from a JSON map.
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] as String,
@@ -31,6 +35,7 @@ class UserModel extends TavaUser {
     );
   }
 
+  /// Converts the [UserModel] instance to a JSON map.
   Map<String, dynamic> toJson() {
     return {
       'id': id,

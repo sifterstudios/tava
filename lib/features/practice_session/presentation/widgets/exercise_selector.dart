@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tava/core/di/injection.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 import 'package:tava/features/exercise_library/presentation/bloc/exercise_library_bloc.dart';
+import 'package:tava/features/practice_session/domain/entities/exercise_category.dart';
 import 'package:tava/features/practice_session/presentation/bloc/practice_session_bloc.dart';
 
 class ExerciseSelector extends StatefulWidget {
@@ -70,48 +71,52 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                SizedBox(
-                  height: 48,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: ExerciseCategory.values.length + 1, // +1 for "All" tab
-                    itemBuilder: (context, index) {
-                      final isSelected = index == 0
-                          ? _selectedCategory == null
-                          : _selectedCategory ==
-                              ExerciseCategory.values[index - 1];
+                BlocBuilder<ExerciseLibraryBloc, ExerciseLibraryState>(
+                  builder: (context, state) {
+                    final categories = state.categories;
+                    
+                    return SizedBox(
+                      height: 48,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: categories.length + 1, // +1 for "All" tab
+                        itemBuilder: (context, index) {
+                          final isSelected = index == 0
+                              ? _selectedCategory == null
+                              : _selectedCategory?.id == categories[index - 1].id;
 
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: ChoiceChip(
-                          label: Text(
-                            index == 0
-                                ? 'All'
-                                : _getCategoryName(
-                                    ExerciseCategory.values[index - 1]),
-                          ),
-                          selected: isSelected,
-                          onSelected: (selected) {
-                            if (selected) {
-                              setState(() {
-                                _selectedCategory = index == 0
-                                    ? null
-                                    : ExerciseCategory.values[index - 1];
-                              });
-                              context.read<ExerciseLibraryBloc>().add(
-                                    FilterByCategory(
-                                      index == 0
-                                          ? null
-                                          : ExerciseCategory.values[index - 1],
-                                    ),
-                                  );
-                            }
-                          },
-                        ),
-                      );
-                    },
-                  ),
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: ChoiceChip(
+                              label: Text(
+                                index == 0
+                                    ? 'All'
+                                    : categories[index - 1].name,
+                              ),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                if (selected) {
+                                  setState(() {
+                                    _selectedCategory = index == 0
+                                        ? null
+                                        : categories[index - 1];
+                                  });
+                                  context.read<ExerciseLibraryBloc>().add(
+                                        FilterByCategory(
+                                          index == 0
+                                              ? null
+                                              : categories[index - 1],
+                                        ),
+                                      );
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
                 Expanded(
                   child: BlocBuilder<ExerciseLibraryBloc, ExerciseLibraryState>(
@@ -141,10 +146,10 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                               title: Text(exercise.name),
                               subtitle: Text(
                                 exercise.description ??
-                                    _getCategoryName(exercise.category),
+                                    exercise.category?.name ?? 'No category',
                               ),
                               leading: Icon(
-                                _getCategoryIcon(exercise.category),
+                                _getCategoryIcon(exercise.category.name),
                                 color: theme.colorScheme.primary,
                               ),
                               trailing: exercise.targetBpm != null
@@ -171,40 +176,21 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
     );
   }
 
-  String _getCategoryName(ExerciseCategory category) {
-    switch (category) {
-      case ExerciseCategory.technique:
-        return 'Technique';
-      case ExerciseCategory.repertoire:
-        return 'Repertoire';
-      case ExerciseCategory.scales:
-        return 'Scales';
-      case ExerciseCategory.etudes:
-        return 'Etudes';
-      case ExerciseCategory.sightReading:
-        return 'Sight Reading';
-      case ExerciseCategory.improvisation:
-        return 'Improvisation';
-      case ExerciseCategory.other:
-        return 'Other';
-    }
-  }
-
-  IconData _getCategoryIcon(ExerciseCategory category) {
-    switch (category) {
-      case ExerciseCategory.technique:
+  IconData _getCategoryIcon(String categoryName) {
+    switch (categoryName.toLowerCase()) {
+      case 'technique':
         return Icons.fitness_center;
-      case ExerciseCategory.repertoire:
+      case 'repertoire':
         return Icons.music_note;
-      case ExerciseCategory.scales:
+      case 'scales':
         return Icons.piano;
-      case ExerciseCategory.etudes:
+      case 'etudes':
         return Icons.school;
-      case ExerciseCategory.sightReading:
+      case 'sight reading':
         return Icons.visibility;
-      case ExerciseCategory.improvisation:
+      case 'improvisation':
         return Icons.psychology;
-      case ExerciseCategory.other:
+      default:
         return Icons.category;
     }
   }

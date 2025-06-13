@@ -3,29 +3,37 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tava/core/error/failures.dart';
 import 'package:tava/features/auth/data/models/user_model.dart';
 
+/// Abstract class for remote data source handling authentication operations.
 abstract class AuthRemoteDataSource {
+  /// Retrieves the currently logged-in user.
   Future<UserModel> getCurrentUser();
 
+  /// Logs in a user with the provided email and password.
   Future<UserModel> login({required String email, required String password});
 
+  /// Registers a new user with the provided email, password, and name.
   Future<UserModel> register(
       {required String email, required String password, required String name});
 
+  /// Logs out the currently logged-in user.
   Future<void> logout();
 }
 
+/// Implementation of [AuthRemoteDataSource] using Supabase for authentication.
 @Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final SupabaseClient supabaseClient;
 
+  /// Constructor for [AuthRemoteDataSourceImpl].
   AuthRemoteDataSourceImpl({required this.supabaseClient});
+  /// Supabase client for interacting with the Supabase backend.
+  final SupabaseClient supabaseClient;
 
   @override
   Future<UserModel> getCurrentUser() async {
     try {
       final user = supabaseClient.auth.currentUser;
       if (user == null) {
-        throw const AuthFailure(message: 'No user logged in');
+        throw AuthFailure(message: 'No user logged in');
       }
 
       return UserModel.fromSupabaseUser(user);
@@ -44,7 +52,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       if (response.user == null) {
-        throw const AuthFailure(message: 'Login failed');
+        throw AuthFailure(message: 'Login failed');
       }
 
       return UserModel.fromSupabaseUser(response.user!);
@@ -68,7 +76,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       if (response.user == null) {
-        throw const AuthFailure(message: 'Registration failed');
+        throw AuthFailure(message: 'Registration failed');
       }
 
       return UserModel.fromSupabaseUser(response.user!);

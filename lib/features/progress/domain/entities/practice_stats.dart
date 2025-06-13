@@ -1,11 +1,10 @@
 import 'package:equatable/equatable.dart';
-import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 
 class PracticeStats extends Equatable {
   final Duration totalPracticeTime;
   final int totalSessions;
   final int averageBpm;
-  final Map<ExerciseCategory, Duration> timeByCategory;
+  final Map<String, Duration> timeByCategory; // Now uses category ID instead of enum
   final Map<String, Duration> timeByExercise;
   final List<DailyPracticeTime> dailyPracticeTimes;
   final List<WeeklyPracticeTime> weeklyPracticeTimes;

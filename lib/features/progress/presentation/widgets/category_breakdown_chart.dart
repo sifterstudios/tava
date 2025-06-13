@@ -1,9 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 
 class CategoryBreakdownChart extends StatelessWidget {
-  final Map<ExerciseCategory, Duration> categoryData;
+  final Map<String, Duration> categoryData;
 
   const CategoryBreakdownChart({
     super.key,
@@ -45,9 +44,12 @@ class CategoryBreakdownChart extends StatelessWidget {
           ? (duration.inMinutes / totalMinutes * 100)
           : 0.0;
       
+      // Use a color from our predefined list
+      final sectionColor = colors[colorIndex % colors.length];
+      
       sections.add(
         PieChartSectionData(
-          color: colors[colorIndex % colors.length],
+          color: sectionColor,
           value: percentage,
           title: '${percentage.toStringAsFixed(1)}%',
           radius: 80,
@@ -81,6 +83,10 @@ class CategoryBreakdownChart extends StatelessWidget {
             children: [
               ...categoryData.entries.map((entry) {
                 final index = categoryData.keys.toList().indexOf(entry.key);
+                
+                // Use a color from our predefined list
+                final legendColor = colors[index % colors.length];
+                
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
@@ -88,12 +94,12 @@ class CategoryBreakdownChart extends StatelessWidget {
                       Container(
                         width: 12,
                         height: 12,
-                        color: colors[index % colors.length],
+                        color: legendColor,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          _getCategoryName(entry.key),
+                          entry.key,
                           style: theme.textTheme.bodySmall,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -107,24 +113,5 @@ class CategoryBreakdownChart extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _getCategoryName(ExerciseCategory category) {
-    switch (category) {
-      case ExerciseCategory.technique:
-        return 'Technique';
-      case ExerciseCategory.repertoire:
-        return 'Repertoire';
-      case ExerciseCategory.scales:
-        return 'Scales';
-      case ExerciseCategory.etudes:
-        return 'Etudes';
-      case ExerciseCategory.sightReading:
-        return 'Sight Reading';
-      case ExerciseCategory.improvisation:
-        return 'Improvisation';
-      case ExerciseCategory.other:
-        return 'Other';
-    }
   }
 }

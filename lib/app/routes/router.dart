@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tava/features/auth/presentation/pages/login_page.dart';
@@ -13,8 +13,10 @@ import 'package:tava/features/settings/presentation/pages/settings_page.dart';
 import 'package:tava/features/splash/presentation/pages/splash_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellNavigatorKey =
+    GlobalKey<NavigatorState>();
 
+/// The main router for the Tava app, defining all routes and navigation logic.
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/splash',
@@ -32,7 +34,7 @@ final appRouter = GoRouter(
       path: '/signup',
       builder: (context, state) => const SignupPage(),
     ),
-    
+
     // Main app shell with bottom navigation
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -51,25 +53,25 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        
+
         // Library tab
         GoRoute(
           path: '/library',
           builder: (context, state) => const ExerciseLibraryPage(),
         ),
-        
+
         // Metronome tab
         GoRoute(
           path: '/metronome',
           builder: (context, state) => const MetronomePage(),
         ),
-        
+
         // Progress tab
         GoRoute(
           path: '/progress',
           builder: (context, state) => const ProgressPage(),
         ),
-        
+
         // Settings tab
         GoRoute(
           path: '/settings',
@@ -80,28 +82,46 @@ final appRouter = GoRouter(
   ],
 );
 
+/// A scaffold that provides a bottom navigation bar for the main app shell.
 class PlatformScaffoldWithBottomNavBar extends StatefulWidget {
+  /// Creates a [PlatformScaffoldWithBottomNavBar] widget.
   const PlatformScaffoldWithBottomNavBar({
-    super.key,
-    required this.child,
+    required this.child, super.key,
   });
 
+  /// The child widget to display in the scaffold body.
   final Widget child;
 
   @override
-  State<PlatformScaffoldWithBottomNavBar> createState() => 
+  State<PlatformScaffoldWithBottomNavBar> createState() =>
       _PlatformScaffoldWithBottomNavBarState();
 }
 
-class _PlatformScaffoldWithBottomNavBarState 
+class _PlatformScaffoldWithBottomNavBarState
     extends State<PlatformScaffoldWithBottomNavBar> {
   int _currentIndex = 0;
 
-  static final List<(String path, IconData materialIcon, IconData cupertinoIcon, String label)> _tabs = [
+  static final List<
+      (
+        String path,
+        IconData materialIcon,
+        IconData cupertinoIcon,
+        String label
+      )> _tabs = [
     ('/dashboard', Icons.home_rounded, CupertinoIcons.home, 'Home'),
-    ('/library', Icons.library_music_rounded, CupertinoIcons.music_albums, 'Library'),
+    (
+      '/library',
+      Icons.library_music_rounded,
+      CupertinoIcons.music_albums,
+      'Library'
+    ),
     ('/metronome', Icons.speed_rounded, CupertinoIcons.metronome, 'Metronome'),
-    ('/progress', Icons.show_chart_rounded, CupertinoIcons.chart_bar, 'Progress'),
+    (
+      '/progress',
+      Icons.show_chart_rounded,
+      CupertinoIcons.chart_bar,
+      'Progress'
+    ),
     ('/settings', Icons.settings_rounded, CupertinoIcons.settings, 'Settings'),
   ];
 
@@ -115,17 +135,20 @@ class _PlatformScaffoldWithBottomNavBarState
           setState(() => _currentIndex = index);
           context.go(_tabs[index].$1);
         },
-        items: _tabs.map((tab) => BottomNavigationBarItem(
-          icon: PlatformWidget(
-            material: (_, __) => Icon(tab.$2),
-            cupertino: (_, __) => Icon(tab.$3),
-          ),
-          label: tab.$4,
-        )).toList(),
+        items: _tabs
+            .map((tab) => BottomNavigationBarItem(
+                  icon: PlatformWidget(
+                    material: (_, __) => Icon(tab.$2),
+                    cupertino: (_, __) => Icon(tab.$3),
+                  ),
+                  label: tab.$4,
+                ))
+            .toList(),
         material: (_, __) => MaterialNavBarData(
           backgroundColor: Theme.of(context).colorScheme.surface,
           selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          unselectedItemColor:
+              Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
           type: BottomNavigationBarType.fixed,
         ),
         cupertino: (_, __) => CupertinoTabBarData(

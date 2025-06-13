@@ -1,15 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:tava/features/practice_session/domain/entities/practice_session.dart';
 
+/// A card widget that displays recent practice session details.
 class RecentSessionCard extends StatelessWidget {
-  final PracticeSession session;
-
+  /// Creates a [RecentSessionCard] widget.
   const RecentSessionCard({
-    super.key,
     required this.session,
+    super.key,
   });
+
+  /// The practice session to display.
+  final PracticeSession session;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class RecentSessionCard extends StatelessWidget {
         border: Border.all(
           color: platformThemeData(
             context,
-            material: (data) => data.colorScheme.outline.withOpacity(0.2),
+            material: (data) => data.colorScheme.outline.withValues(alpha: 0.2),
             cupertino: (data) => CupertinoColors.separator,
           ),
         ),
@@ -35,7 +38,7 @@ class RecentSessionCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF00FFFF).withOpacity(0.1),
+              color: const Color(0xFF00FFFF).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: PlatformWidget(
@@ -70,11 +73,12 @@ class RecentSessionCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 PlatformText(
-                  '${_formatDuration(session.duration)} • ${session.exercises.length} exercises',
+                  '${_formatDuration(session.duration)} • '
+                  '${session.exercises.length} exercises',
                   style: platformThemeData(
                     context,
                     material: (data) => data.textTheme.bodySmall?.copyWith(
-                      color: data.colorScheme.onSurface.withOpacity(0.6),
+                      color: data.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                     cupertino: (data) => data.textTheme.textStyle.copyWith(
                       color: CupertinoColors.secondaryLabel,
@@ -88,7 +92,10 @@ class RecentSessionCard extends StatelessWidget {
           PlatformWidget(
             material: (_, __) => Icon(
               Icons.chevron_right,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.4),
             ),
             cupertino: (_, __) => const Icon(
               CupertinoIcons.chevron_right,
@@ -104,7 +111,7 @@ class RecentSessionCard extends StatelessWidget {
   String _formatDate(DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date).inDays;
-    
+
     if (difference == 0) {
       return 'Today';
     } else if (difference == 1) {

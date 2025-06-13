@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tava/core/di/injection.dart';
 import 'package:tava/features/auth/presentation/bloc/auth_bloc.dart';
 
+/// A page for user registration, allowing users to create a new account.
 class SignupPage extends StatelessWidget {
+  /// Creates a new instance of [SignupPage] widget.
   const SignupPage({super.key});
 
   @override
@@ -18,7 +20,9 @@ class SignupPage extends StatelessWidget {
   }
 }
 
+/// A stateful widget view that handles user registration.
 class SignupView extends StatefulWidget {
+  /// Creates a new instance of [SignupView] widget.
   const SignupView({super.key});
 
   @override
@@ -67,37 +71,40 @@ class _SignupViewState extends State<SignupView> {
           ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(24),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 32),
-                    
+
                     // Title
                     PlatformText(
                       'Create Account',
                       style: platformThemeData(
                         context,
-                        material: (data) => data.textTheme.headlineMedium?.copyWith(
+                        material: (data) =>
+                            data.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
-                        cupertino: (data) => data.textTheme.navLargeTitleTextStyle.copyWith(
+                        cupertino: (data) =>
+                            data.textTheme.navLargeTitleTextStyle.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     const SizedBox(height: 8),
-                    
+
                     PlatformText(
                       'Join the community of musicians',
                       style: platformThemeData(
                         context,
                         material: (data) => data.textTheme.bodyLarge?.copyWith(
-                          color: data.colorScheme.onSurface.withOpacity(0.7),
+                          color:
+                              data.colorScheme.onSurface.withValues(alpha: 0.7),
                         ),
                         cupertino: (data) => data.textTheme.textStyle.copyWith(
                           color: CupertinoColors.secondaryLabel,
@@ -105,9 +112,9 @@ class _SignupViewState extends State<SignupView> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    
+
                     const SizedBox(height: 48),
-                    
+
                     // Name field
                     PlatformTextFormField(
                       controller: _nameController,
@@ -140,9 +147,9 @@ class _SignupViewState extends State<SignupView> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Email field
                     PlatformTextFormField(
                       controller: _emailController,
@@ -178,9 +185,9 @@ class _SignupViewState extends State<SignupView> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Password field
                     PlatformTextFormField(
                       controller: _passwordController,
@@ -201,8 +208,11 @@ class _SignupViewState extends State<SignupView> {
                           labelText: 'Password',
                           prefixIcon: const Icon(Icons.lock_outlined),
                           suffixIcon: IconButton(
-                            icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
-                            onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                            icon: Icon(_obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () => setState(
+                                () => _obscurePassword = !_obscurePassword),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -216,14 +226,17 @@ class _SignupViewState extends State<SignupView> {
                         ),
                         prefix: CupertinoButton(
                           padding: EdgeInsets.zero,
-                          onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-                          child: Icon(_obscurePassword ? CupertinoIcons.eye : CupertinoIcons.eye_slash),
+                          onPressed: () => setState(
+                              () => _obscurePassword = !_obscurePassword),
+                          child: Icon(_obscurePassword
+                              ? CupertinoIcons.eye
+                              : CupertinoIcons.eye_slash),
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Confirm password field
                     PlatformTextFormField(
                       controller: _confirmPasswordController,
@@ -245,8 +258,12 @@ class _SignupViewState extends State<SignupView> {
                           labelText: 'Confirm Password',
                           prefixIcon: const Icon(Icons.lock_outlined),
                           suffixIcon: IconButton(
-                            icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
-                            onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                            icon: Icon(_obscureConfirmPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () => setState(() =>
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -260,14 +277,18 @@ class _SignupViewState extends State<SignupView> {
                         ),
                         prefix: CupertinoButton(
                           padding: EdgeInsets.zero,
-                          onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
-                          child: Icon(_obscureConfirmPassword ? CupertinoIcons.eye : CupertinoIcons.eye_slash),
+                          onPressed: () => setState(() =>
+                              _obscureConfirmPassword =
+                                  !_obscureConfirmPassword),
+                          child: Icon(_obscureConfirmPassword
+                              ? CupertinoIcons.eye
+                              : CupertinoIcons.eye_slash),
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // Sign up button
                     PlatformElevatedButton(
                       onPressed: state is AuthLoading ? null : _handleSignup,
@@ -286,7 +307,7 @@ class _SignupViewState extends State<SignupView> {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
                       child: state is AuthLoading
-                          ? PlatformCircularProgressIndicator()
+                          ? const PlatformCircularProgressIndicator()
                           : const Text(
                               'Create Account',
                               style: TextStyle(
@@ -295,9 +316,9 @@ class _SignupViewState extends State<SignupView> {
                               ),
                             ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Sign in link
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -344,6 +365,8 @@ class _SignupViewState extends State<SignupView> {
     }
   }
 
+  /// Shows an error dialog with the provided message.
+  // TODO(sifterstudios): Not sure how to fix warning
   void _showErrorDialog(BuildContext context, String message) {
     showPlatformDialog(
       context: context,

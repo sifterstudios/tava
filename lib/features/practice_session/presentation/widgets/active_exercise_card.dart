@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
+import 'package:tava/features/practice_session/domain/entities/exercise_category.dart';
 
 class ActiveExerciseCard extends StatelessWidget {
   final Exercise exercise;
@@ -62,8 +63,8 @@ class ActiveExerciseCard extends StatelessWidget {
             Row(
               children: [
                 Chip(
-                  label: Text(_getCategoryName(exercise.category)),
-                  backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
+                  label: Text(exercise.category?.name ?? 'No category'),
+                  backgroundColor: _getCategoryColor(exercise.category, theme),
                   labelStyle: TextStyle(
                     color: theme.colorScheme.onPrimary,
                   ),
@@ -85,22 +86,11 @@ class ActiveExerciseCard extends StatelessWidget {
     );
   }
 
-  String _getCategoryName(ExerciseCategory category) {
-    switch (category) {
-      case ExerciseCategory.technique:
-        return 'Technique';
-      case ExerciseCategory.repertoire:
-        return 'Repertoire';
-      case ExerciseCategory.scales:
-        return 'Scales';
-      case ExerciseCategory.etudes:
-        return 'Etudes';
-      case ExerciseCategory.sightReading:
-        return 'Sight Reading';
-      case ExerciseCategory.improvisation:
-        return 'Improvisation';
-      case ExerciseCategory.other:
-        return 'Other';
+  Color _getCategoryColor(ExerciseCategory? category, ThemeData theme) {
+    // Use the category's color if provided, otherwise default to theme primary
+    if (category?.color != null) {
+      return Color(int.parse(category!.color!));
     }
+    return theme.colorScheme.primary.withOpacity(0.7);
   }
 }

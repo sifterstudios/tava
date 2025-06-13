@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +11,9 @@ import 'package:tava/features/dashboard/presentation/widgets/quick_start_card.da
 import 'package:tava/features/dashboard/presentation/widgets/recent_session_card.dart';
 import 'package:tava/features/dashboard/presentation/widgets/weather_card.dart';
 
+/// The main dashboard page that displays the user's practice journal.
 class DashboardPage extends StatelessWidget {
+  /// Creates a new instance of [DashboardPage].
   const DashboardPage({super.key});
 
   @override
@@ -23,7 +25,10 @@ class DashboardPage extends StatelessWidget {
   }
 }
 
+/// The view for the dashboard, displaying practice stats, recent sessions,
+/// suggested exercises, and weather information.
 class DashboardView extends StatelessWidget {
+  /// Creates a new instance of [DashboardView].
   const DashboardView({super.key});
 
   @override
@@ -50,11 +55,11 @@ class DashboardView extends StatelessWidget {
       body: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state.status == DashboardStatus.loading) {
-            return Center(
+            return const Center(
               child: PlatformCircularProgressIndicator(),
             );
           }
-          
+
           if (state.status == DashboardStatus.failure) {
             return Center(
               child: Column(
@@ -70,15 +75,15 @@ class DashboardView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   PlatformElevatedButton(
-                    onPressed: () => context.read<DashboardBloc>()
-                      ..add(LoadDashboardData()),
+                    onPressed: () =>
+                        context.read<DashboardBloc>()..add(LoadDashboardData()),
                     child: const Text('Retry'),
                   ),
                 ],
               ),
             );
           }
-          
+
           return RefreshIndicator(
             onRefresh: () async {
               context.read<DashboardBloc>().add(LoadDashboardData());
@@ -93,9 +98,7 @@ class DashboardView extends StatelessWidget {
                         const _ActiveSessionBanner(),
                         const SizedBox(height: 16),
                       ],
-                      
                       const QuickStartCard(),
-                      
                       const SizedBox(height: 16),
                       PlatformText(
                         'Practice Stats',
@@ -107,7 +110,6 @@ class DashboardView extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       PracticeStatsCard(stats: state.practiceStats),
-                      
                       const SizedBox(height: 16),
                       Row(
                         children: [
@@ -116,7 +118,8 @@ class DashboardView extends StatelessWidget {
                             style: platformThemeData(
                               context,
                               material: (data) => data.textTheme.titleLarge,
-                              cupertino: (data) => data.textTheme.navTitleTextStyle,
+                              cupertino: (data) =>
+                                  data.textTheme.navTitleTextStyle,
                             ),
                           ),
                           const Spacer(),
@@ -128,10 +131,9 @@ class DashboardView extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       ...state.recentSessions.map((session) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: RecentSessionCard(session: session),
-                      )),
-                      
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: RecentSessionCard(session: session),
+                          )),
                       const SizedBox(height: 16),
                       Row(
                         children: [
@@ -140,7 +142,8 @@ class DashboardView extends StatelessWidget {
                             style: platformThemeData(
                               context,
                               material: (data) => data.textTheme.titleLarge,
-                              cupertino: (data) => data.textTheme.navTitleTextStyle,
+                              cupertino: (data) =>
+                                  data.textTheme.navTitleTextStyle,
                             ),
                           ),
                           const Spacer(),
@@ -160,9 +163,10 @@ class DashboardView extends StatelessWidget {
                             final exercise = state.suggestedExercises[index];
                             return Padding(
                               padding: EdgeInsets.only(
-                                right: index < state.suggestedExercises.length - 1
-                                    ? 8
-                                    : 0,
+                                right:
+                                    index < state.suggestedExercises.length - 1
+                                        ? 8
+                                        : 0,
                               ),
                               child: ExerciseCard(
                                 exercise: exercise,
@@ -174,7 +178,6 @@ class DashboardView extends StatelessWidget {
                           },
                         ),
                       ),
-                      
                       if (state.weatherInfo != null) ...[
                         const SizedBox(height: 16),
                         WeatherCard(weatherInfo: state.weatherInfo!),
@@ -203,7 +206,7 @@ class _ActiveSessionBanner extends StatelessWidget {
         color: platformThemeData(
           context,
           material: (data) => data.colorScheme.primaryContainer,
-          cupertino: (data) => const Color(0xFF00FFFF).withOpacity(0.1),
+          cupertino: (data) => const Color(0xFF00FFFF).withValues(alpha: 0.1),
         ),
         borderRadius: BorderRadius.circular(8),
       ),
@@ -231,7 +234,8 @@ class _ActiveSessionBanner extends StatelessWidget {
                     material: (data) => data.textTheme.titleMedium?.copyWith(
                       color: data.colorScheme.onPrimaryContainer,
                     ),
-                    cupertino: (data) => data.textTheme.navTitleTextStyle.copyWith(
+                    cupertino: (data) =>
+                        data.textTheme.navTitleTextStyle.copyWith(
                       color: const Color(0xFF00FFFF),
                     ),
                   ),
@@ -255,7 +259,8 @@ class _ActiveSessionBanner extends StatelessWidget {
             onPressed: () => context.go('/dashboard/start-session'),
             material: (_, __) => MaterialElevatedButtonData(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 foregroundColor: Theme.of(context).colorScheme.primaryContainer,
               ),
             ),

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tava/core/di/injection.dart';
@@ -29,15 +30,16 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder, String env) async {
   // Initialize Hive for local storage
   await Hive.initFlutter();
 
+  // Initialize dotenv
+  await dotenv.load();
+
   // Register Hive adapters
   // TODO: Register adapters for your models
 
   // Initialize Supabase
   await Supabase.initialize(
-    url: const String.fromEnvironment('SUPABASE_URL',
-        defaultValue: 'https://your-supabase-url.supabase.co'),
-    anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY',
-        defaultValue: 'your-anon-key'),
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
 
   // Initialize dependency injection

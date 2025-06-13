@@ -12,11 +12,10 @@ import 'package:tava/features/progress/domain/usecases/get_practice_stats.dart';
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
+/// Bloc for managing the dashboard state, including active session,
+/// recent sessions, practice statistics, and suggested exercises.
 @injectable
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  final GetActiveSession _getActiveSession;
-  final GetRecentSessions _getRecentSessions;
-  final GetPracticeStats _getPracticeStats;
 
   DashboardBloc({
     required GetActiveSession getActiveSession,
@@ -28,6 +27,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         super(const DashboardState.initial()) {
     on<LoadDashboardData>(_onLoadDashboardData);
   }
+  final GetActiveSession _getActiveSession;
+  final GetRecentSessions _getRecentSessions;
+  final GetPracticeStats _getPracticeStats;
 
   Future<void> _onLoadDashboardData(
     LoadDashboardData event,
@@ -38,7 +40,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     // Get active session if exists
     final activeSessionResult = await _getActiveSession();
     PracticeSession? activeSession;
-    
+
     activeSessionResult.fold(
       (failure) => null, // Ignore failures for active session
       (session) => activeSession = session,
@@ -46,8 +48,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     // Get recent sessions
     final recentSessionsResult = await _getRecentSessions();
-    List<PracticeSession> recentSessions = [];
-    
+    var recentSessions = <PracticeSession>[];
+
     recentSessionsResult.fold(
       (failure) => emit(state.copyWith(
         status: DashboardStatus.failure,
@@ -59,7 +61,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     // Get practice stats
     final practiceStatsResult = await _getPracticeStats();
     PracticeStats? practiceStats;
-    
+
     practiceStatsResult.fold(
       (failure) => emit(state.copyWith(
         status: DashboardStatus.failure,
@@ -75,7 +77,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         recentSessions: recentSessions,
         practiceStats: practiceStats,
         weatherInfo: activeSession?.weatherInfo,
-        // In a real app, we'd fetch suggested exercises based on practice history
+        // TODO(sifterstudios): Replace with actual suggested exercises
         suggestedExercises: _getDummySuggestedExercises(),
       ));
     }
@@ -87,8 +89,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       Exercise(
         id: '1',
         name: 'C Major Scale',
-        category: ExerciseCategory.scales,
-        tags: ['scale', 'beginner'],
+        categoryId: 'scales',
+        tags: const ['scale', 'beginner'],
         isFavorite: true,
         createdAt: DateTime.now().subtract(const Duration(days: 30)),
         updatedAt: DateTime.now().subtract(const Duration(days: 2)),
@@ -97,8 +99,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       Exercise(
         id: '2',
         name: 'Finger Exercise #4',
-        category: ExerciseCategory.technique,
-        tags: ['technique', 'intermediate'],
+        categoryId: 'technique',
+        tags: const ['technique', 'intermediate'],
         isFavorite: false,
         createdAt: DateTime.now().subtract(const Duration(days: 25)),
         updatedAt: DateTime.now().subtract(const Duration(days: 3)),
@@ -107,8 +109,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       Exercise(
         id: '3',
         name: 'Bach Prelude',
-        category: ExerciseCategory.repertoire,
-        tags: ['classical', 'advanced'],
+        categoryId: 'repertoire',
+        tags: const ['classical', 'advanced'],
         isFavorite: true,
         createdAt: DateTime.now().subtract(const Duration(days: 15)),
         updatedAt: DateTime.now().subtract(const Duration(days: 1)),
@@ -117,8 +119,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       Exercise(
         id: '4',
         name: 'Sight Reading Ex. 12',
-        category: ExerciseCategory.sightReading,
-        tags: ['sight reading', 'intermediate'],
+        categoryId: 'sightReading',
+        tags: const ['sight reading', 'intermediate'],
         isFavorite: false,
         createdAt: DateTime.now().subtract(const Duration(days: 10)),
         updatedAt: DateTime.now(),

@@ -6,19 +6,21 @@ import 'package:tava/core/utils/either.dart';
 import 'package:tava/features/auth/domain/entities/tava_user.dart';
 import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
+/// Implementation of [AuthRepository] using Supabase for authentication.
 @prod
 @Injectable()
 class AuthRepositoryImpl implements AuthRepository {
-  final SupabaseClient _supabaseClient;
-
+  /// Creates an instance of [AuthRepositoryImpl].
   AuthRepositoryImpl(this._supabaseClient);
+
+  final SupabaseClient _supabaseClient;
 
   @override
   FutureEitherResult<TavaUser> getCurrentUser() async {
     try {
       final session = _supabaseClient.auth.currentSession;
       if (session == null) {
-        return Left(AuthFailure(message: 'No active session found'));
+        return const Left(AuthFailure(message: 'No active session found'));
       }
 
       // For now, just return a mock user
@@ -31,7 +33,7 @@ class AuthRepositoryImpl implements AuthRepository {
           updatedAt: DateTime.now(),
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
   }
@@ -48,7 +50,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       if (response.user == null) {
-        return Left(const AuthFailure(message: 'Login failed'));
+        return const Left(AuthFailure(message: 'Login failed'));
       }
 
       return Right(
@@ -60,7 +62,7 @@ class AuthRepositoryImpl implements AuthRepository {
           updatedAt: DateTime.now(),
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
   }
@@ -78,7 +80,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       if (response.user == null) {
-        return Left(const AuthFailure(message: 'Registration failed'));
+        return const Left(AuthFailure(message: 'Registration failed'));
       }
 
       return Right(
@@ -90,7 +92,7 @@ class AuthRepositoryImpl implements AuthRepository {
           updatedAt: DateTime.now(),
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
   }
@@ -100,7 +102,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _supabaseClient.auth.signOut();
       return right(unit);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
   }

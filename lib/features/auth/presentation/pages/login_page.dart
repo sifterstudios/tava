@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tava/core/di/injection.dart';
 import 'package:tava/features/auth/presentation/bloc/auth_bloc.dart';
 
+/// A page for user login, providing a form to enter email and password.
 class LoginPage extends StatelessWidget {
+  /// Creates a [LoginPage] widget.
   const LoginPage({super.key});
 
   @override
@@ -18,7 +20,10 @@ class LoginPage extends StatelessWidget {
   }
 }
 
+/// A view for user login, containing the login
+/// form and handling authentication.
 class LoginView extends StatefulWidget {
+  /// Creates a [LoginView] widget.
   const LoginView({super.key});
 
   @override
@@ -50,20 +55,20 @@ class _LoginViewState extends State<LoginView> {
       },
       builder: (context, state) {
         return PlatformScaffold(
-          appBar: PlatformAppBar(
-            title: const Text('Sign In'),
+          appBar: const PlatformAppBar(
+            title: Text('Sign In'),
             automaticallyImplyLeading: false,
           ),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(24),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Spacer(),
-                    
+
                     // Logo/Title
                     Column(
                       children: [
@@ -71,7 +76,8 @@ class _LoginViewState extends State<LoginView> {
                           width: 80,
                           height: 80,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF00FFFF).withOpacity(0.1),
+                            color:
+                                const Color(0xFF00FFFF).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: PlatformWidget(
@@ -92,10 +98,12 @@ class _LoginViewState extends State<LoginView> {
                           'TAVA',
                           style: platformThemeData(
                             context,
-                            material: (data) => data.textTheme.headlineMedium?.copyWith(
+                            material: (data) =>
+                                data.textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
-                            cupertino: (data) => data.textTheme.navLargeTitleTextStyle.copyWith(
+                            cupertino: (data) =>
+                                data.textTheme.navLargeTitleTextStyle.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -105,19 +113,22 @@ class _LoginViewState extends State<LoginView> {
                           'Track your practice journey',
                           style: platformThemeData(
                             context,
-                            material: (data) => data.textTheme.bodyLarge?.copyWith(
-                              color: data.colorScheme.onSurface.withOpacity(0.7),
+                            material: (data) =>
+                                data.textTheme.bodyLarge?.copyWith(
+                              color: data.colorScheme.onSurface
+                                  .withValues(alpha: 0.7),
                             ),
-                            cupertino: (data) => data.textTheme.textStyle.copyWith(
+                            cupertino: (data) =>
+                                data.textTheme.textStyle.copyWith(
                               color: CupertinoColors.secondaryLabel,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 48),
-                    
+
                     // Email field
                     PlatformTextFormField(
                       controller: _emailController,
@@ -153,9 +164,9 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Password field
                     PlatformTextFormField(
                       controller: _passwordController,
@@ -177,8 +188,11 @@ class _LoginViewState extends State<LoginView> {
                           labelText: 'Password',
                           prefixIcon: const Icon(Icons.lock_outlined),
                           suffixIcon: IconButton(
-                            icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
-                            onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                            icon: Icon(_obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () => setState(
+                                () => _obscurePassword = !_obscurePassword),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -192,14 +206,17 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         prefix: CupertinoButton(
                           padding: EdgeInsets.zero,
-                          onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-                          child: Icon(_obscurePassword ? CupertinoIcons.eye : CupertinoIcons.eye_slash),
+                          onPressed: () => setState(
+                              () => _obscurePassword = !_obscurePassword),
+                          child: Icon(_obscurePassword
+                              ? CupertinoIcons.eye
+                              : CupertinoIcons.eye_slash),
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Login button
                     PlatformElevatedButton(
                       onPressed: state is AuthLoading ? null : _handleLogin,
@@ -218,7 +235,7 @@ class _LoginViewState extends State<LoginView> {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
                       child: state is AuthLoading
-                          ? PlatformCircularProgressIndicator()
+                          ? const PlatformCircularProgressIndicator()
                           : const Text(
                               'Sign In',
                               style: TextStyle(
@@ -227,9 +244,9 @@ class _LoginViewState extends State<LoginView> {
                               ),
                             ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Sign up link
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -254,7 +271,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ],
                     ),
-                    
+
                     const Spacer(),
                   ],
                 ),
@@ -277,6 +294,7 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
+  // TODO(sifterstudios): Not sure why we're getting this warning.
   void _showErrorDialog(BuildContext context, String message) {
     showPlatformDialog(
       context: context,

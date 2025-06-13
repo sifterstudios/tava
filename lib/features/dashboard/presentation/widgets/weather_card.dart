@@ -1,15 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:tava/features/practice_session/domain/entities/weather_info.dart';
 
+/// A widget that displays a weather card with information
+/// about the current weather conditions.
 class WeatherCard extends StatelessWidget {
-  final WeatherInfo weatherInfo;
-
+  /// Creates a new instance of [WeatherCard].
   const WeatherCard({
-    super.key,
     required this.weatherInfo,
+    super.key,
   });
+
+  /// The weather information to display in the card.
+  final WeatherInfo weatherInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class WeatherCard extends StatelessWidget {
         border: Border.all(
           color: platformThemeData(
             context,
-            material: (data) => data.colorScheme.outline.withOpacity(0.2),
+            material: (data) => data.colorScheme.outline.withValues(alpha: 0.2),
             cupertino: (data) => CupertinoColors.separator,
           ),
         ),
@@ -35,7 +39,8 @@ class WeatherCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: _getWeatherColor(weatherInfo.condition).withOpacity(0.1),
+              color: _getWeatherColor(weatherInfo.condition)
+                  .withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
@@ -63,11 +68,13 @@ class WeatherCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 PlatformText(
-                  '${weatherInfo.temperature.round()}°C • ${_getConditionName(weatherInfo.condition)} • ${weatherInfo.humidity}% humidity',
+                  '${weatherInfo.temperature.round()}°C • '
+                  '${_getConditionName(weatherInfo.condition)} • '
+                  '${weatherInfo.humidity}% humidity',
                   style: platformThemeData(
                     context,
                     material: (data) => data.textTheme.bodySmall?.copyWith(
-                      color: data.colorScheme.onSurface.withOpacity(0.6),
+                      color: data.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                     cupertino: (data) => data.textTheme.textStyle.copyWith(
                       color: CupertinoColors.secondaryLabel,

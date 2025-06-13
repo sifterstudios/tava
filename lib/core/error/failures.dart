@@ -1,42 +1,57 @@
-import 'package:equatable/equatable.dart';
-
-abstract class Failure extends Equatable {
-  final String message;
-  
+/// Base class for all failures in the application.
+abstract class Failure implements Exception {
+  /// Creates a [Failure] with the given [message].
   const Failure({required this.message});
-  
-  @override
+
+  /// The error message associated with the failure.
+  final String message;
+
+  /// Override the equality operator to compare failures by their message.
   List<Object> get props => [message];
 }
 
+/// Failure for server-related issues.
 class ServerFailure extends Failure {
-  const ServerFailure({required String message}) : super(message: message);
+  /// Creates a [ServerFailure] with the given [message].
+  const ServerFailure({required super.message});
 }
 
+/// Failure for cache-related issues.
 class CacheFailure extends Failure {
-  const CacheFailure({required String message}) : super(message: message);
+  /// Creates a [CacheFailure] with the given [message].
+  const CacheFailure({required super.message});
 }
 
+/// Failure for network-related issues.
 class NetworkFailure extends Failure {
-  const NetworkFailure({required String message}) : super(message: message);
+  /// Creates a [NetworkFailure] with the given [message].
+  const NetworkFailure({required super.message});
 }
 
+/// Failure for authentication-related issues.
 class AuthFailure extends Failure {
-  const AuthFailure({required String message}) : super(message: message);
+  /// Creates an [AuthFailure] with the given [message].
+  const AuthFailure({required super.message});
 }
 
+/// Failure for validation-related issues, containing a map of errors.
 class ValidationFailure extends Failure {
-  final Map<String, String> errors;
-  
+  /// Creates a [ValidationFailure] with the given [message] and [errors].
   const ValidationFailure({
-    required String message,
+    required super.message,
     required this.errors,
-  }) : super(message: message);
-  
+  });
+
+  /// A map of validation errors, where the key is the field name and
+  /// the value is the error message.
+  final Map<String, String> errors;
+
   @override
   List<Object> get props => [message, errors];
 }
 
+/// Failure for unexpected issues that do not fit into other categories.
 class UnexpectedFailure extends Failure {
-  const UnexpectedFailure({required String message}) : super(message: message);
+  /// Creates an [UnexpectedFailure] with the given [message].
+  const UnexpectedFailure({required super.message});
 }

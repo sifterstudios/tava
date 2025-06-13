@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 
+/// A card widget that provides a quick start option for practice sessions.
 class QuickStartCard extends StatelessWidget {
+  /// Creates a [QuickStartCard].
   const QuickStartCard({super.key});
 
   @override
@@ -14,16 +16,15 @@ class QuickStartCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFF00FFFF).withOpacity(0.1),
-            const Color(0xFF00BFA5).withOpacity(0.1),
+            const Color(0xFF00FFFF).withValues(alpha: 0.1),
+            const Color(0xFF00BFA5).withValues(alpha: 0.1),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: const Color(0xFF00FFFF).withOpacity(0.3),
-          width: 1,
+          color: const Color(0xFF00FFFF).withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -55,7 +56,8 @@ class QuickStartCard extends StatelessWidget {
                         material: (data) => data.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
-                        cupertino: (data) => data.textTheme.navTitleTextStyle.copyWith(
+                        cupertino: (data) =>
+                            data.textTheme.navTitleTextStyle.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -66,7 +68,8 @@ class QuickStartCard extends StatelessWidget {
                       style: platformThemeData(
                         context,
                         material: (data) => data.textTheme.bodyMedium?.copyWith(
-                          color: data.colorScheme.onSurface.withOpacity(0.7),
+                          color:
+                              data.colorScheme.onSurface.withValues(alpha: 0.7),
                         ),
                         cupertino: (data) => data.textTheme.textStyle.copyWith(
                           color: CupertinoColors.secondaryLabel,

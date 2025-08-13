@@ -10,8 +10,6 @@ import 'package:tava/features/settings/presentation/pages/settings_page.dart';
 import 'package:tava/features/splash/presentation/pages/splash_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,

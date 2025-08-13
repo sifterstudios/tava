@@ -19,7 +19,7 @@ class App extends StatelessWidget {
       ],
       child: BlocBuilder<SettingsBloc, SettingsState>(
         buildWhen: (previous, current) =>
-        previous.themeMode != current.themeMode,
+            previous.themeMode != current.themeMode,
         builder: (context, state) {
           return MaterialApp.router(
             routerConfig: appRouter,
@@ -34,10 +34,6 @@ class App extends StatelessWidget {
   }
 
   ThemeData _buildLightTheme() {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: const Color(0xFF00FFFF),
-    );
-
     return FlexThemeData.light(
       colors: const FlexSchemeColor(
         primary: Color(0xFF00FFFF),
@@ -61,29 +57,65 @@ class App extends StatelessWidget {
       fontFamily: GoogleFonts.inter().fontFamily,
       textTheme: TextTheme(
         displayLarge: GoogleFonts.manrope(
-            fontSize: 57, fontWeight: FontWeight.w700, letterSpacing: -0.25,),
+          fontSize: 57,
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.25,
+        ),
         displayMedium: GoogleFonts.manrope(
-            fontSize: 45, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 45,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         displaySmall: GoogleFonts.manrope(
-            fontSize: 36, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 36,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         headlineLarge: GoogleFonts.manrope(
-            fontSize: 32, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 32,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         headlineMedium: GoogleFonts.manrope(
-            fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 28,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         headlineSmall: GoogleFonts.manrope(
-            fontSize: 24, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         titleLarge: GoogleFonts.inter(
-            fontSize: 22, fontWeight: FontWeight.w600, letterSpacing: 0,),
+          fontSize: 22,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0,
+        ),
         titleMedium: GoogleFonts.inter(
-            fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 0.15,),
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.15,
+        ),
         titleSmall: GoogleFonts.inter(
-            fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.1,),
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.1,
+        ),
         bodyLarge: GoogleFonts.inter(
-            fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.15,),
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.15,
+        ),
         bodyMedium: GoogleFonts.inter(
-            fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25,),
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.25,
+        ),
         bodySmall: GoogleFonts.inter(
-            fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4,),
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.4,
+        ),
       ),
     );
   }
@@ -112,29 +144,65 @@ class App extends StatelessWidget {
       fontFamily: GoogleFonts.inter().fontFamily,
       textTheme: TextTheme(
         displayLarge: GoogleFonts.manrope(
-            fontSize: 57, fontWeight: FontWeight.w700, letterSpacing: -0.25,),
+          fontSize: 57,
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.25,
+        ),
         displayMedium: GoogleFonts.manrope(
-            fontSize: 45, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 45,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         displaySmall: GoogleFonts.manrope(
-            fontSize: 36, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 36,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         headlineLarge: GoogleFonts.manrope(
-            fontSize: 32, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 32,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         headlineMedium: GoogleFonts.manrope(
-            fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 28,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         headlineSmall: GoogleFonts.manrope(
-            fontSize: 24, fontWeight: FontWeight.w700, letterSpacing: 0,),
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ),
         titleLarge: GoogleFonts.inter(
-            fontSize: 22, fontWeight: FontWeight.w600, letterSpacing: 0,),
+          fontSize: 22,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0,
+        ),
         titleMedium: GoogleFonts.inter(
-            fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 0.15,),
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.15,
+        ),
         titleSmall: GoogleFonts.inter(
-            fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.1,),
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.1,
+        ),
         bodyLarge: GoogleFonts.inter(
-            fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.15,),
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.15,
+        ),
         bodyMedium: GoogleFonts.inter(
-            fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25,),
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.25,
+        ),
         bodySmall: GoogleFonts.inter(
-            fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4,),
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.4,
+        ),
       ),
     );
   }

@@ -11,8 +11,15 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:shared_preferences/shared_preferences.dart' as _i460;
+import 'package:logger/logger.dart' as _i974;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
+import 'package:tava/features/settings/domain/repositories/settings_repository.dart';
+import 'package:tava/features/settings/domain/usecases/get_settings.dart';
+import 'package:tava/features/settings/domain/usecases/update_settings.dart';
+import 'package:tava/features/settings/infrastructure/mock_settings_repository.dart';
+import 'package:tava/features/settings/infrastructure/settings_repository_impl.dart';
+import 'package:tava/features/settings/presentation/bloc/settings_bloc.dart';
 
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
 import '../../features/auth/domain/usecases/check_auth.dart' as _i1011;
@@ -41,15 +48,7 @@ import '../../features/progress/domain/usecases/get_practice_stats.dart'
 import '../../features/progress/infrastructure/mock_progress_repository.dart'
     as _i251;
 import '../../features/progress/presentation/bloc/progress_bloc.dart' as _i522;
-import '../../features/settings/domain/repositories/settings_repository.dart'
-    as _i674;
-import '../../features/settings/domain/usecases/get_settings.dart' as _i558;
-import '../../features/settings/domain/usecases/update_settings.dart' as _i986;
-import '../../features/settings/infrastructure/mock_settings_repository.dart'
-    as _i473;
-import '../../features/settings/infrastructure/settings_repository_impl.dart'
-    as _i569;
-import '../../features/settings/presentation/bloc/settings_bloc.dart' as _i585;
+import 'logger_module.dart' as _i987;
 
 const String _prod = 'prod';
 const String _dev = 'dev';
@@ -65,10 +64,12 @@ _i174.GetIt init(
     environment,
     environmentFilter,
   );
+  final loggerModule = _$LoggerModule();
   gh.factory<_i652.DashboardBloc>(() => _i652.DashboardBloc());
   gh.factory<_i1021.PracticeSessionBloc>(() => _i1021.PracticeSessionBloc());
   gh.factory<_i804.ExerciseLibraryBloc>(() => _i804.ExerciseLibraryBloc());
   gh.factory<_i544.MetronomeBloc>(() => _i544.MetronomeBloc());
+  gh.lazySingleton<_i974.Logger>(() => loggerModule.logger);
   gh.lazySingleton<_i787.AuthRepository>(
     () => _i420.AuthRepositoryImpl(gh<_i454.SupabaseClient>()),
     registerFor: {_prod},
@@ -76,6 +77,10 @@ _i174.GetIt init(
   gh.lazySingleton<_i879.PracticeSessionRepository>(
     () => _i341.MockPracticeSessionRepository(),
     registerFor: {_dev},
+  );
+  gh.lazySingleton<SettingsRepository>(
+    () => SettingsRepositoryImpl(gh<SharedPreferences>()),
+    registerFor: {_prod},
   );
   gh.factory<_i419.LogoutUser>(
       () => _i419.LogoutUser(gh<_i787.AuthRepository>()));
@@ -85,34 +90,24 @@ _i174.GetIt init(
       () => _i1011.CheckAuth(gh<_i787.AuthRepository>()));
   gh.factory<_i778.LoginUser>(
       () => _i778.LoginUser(gh<_i787.AuthRepository>()));
-  gh.lazySingleton<_i1058.ProgressRepository>(
-    () => _i251.MockProgressRepository(),
+  gh.lazySingleton<SettingsRepository>(
+    () => MockSettingsRepository(),
     registerFor: {_dev},
   );
-  gh.lazySingleton<_i674.SettingsRepository>(
-    () => _i473.MockSettingsRepository(),
+  gh.lazySingleton<_i1058.ProgressRepository>(
+    () => _i251.MockProgressRepository(),
     registerFor: {_dev},
   );
   gh.lazySingleton<_i787.AuthRepository>(
     () => _i560.MockAuthRepository(),
     registerFor: {_dev},
   );
-  gh.factory<_i558.GetSettings>(
-      () => _i558.GetSettings(gh<_i674.SettingsRepository>()));
-  gh.factory<_i986.UpdateSettings>(
-      () => _i986.UpdateSettings(gh<_i674.SettingsRepository>()));
-  gh.lazySingleton<_i674.SettingsRepository>(
-    () => _i569.SettingsRepositoryImpl(gh<_i460.SharedPreferences>()),
-    registerFor: {_prod},
-  );
   gh.factory<_i760.GetRecentSessions>(
       () => _i760.GetRecentSessions(gh<_i879.PracticeSessionRepository>()));
   gh.factory<_i879.GetActiveSession>(
       () => _i879.GetActiveSession(gh<_i879.PracticeSessionRepository>()));
-  gh.factory<_i585.SettingsBloc>(() => _i585.SettingsBloc(
-        getSettings: gh<_i558.GetSettings>(),
-        updateSettings: gh<_i986.UpdateSettings>(),
-      ));
+  gh.factory<GetSettings>(() => GetSettings(gh<SettingsRepository>()));
+  gh.factory<UpdateSettings>(() => UpdateSettings(gh<SettingsRepository>()));
   gh.factory<_i1058.GetPracticeStats>(
       () => _i1058.GetPracticeStats(gh<_i1058.ProgressRepository>()));
   gh.factory<_i797.AuthBloc>(() => _i797.AuthBloc(
@@ -121,7 +116,13 @@ _i174.GetIt init(
         logoutUser: gh<_i419.LogoutUser>(),
         registerUser: gh<_i198.RegisterUser>(),
       ));
+  gh.factory<SettingsBloc>(() => SettingsBloc(
+        getSettings: gh<GetSettings>(),
+        updateSettings: gh<UpdateSettings>(),
+      ));
   gh.factory<_i522.ProgressBloc>(() =>
       _i522.ProgressBloc(getPracticeStats: gh<_i1058.GetPracticeStats>()));
   return getIt;
 }
+
+class _$LoggerModule extends _i987.LoggerModule {}

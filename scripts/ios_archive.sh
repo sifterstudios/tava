@@ -12,11 +12,18 @@ cd "$ROOT"
 FLAVOR="${1:-production}"
 TARGET="lib/main_${FLAVOR}.dart"
 
-echo "Building $FLAVOR → $TARGET"
+DEFINES_FILE="${DART_DEFINES_FILE:-$ROOT/dart_defines.json}"
+if [[ ! -f "$DEFINES_FILE" ]]; then
+  echo "Missing $DEFINES_FILE — copy dart_defines.example.json and set SUPABASE_ANON_KEY." >&2
+  exit 1
+fi
+
+echo "Building $FLAVOR → $TARGET (defines: $DEFINES_FILE)"
 flutter pub get
 flutter build ipa \
   --flavor "$FLAVOR" \
   --target "$TARGET" \
+  --dart-define-from-file="$DEFINES_FILE" \
   --export-options-plist=ios/ExportOptions.plist
 
 echo "IPA ready under build/ios/ipa/"

@@ -1,5 +1,8 @@
-/// Client configuration. The anon/publishable key is safe in the app binary;
-/// never ship the service_role key.
+/// Client configuration.
+///
+/// Pass secrets at build/run time via `--dart-define-from-file=dart_defines.json`
+/// (see `.env.example`). Never commit real keys; never ship the service_role /
+/// `sb_secret_*` key in the app binary.
 class AppConfig {
   const AppConfig._();
 
@@ -8,11 +11,8 @@ class AppConfig {
     defaultValue: 'https://gmrqsgxjmtxccxctcttf.supabase.co',
   );
 
-  static const supabaseAnonKey = String.fromEnvironment(
-    'SUPABASE_ANON_KEY',
-    defaultValue:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtcnFzZ3hqbXR4Y2N4Y3RjdHRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwOTM4ODYsImV4cCI6MjEwNjY2OTg4Nn0.9QbZTpL_e5JKOth-MMieSJ_6PNzcIkHJbBvHFgWZVxg',
-  );
+  /// Publishable key (`sb_publishable_...`) or legacy anon JWT if still enabled.
+  static const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
   /// When true and the user has no BPM history yet, Progress shows seeded
   /// demo samples so chart layout can be reviewed.

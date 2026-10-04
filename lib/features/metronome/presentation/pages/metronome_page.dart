@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tava/core/di/injection.dart';
+import 'package:tava/core/widgets/empty_state.dart';
 import 'package:tava/features/metronome/presentation/bloc/metronome_bloc.dart';
 import 'package:tava/features/metronome/presentation/widgets/bpm_slider.dart';
 import 'package:tava/features/metronome/presentation/widgets/metronome_control.dart';
@@ -25,119 +27,131 @@ class MetronomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = theme.colorScheme;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Metronome'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.history),
+            tooltip: 'BPM history',
+            icon: const Icon(Icons.history_rounded),
             onPressed: () => _showBpmHistory(context),
           ),
           IconButton(
-            icon: const Icon(Icons.settings),
+            tooltip: 'Sound',
+            icon: const Icon(Icons.tune_rounded),
             onPressed: () => _showMetronomeSettings(context),
           ),
         ],
       ),
       body: BlocBuilder<MetronomeBloc, MetronomeState>(
         builder: (context, state) {
+          if (state.status == MetronomeStatus.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state.status == MetronomeStatus.failure) {
+            return EmptyState(
+              icon: Icons.speed_rounded,
+              title: 'Metronome unavailable',
+              message: state.errorMessage ?? 'Could not load presets.',
+              actionLabel: 'Retry',
+              onAction: () =>
+                  context.read<MetronomeBloc>().add(LoadMetronomePresets()),
+            );
+          }
+
           return Column(
             children: [
-              // BPM Display
               Container(
-                color: theme.colorScheme.primaryContainer,
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 40),
+                padding: const EdgeInsets.symmetric(vertical: 36),
+                color: colors.primaryContainer,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      '${state.currentBpm}',
-                      style: theme.textTheme.displayLarge?.copyWith(
-                        color: theme.colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.bold,
+                    Semantics(
+                      label: '${state.currentBpm} beats per minute',
+                      child: Text(
+                        '${state.currentBpm}',
+                        style: theme.textTheme.displayLarge?.copyWith(
+                          color: colors.onPrimaryContainer,
+                          fontWeight: FontWeight.bold,
+                          fontFeatures: const [FontFeature.tabularFigures()],
+                        ),
                       ),
                     ),
                     Text(
                       'BPM',
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: theme.colorScheme.onPrimaryContainer,
+                        color: colors.onPrimaryContainer,
                       ),
                     ),
                   ],
                 ),
               ),
-
-              // BPM Slider
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 24,
-                ),
-                child: BpmSlider(
-                  value: state.currentBpm.toDouble(),
-                  onChanged: (value) => context
-                      .read<MetronomeBloc>()
-                      .add(ChangeBpm(value.toInt())),
-                ),
-              ),
-
-              // Tap tempo and time signature
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OutlinedButton.icon(
-                      onPressed: () => _showTapTempoDialog(context),
-                      icon: const Icon(Icons.touch_app),
-                      label: const Text('Tap Tempo'),
-                    ),
-                    TimeSignatureSelector(
-                      beatsPerMeasure: state.beatsPerMeasure,
-                      beatUnit: state.beatUnit,
-                      onChanged: (beats, unit) => context
-                          .read<MetronomeBloc>()
-                          .add(ChangeTimeSignature(beats, unit)),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Metronome control
-              const MetronomeControl(),
-
-              const SizedBox(height: 24),
-
-              // Presets section
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Presets',
-                      style: theme.textTheme.titleLarge,
-                    ),
-                    TextButton.icon(
-                      onPressed: () => _showSavePresetDialog(context),
-                      icon: const Icon(Icons.add),
-                      label: const Text('Save Current'),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Preset list
               Expanded(
-                child: PresetSelector(
-                  presets: state.presets,
-                  onSelectPreset: (preset) => context
-                      .read<MetronomeBloc>()
-                      .add(SelectPreset(preset)),
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+                  children: [
+                    BpmSlider(
+                      value: state.currentBpm.toDouble(),
+                      onChanged: (value) => context
+                          .read<MetronomeBloc>()
+                          .add(ChangeBpm(value.toInt())),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () => context
+                                .read<MetronomeBloc>()
+                                .add(TapTempo(DateTime.now())),
+                            icon: const Icon(Icons.touch_app_rounded),
+                            label: const Text('Tap tempo'),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        TimeSignatureSelector(
+                          beatsPerMeasure: state.beatsPerMeasure,
+                          beatUnit: state.beatUnit,
+                          onChanged: (beats, unit) => context
+                              .read<MetronomeBloc>()
+                              .add(ChangeTimeSignature(beats, unit)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    const MetronomeControl(),
+                    const SizedBox(height: 28),
+                    Row(
+                      children: [
+                        Text('Presets', style: theme.textTheme.titleLarge),
+                        const Spacer(),
+                        TextButton.icon(
+                          onPressed: () => _showSavePresetDialog(context),
+                          icon: const Icon(Icons.add_rounded),
+                          label: const Text('Save current'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    if (state.presets.isEmpty)
+                      Text(
+                        'No saved presets yet.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colors.onSurfaceVariant,
+                        ),
+                      )
+                    else
+                      PresetSelector(
+                        presets: state.presets,
+                        onSelectPreset: (preset) => context
+                            .read<MetronomeBloc>()
+                            .add(SelectPreset(preset)),
+                      ),
+                  ],
                 ),
               ),
             ],
@@ -148,99 +162,165 @@ class MetronomeView extends StatelessWidget {
   }
 
   void _showBpmHistory(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'BPM History',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: BlocBuilder<MetronomeBloc, MetronomeState>(
-                builder: (context, state) {
-                  if (state.bpmHistory.isEmpty) {
-                    return const Center(
-                      child: Text('No BPM history available'),
-                    );
-                  }
+    final bloc = context.read<MetronomeBloc>();
+    final formatter = DateFormat.yMMMd().add_jm();
 
-                  return ListView.builder(
-                    itemCount: state.bpmHistory.length,
-                    itemBuilder: (context, index) {
-                      final entry = state.bpmHistory[index];
-                      return ListTile(
-                        title: Text('${entry.bpm} BPM'),
-                        subtitle: Text(
-                          '${entry.dateTime.day}/${entry.dateTime.month}/${entry.dateTime.year} ${entry.dateTime.hour}:${entry.dateTime.minute}',
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.play_arrow),
-                          onPressed: () => context
-                              .read<MetronomeBloc>()
-                              .add(ChangeBpm(entry.bpm)),
-                        ),
-                      );
-                    },
-                  );
-                },
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        return BlocProvider.value(
+          value: bloc,
+          child: SafeArea(
+            child: SizedBox(
+              height: MediaQuery.sizeOf(sheetContext).height * 0.45,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'BPM history',
+                      style: Theme.of(sheetContext).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: BlocBuilder<MetronomeBloc, MetronomeState>(
+                        builder: (context, state) {
+                          if (state.bpmHistory.isEmpty) {
+                            return const Center(
+                              child: Text('No recent tempo changes'),
+                            );
+                          }
+
+                          return ListView.builder(
+                            itemCount: state.bpmHistory.length,
+                            itemBuilder: (context, index) {
+                              final entry = state.bpmHistory[index];
+                              return ListTile(
+                                title: Text('${entry.bpm} BPM'),
+                                subtitle: Text(formatter.format(entry.dateTime)),
+                                trailing: IconButton(
+                                  tooltip: 'Use this tempo',
+                                  icon: const Icon(Icons.play_arrow_rounded),
+                                  onPressed: () {
+                                    context
+                                        .read<MetronomeBloc>()
+                                        .add(ChangeBpm(entry.bpm));
+                                    Navigator.of(sheetContext).pop();
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   void _showMetronomeSettings(BuildContext context) {
-    // Implement metronome settings dialog
-  }
+    final bloc = context.read<MetronomeBloc>();
 
-  void _showTapTempoDialog(BuildContext context) {
-    // Implement tap tempo dialog
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        return BlocProvider.value(
+          value: bloc,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+              child: BlocBuilder<MetronomeBloc, MetronomeState>(
+                builder: (context, state) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Click sound',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 12),
+                      ...['click', 'wood', 'digital'].map(
+                        (sound) => RadioListTile<String>(
+                          title: Text(sound[0].toUpperCase() + sound.substring(1)),
+                          value: sound,
+                          groupValue: state.soundType,
+                          onChanged: (value) {
+                            if (value != null) {
+                              context
+                                  .read<MetronomeBloc>()
+                                  .add(ChangeSoundType(value));
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _showSavePresetDialog(BuildContext context) {
+    final bloc = context.read<MetronomeBloc>();
     final nameController = TextEditingController();
 
-    showDialog(
+    showDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Save Preset'),
-        content: TextField(
-          controller: nameController,
-          decoration: const InputDecoration(
-            labelText: 'Preset Name',
-            hintText: 'e.g., Jazz Swing, Bach Tempo',
+      builder: (dialogContext) {
+        return BlocProvider.value(
+          value: bloc,
+          child: AlertDialog(
+            title: const Text('Save preset'),
+            content: TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: 'Preset name',
+                hintText: 'e.g. Jazz swing, Bach tempo',
+              ),
+              autofocus: true,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _savePreset(
+                dialogContext,
+                nameController,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                onPressed: () => _savePreset(dialogContext, nameController),
+                child: const Text('Save'),
+              ),
+            ],
           ),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (nameController.text.trim().isNotEmpty) {
-                context.read<MetronomeBloc>().add(
-                  SavePreset(nameController.text.trim()),
-                );
-                Navigator.of(context).pop();
-              }
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
+        );
+      },
+    ).whenComplete(nameController.dispose);
+  }
+
+  void _savePreset(
+    BuildContext context,
+    TextEditingController nameController,
+  ) {
+    final name = nameController.text.trim();
+    if (name.isEmpty) return;
+    context.read<MetronomeBloc>().add(SavePreset(name));
+    Navigator.of(context).pop();
   }
 }

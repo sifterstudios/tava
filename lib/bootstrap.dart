@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tava/core/config/app_config.dart';
 import 'package:tava/core/di/injection.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -13,7 +16,9 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    log('onChange(${bloc.runtimeType}, $change)');
+    if (kDebugMode) {
+      log('onChange(${bloc.runtimeType}, $change)');
+    }
   }
 
   @override
@@ -23,31 +28,26 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+Future<void> bootstrap(
+  FutureOr<Widget> Function() builder, {
+  String environment = Environment.prod,
+}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive for local storage
   await Hive.initFlutter();
 
-  // Initialize dependency injection first
-  await configureDependencies();
-
   try {
-    // Initialize Supabase
     await Supabase.initialize(
-      url: const String.fromEnvironment('SUPABASE_URL',
-          defaultValue: 'https://your-supabase-url.supabase.co',),
-      anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY',
-          defaultValue: 'your-anon-key',),
+      url: AppConfig.supabaseUrl,
+      anonKey: AppConfig.supabaseAnonKey,
     );
-  } catch (e) {
-    print('Warning: Failed to initialize Supabase: $e');
-    // Continue app initialization even if Supabase fails
+  } on Object catch (e, stackTrace) {
+    debugPrint('Warning: Failed to initialize Supabase: $e\n$stackTrace');
   }
 
-  // Set up bloc observer for debugging
+  await configureDependencies(environment: environment);
+
   Bloc.observer = const AppBlocObserver();
 
-  // Run the app
   runApp(await builder());
 }

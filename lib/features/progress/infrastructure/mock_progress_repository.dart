@@ -4,16 +4,15 @@ import 'package:tava/core/utils/either.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 import 'package:tava/features/progress/domain/usecases/get_practice_stats.dart';
+import 'package:tava/features/progress/infrastructure/progress_repository_impl.dart';
 
-@dev
+@Environment('dev')
 @LazySingleton(as: ProgressRepository)
 class MockProgressRepository implements ProgressRepository {
   @override
   FutureEitherResult<PracticeStats?> getPracticeStats() async {
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 800));
-    
-    // Return mock data
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    final now = DateTime.now();
     return right(
       PracticeStats(
         totalPracticeTime: const Duration(hours: 10, minutes: 30),
@@ -29,48 +28,14 @@ class MockProgressRepository implements ProgressRepository {
           'Bach Prelude': Duration(hours: 1, minutes: 45),
         },
         dailyPracticeTimes: [
-          DailyPracticeTime(
-            date: DateTime.now().subtract(const Duration(days: 6)),
-            duration: const Duration(minutes: 45),
-          ),
-          DailyPracticeTime(
-            date: DateTime.now().subtract(const Duration(days: 5)),
-            duration: const Duration(minutes: 30),
-          ),
-          DailyPracticeTime(
-            date: DateTime.now().subtract(const Duration(days: 4)),
-            duration: const Duration(hours: 1, minutes: 15),
-          ),
-          DailyPracticeTime(
-            date: DateTime.now().subtract(const Duration(days: 3)),
-            duration: const Duration(minutes: 45),
-          ),
-          DailyPracticeTime(
-            date: DateTime.now().subtract(const Duration(days: 2)),
-            duration: const Duration(hours: 1),),
-          DailyPracticeTime(
-            date: DateTime.now().subtract(const Duration(days: 1)),
-            duration: const Duration(minutes: 30),
-          ),
-          DailyPracticeTime(
-            date: DateTime.now(),
-            duration: const Duration(hours: 1, minutes: 15),
-          ),
+          for (var i = 6; i >= 0; i--)
+            DailyPracticeTime(
+              date: now.subtract(Duration(days: i)),
+              duration: Duration(minutes: 20 + i * 5),
+            ),
         ],
-        weeklyPracticeTimes: [
-          WeeklyPracticeTime(
-            weekStart: DateTime.now().subtract(const Duration(days: 21)),
-            duration: const Duration(hours: 3, minutes: 30),
-          ),
-          WeeklyPracticeTime(
-            weekStart: DateTime.now().subtract(const Duration(days: 14)),
-            duration: const Duration(hours: 4, minutes: 15),
-          ),
-          WeeklyPracticeTime(
-            weekStart: DateTime.now().subtract(const Duration(days: 7)),
-            duration: const Duration(hours: 5, minutes: 45),
-          ),
-        ],
+        weeklyPracticeTimes: const [],
+        bpmTrend: ProgressRepositoryImpl.seedBpmTrend(),
       ),
     );
   }

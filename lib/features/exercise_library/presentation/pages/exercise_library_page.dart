@@ -26,32 +26,12 @@ class ExerciseLibraryView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Exercise Library'),
+        title: const Text('Exercise library'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // Implement search
-            },
-          ),
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'categories') {
-                _showCategoriesDialog(context);
-              } else if (value == 'tags') {
-                _showTagsDialog(context);
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'categories',
-                child: Text('Filter by Category'),
-              ),
-              const PopupMenuItem(
-                value: 'tags',
-                child: Text('Filter by Tags'),
-              ),
-            ],
+            tooltip: 'Search',
+            icon: const Icon(Icons.search_rounded),
+            onPressed: () => _showSearchDialog(context),
           ),
         ],
       ),
@@ -150,30 +130,39 @@ class ExerciseLibraryView extends StatelessWidget {
                 ),
               ),
 
-              // Exercise list
               Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: state.filteredExercises.length,
-                  itemBuilder: (context, index) {
-                    final exercise = state.filteredExercises[index];
-                    return ExerciseCard(
-                      exercise: exercise,
-                      onEdit: () => _showExerciseForm(context, exercise),
-                      onToggleFavorite: () => context
-                          .read<ExerciseLibraryBloc>()
-                          .add(ToggleExerciseFavorite(exercise)),
-                    );
-                  },
-                ),
+                child: state.filteredExercises.isEmpty
+                    ? Center(
+                        child: Text(
+                          'No exercises match this filter',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
+                        itemCount: state.filteredExercises.length,
+                        itemBuilder: (context, index) {
+                          final exercise = state.filteredExercises[index];
+                          return ExerciseCard(
+                            exercise: exercise,
+                            onEdit: () => _showExerciseForm(context, exercise),
+                            onToggleFavorite: () => context
+                                .read<ExerciseLibraryBloc>()
+                                .add(ToggleExerciseFavorite(exercise)),
+                          );
+                        },
+                      ),
               ),
             ],
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showExerciseForm(context),
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add_rounded),
+        label: const Text('Add exercise'),
       ),
     );
   }
@@ -198,60 +187,62 @@ class ExerciseLibraryView extends StatelessWidget {
   }
 
   void _showExerciseForm(BuildContext context, [Exercise? exercise]) {
-    showModalBottomSheet(
+    final bloc = context.read<ExerciseLibraryBloc>();
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+      showDragHandle: true,
+      builder: (sheetContext) => BlocProvider.value(
+        value: bloc,
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
+          ),
+          child: ExerciseForm(exercise: exercise),
         ),
-        child: ExerciseForm(exercise: exercise),
       ),
     );
   }
 
-  void _showCategoriesDialog(BuildContext context) {
-    showDialog(
+  void _showSearchDialog(BuildContext context) {
+    final bloc = context.read<ExerciseLibraryBloc>();
+    final controller = TextEditingController(text: bloc.state.searchQuery);
+
+    showDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Filter by Category'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: ExerciseCategory.values
-              .map(
-                (category) => ListTile(
-              title: Text(_getCategoryName(category)),
-              onTap: () {
-                context
-                    .read<ExerciseLibraryBloc>()
-                    .add(FilterByCategory(category));
-                Navigator.of(context).pop();
-              },
-            ),
-          )
-              .toList(),
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Search exercises'),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: const InputDecoration(
+            hintText: 'Name, description, or tag',
+            prefixIcon: Icon(Icons.search_rounded),
+          ),
+          textInputAction: TextInputAction.search,
+          onSubmitted: (value) {
+            bloc.add(SearchExercises(value.trim()));
+            Navigator.of(dialogContext).pop();
+          },
         ),
         actions: [
           TextButton(
             onPressed: () {
-              context
-                  .read<ExerciseLibraryBloc>()
-                  .add(const FilterByCategory(null));
-              Navigator.of(context).pop();
+              bloc.add(const SearchExercises(''));
+              Navigator.of(dialogContext).pop();
             },
-            child: const Text('Show All'),
+            child: const Text('Clear'),
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+          FilledButton(
+            onPressed: () {
+              bloc.add(SearchExercises(controller.text.trim()));
+              Navigator.of(dialogContext).pop();
+            },
+            child: const Text('Search'),
           ),
         ],
       ),
-    );
-  }
-
-  void _showTagsDialog(BuildContext context) {
-    // Implement tags dialog
+    ).whenComplete(controller.dispose);
   }
 }
 

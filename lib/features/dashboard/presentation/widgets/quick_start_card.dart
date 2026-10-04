@@ -7,19 +7,22 @@ class QuickStartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = theme.colorScheme;
 
-    return Card(
-      color: theme.colorScheme.primary,
+    return Material(
+      color: colors.primary,
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
-        onTap: () => context.go('/dashboard/start-session'),
+        onTap: () => context.push('/session'),
+        borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: Row(
             children: [
               Icon(
-                Icons.play_circle_filled,
+                Icons.play_circle_filled_rounded,
                 size: 48,
-                color: theme.colorScheme.onPrimary,
+                color: colors.onPrimary,
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -27,24 +30,24 @@ class QuickStartCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Start Practice Session',
+                      'Start a practice session',
                       style: theme.textTheme.titleLarge?.copyWith(
-                        color: theme.colorScheme.onPrimary,
+                        color: colors.onPrimary,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Track your progress and improve your skills',
+                      'Log exercises, tempo, and how the session felt',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onPrimary.withOpacity(0.8),
+                        color: colors.onPrimary.withValues(alpha: 0.88),
                       ),
                     ),
                   ],
                 ),
               ),
               Icon(
-                Icons.arrow_forward_ios,
-                color: theme.colorScheme.onPrimary,
+                Icons.chevron_right_rounded,
+                color: colors.onPrimary,
               ),
             ],
           ),

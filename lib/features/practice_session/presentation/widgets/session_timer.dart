@@ -12,31 +12,42 @@ class SessionTimer extends StatefulWidget {
 }
 
 class _SessionTimerState extends State<SessionTimer> {
-  late Timer _timer;
+  Timer? _timer;
   Duration _elapsed = Duration.zero;
-  DateTime? _startTime;
+  Duration _accumulated = Duration.zero;
+  DateTime? _segmentStart;
 
   @override
   void initState() {
     super.initState();
-    _startTimer();
+    _resume();
   }
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
-  void _startTimer() {
-    _startTime = DateTime.now();
+  void _resume() {
+    _segmentStart = DateTime.now();
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted) {
-        setState(() {
-          _elapsed = DateTime.now().difference(_startTime!);
-        });
-      }
+      if (!mounted || _segmentStart == null) return;
+      setState(() {
+        _elapsed = _accumulated + DateTime.now().difference(_segmentStart!);
+      });
     });
+  }
+
+  void _pause() {
+    if (_segmentStart != null) {
+      _accumulated += DateTime.now().difference(_segmentStart!);
+      _elapsed = _accumulated;
+      _segmentStart = null;
+    }
+    _timer?.cancel();
+    _timer = null;
   }
 
   @override
@@ -46,17 +57,23 @@ class _SessionTimerState extends State<SessionTimer> {
     return BlocListener<PracticeSessionBloc, PracticeSessionState>(
       listenWhen: (previous, current) => previous.isRunning != current.isRunning,
       listener: (context, state) {
-        if (state.isRunning && _timer.isActive == false) {
-          _startTimer();
-        } else if (!state.isRunning && _timer.isActive) {
-          _timer.cancel();
+        if (state.isRunning) {
+          _resume();
+        } else {
+          _pause();
+          setState(() {});
         }
       },
-      child: Text(
-        _formatDuration(_elapsed),
-        style: theme.textTheme.displayMedium?.copyWith(
-          color: theme.colorScheme.onPrimaryContainer,
-          fontWeight: FontWeight.bold,
+      child: Semantics(
+        liveRegion: true,
+        label: 'Session timer ${_formatDuration(_elapsed)}',
+        child: Text(
+          _formatDuration(_elapsed),
+          style: theme.textTheme.displayMedium?.copyWith(
+            color: theme.colorScheme.onPrimaryContainer,
+            fontWeight: FontWeight.bold,
+            fontFeatures: const [FontFeature.tabularFigures()],
+          ),
         ),
       ),
     );
@@ -66,7 +83,9 @@ class _SessionTimerState extends State<SessionTimer> {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
     final seconds = duration.inSeconds.remainder(60);
-    
-    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+
+    return '${hours.toString().padLeft(2, '0')}:'
+        '${minutes.toString().padLeft(2, '0')}:'
+        '${seconds.toString().padLeft(2, '0')}';
   }
 }

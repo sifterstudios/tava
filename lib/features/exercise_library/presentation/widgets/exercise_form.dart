@@ -55,12 +55,13 @@ class _ExerciseFormState extends State<ExerciseForm> {
       padding: const EdgeInsets.all(16),
       child: Form(
         key: _formKey,
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              isEditing ? 'Edit Exercise' : 'Add Exercise',
+              isEditing ? 'Edit exercise' : 'Add exercise',
               style: theme.textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
@@ -149,6 +150,7 @@ class _ExerciseFormState extends State<ExerciseForm> {
               ],
             ),
           ],
+        ),
         ),
       ),
     );

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class StatsCard extends StatelessWidget {
-
   const StatsCard({
-    required this.title, required this.value, required this.icon, super.key,
+    required this.title,
+    required this.value,
+    required this.icon,
+    super.key,
   });
+
   final String title;
   final String value;
   final IconData icon;
@@ -12,6 +15,7 @@ class StatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = theme.colorScheme;
 
     return Card(
       child: Padding(
@@ -21,11 +25,15 @@ class StatsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(icon, color: theme.colorScheme.primary),
+                Icon(icon, color: colors.onSurfaceVariant),
                 const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: theme.textTheme.titleMedium,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: theme.textTheme.titleMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
@@ -33,7 +41,7 @@ class StatsCard extends StatelessWidget {
             Text(
               value,
               style: theme.textTheme.headlineSmall?.copyWith(
-                color: theme.colorScheme.primary,
+                color: colors.onSurface,
                 fontWeight: FontWeight.bold,
               ),
             ),

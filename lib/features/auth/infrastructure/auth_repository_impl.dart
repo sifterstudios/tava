@@ -1,43 +1,32 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' hide User;
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tava/core/error/failures.dart';
 import 'package:tava/core/utils/either.dart';
-import 'package:tava/features/auth/domain/entities/user.dart';
+import 'package:tava/features/auth/domain/entities/user.dart' as domain;
 import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
 @prod
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-
   AuthRepositoryImpl(this._supabaseClient);
   final SupabaseClient _supabaseClient;
 
   @override
-  FutureEitherResult<User> getCurrentUser() async {
+  FutureEitherResult<domain.User> getCurrentUser() async {
     try {
-      final session = _supabaseClient.auth.currentSession;
-      if (session == null) {
+      final authUser = _supabaseClient.auth.currentUser;
+      if (authUser == null) {
         return const Left(AuthFailure(message: 'No active session found'));
       }
-
-      // For now, just return a mock user
-      return Right(
-        User(
-          id: session.user.id,
-          email: session.user.email ?? 'user@example.com',
-          name: 'Test User',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
-      );
-    } catch (e) {
+      return Right(_mapUser(authUser));
+    } on Object catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
   }
 
   @override
-  FutureEitherResult<User> login({
+  FutureEitherResult<domain.User> login({
     required String email,
     required String password,
   }) async {
@@ -46,27 +35,18 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-
-      if (response.user == null) {
+      final authUser = response.user;
+      if (authUser == null) {
         return const Left(AuthFailure(message: 'Login failed'));
       }
-
-      return Right(
-        User(
-          id: response.user!.id,
-          email: email,
-          name: 'Test User',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
-      );
-    } catch (e) {
+      return Right(_mapUser(authUser));
+    } on Object catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
   }
 
   @override
-  FutureEitherResult<User> register({
+  FutureEitherResult<domain.User> register({
     required String email,
     required String password,
     required String name,
@@ -75,22 +55,20 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _supabaseClient.auth.signUp(
         email: email,
         password: password,
+        data: {'name': name},
       );
-
-      if (response.user == null) {
+      final authUser = response.user;
+      if (authUser == null) {
         return const Left(AuthFailure(message: 'Registration failed'));
       }
-
-      return Right(
-        User(
-          id: response.user!.id,
-          email: email,
-          name: name,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
-      );
-    } catch (e) {
+      await _supabaseClient.from('profiles').upsert({
+        'id': authUser.id,
+        'email': email,
+        'name': name,
+        'updated_at': DateTime.now().toIso8601String(),
+      });
+      return Right(_mapUser(authUser, fallbackName: name));
+    } on Object catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
   }
@@ -100,8 +78,19 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _supabaseClient.auth.signOut();
       return right(unit);
-    } catch (e) {
+    } on Object catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
+  }
+
+  domain.User _mapUser(User authUser, {String? fallbackName}) {
+    final meta = authUser.userMetadata ?? {};
+    return domain.User(
+      id: authUser.id,
+      email: authUser.email ?? '',
+      name: (meta['name'] as String?) ?? fallbackName,
+      createdAt: DateTime.tryParse(authUser.createdAt) ?? DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
   }
 }

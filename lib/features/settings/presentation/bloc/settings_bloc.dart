@@ -9,7 +9,7 @@ import 'package:tava/features/settings/domain/usecases/update_settings.dart';
 part 'settings_event.dart';
 part 'settings_state.dart';
 
-@injectable
+@lazySingleton
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   SettingsBloc({
@@ -70,6 +70,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         themeMode: event.themeMode,
+        errorMessage: null,
       ),),
     );
   }
@@ -96,6 +97,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         metronomeSound: event.sound,
+        errorMessage: null,
       ),),
     );
   }
@@ -122,6 +124,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (_) => emit(state.copyWith(
         status: SettingsStatus.success,
         trackWeather: event.trackWeather,
+        errorMessage: null,
       ),),
     );
   }

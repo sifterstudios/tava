@@ -10,7 +10,7 @@ import 'package:tava/features/auth/domain/usecases/register_user.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-@injectable
+@lazySingleton
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({

@@ -2,13 +2,16 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
+import 'package:tava/features/exercise_library/domain/repositories/exercise_repository.dart';
 
 part 'exercise_library_event.dart';
 part 'exercise_library_state.dart';
 
 @injectable
-class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryState> {
-  ExerciseLibraryBloc() : super(const ExerciseLibraryState.initial()) {
+class ExerciseLibraryBloc
+    extends Bloc<ExerciseLibraryEvent, ExerciseLibraryState> {
+  ExerciseLibraryBloc(this._repository)
+      : super(const ExerciseLibraryState.initial()) {
     on<LoadExercises>(_onLoadExercises);
     on<AddExercise>(_onAddExercise);
     on<UpdateExercise>(_onUpdateExercise);
@@ -18,128 +21,130 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
     on<SearchExercises>(_onSearchExercises);
   }
 
+  final ExerciseRepository _repository;
+
   Future<void> _onLoadExercises(
     LoadExercises event,
     Emitter<ExerciseLibraryState> emit,
   ) async {
     emit(state.copyWith(status: ExerciseLibraryStatus.loading));
-
-    // This would normally call a repository method, but for now we'll use mock data
-    await Future.delayed(const Duration(milliseconds: 500));
-    
-    final exercises = _getMockExercises();
-    
-    emit(state.copyWith(
-      status: ExerciseLibraryStatus.success,
-      exercises: exercises,
-      filteredExercises: exercises,
-    ),);
+    final result = await _repository.getExercises();
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: ExerciseLibraryStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (exercises) => emit(
+        state.copyWith(
+          status: ExerciseLibraryStatus.success,
+          exercises: exercises,
+          filteredExercises: _applyFilters(
+            exercises,
+            state.selectedCategory,
+            state.searchQuery,
+          ),
+          errorMessage: null,
+        ),
+      ),
+    );
   }
 
-  void _onAddExercise(
+  Future<void> _onAddExercise(
     AddExercise event,
     Emitter<ExerciseLibraryState> emit,
-  ) {
-    final updatedExercises = List<Exercise>.from(state.exercises)
-      ..add(event.exercise);
-    
-    emit(state.copyWith(
-      exercises: updatedExercises,
-      filteredExercises: _applyFilters(
-        updatedExercises,
-        state.selectedCategory,
-        state.searchQuery,
+  ) async {
+    final result = await _repository.upsertExercise(event.exercise);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: ExerciseLibraryStatus.failure,
+          errorMessage: failure.message,
+        ),
       ),
-    ),);
+      (_) => add(LoadExercises()),
+    );
   }
 
-  void _onUpdateExercise(
+  Future<void> _onUpdateExercise(
     UpdateExercise event,
     Emitter<ExerciseLibraryState> emit,
-  ) {
-    final updatedExercises = List<Exercise>.from(state.exercises);
-    final index = updatedExercises.indexWhere((e) => e.id == event.exercise.id);
-    
-    if (index != -1) {
-      updatedExercises[index] = event.exercise;
-      
-      emit(state.copyWith(
-        exercises: updatedExercises,
-        filteredExercises: _applyFilters(
-          updatedExercises,
-          state.selectedCategory,
-          state.searchQuery,
+  ) async {
+    final result = await _repository.upsertExercise(event.exercise);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: ExerciseLibraryStatus.failure,
+          errorMessage: failure.message,
         ),
-      ),);
-    }
+      ),
+      (_) => add(LoadExercises()),
+    );
   }
 
-  void _onDeleteExercise(
+  Future<void> _onDeleteExercise(
     DeleteExercise event,
     Emitter<ExerciseLibraryState> emit,
-  ) {
-    final updatedExercises = List<Exercise>.from(state.exercises)
-      ..removeWhere((e) => e.id == event.exerciseId);
-    
-    emit(state.copyWith(
-      exercises: updatedExercises,
-      filteredExercises: _applyFilters(
-        updatedExercises,
-        state.selectedCategory,
-        state.searchQuery,
+  ) async {
+    final result = await _repository.deleteExercise(event.exerciseId);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: ExerciseLibraryStatus.failure,
+          errorMessage: failure.message,
+        ),
       ),
-    ),);
+      (_) => add(LoadExercises()),
+    );
   }
 
-  void _onToggleExerciseFavorite(
+  Future<void> _onToggleExerciseFavorite(
     ToggleExerciseFavorite event,
     Emitter<ExerciseLibraryState> emit,
-  ) {
-    final updatedExercises = List<Exercise>.from(state.exercises);
-    final index = updatedExercises.indexWhere((e) => e.id == event.exercise.id);
-    
-    if (index != -1) {
-      updatedExercises[index] = event.exercise.copyWith(
-        isFavorite: !event.exercise.isFavorite,
-      );
-      
-      emit(state.copyWith(
-        exercises: updatedExercises,
-        filteredExercises: _applyFilters(
-          updatedExercises,
-          state.selectedCategory,
-          state.searchQuery,
+  ) async {
+    final result = await _repository.toggleFavorite(event.exercise);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: ExerciseLibraryStatus.failure,
+          errorMessage: failure.message,
         ),
-      ),);
-    }
+      ),
+      (_) => add(LoadExercises()),
+    );
   }
 
   void _onFilterByCategory(
     FilterByCategory event,
     Emitter<ExerciseLibraryState> emit,
   ) {
-    emit(state.copyWith(
-      selectedCategory: event.category,
-      filteredExercises: _applyFilters(
-        state.exercises,
-        event.category,
-        state.searchQuery,
+    emit(
+      state.copyWith(
+        selectedCategory: event.category,
+        filteredExercises: _applyFilters(
+          state.exercises,
+          event.category,
+          state.searchQuery,
+        ),
       ),
-    ),);
+    );
   }
 
   void _onSearchExercises(
     SearchExercises event,
     Emitter<ExerciseLibraryState> emit,
   ) {
-    emit(state.copyWith(
-      searchQuery: event.query,
-      filteredExercises: _applyFilters(
-        state.exercises,
-        state.selectedCategory,
-        event.query,
+    emit(
+      state.copyWith(
+        searchQuery: event.query,
+        filteredExercises: _applyFilters(
+          state.exercises,
+          state.selectedCategory,
+          event.query,
+        ),
       ),
-    ),);
+    );
   }
 
   List<Exercise> _applyFilters(
@@ -147,14 +152,10 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
     ExerciseCategory? category,
     String? query,
   ) {
-    var filtered = exercises;
-    
-    // Apply category filter
+    var filtered = exercises.where((e) => !e.isArchived).toList();
     if (category != null) {
       filtered = filtered.where((e) => e.category == category).toList();
     }
-    
-    // Apply search query
     if (query != null && query.isNotEmpty) {
       final lowercaseQuery = query.toLowerCase();
       filtered = filtered.where((e) {
@@ -163,60 +164,6 @@ class ExerciseLibraryBloc extends Bloc<ExerciseLibraryEvent, ExerciseLibraryStat
             e.tags.any((tag) => tag.toLowerCase().contains(lowercaseQuery));
       }).toList();
     }
-    
     return filtered;
-  }
-
-  List<Exercise> _getMockExercises() {
-    return [
-      Exercise(
-        id: '1',
-        name: 'C Major Scale',
-        description: 'Basic C major scale practice',
-        category: ExerciseCategory.scales,
-        targetBpm: 120,
-        tags: const ['scale', 'beginner'],
-        isFavorite: true,
-        createdAt: DateTime.now().subtract(const Duration(days: 30)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 2)),
-        isArchived: false,
-      ),
-      Exercise(
-        id: '2',
-        name: 'Finger Exercise #4',
-        description: 'Finger independence exercise',
-        category: ExerciseCategory.technique,
-        targetBpm: 90,
-        tags: const ['technique', 'intermediate'],
-        isFavorite: false,
-        createdAt: DateTime.now().subtract(const Duration(days: 25)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 3)),
-        isArchived: false,
-      ),
-      Exercise(
-        id: '3',
-        name: 'Bach Prelude',
-        description: 'Bach Prelude in C Major',
-        category: ExerciseCategory.repertoire,
-        targetBpm: 72,
-        tags: const ['classical', 'advanced'],
-        isFavorite: true,
-        createdAt: DateTime.now().subtract(const Duration(days: 15)),
-        updatedAt: DateTime.now().subtract(const Duration(days: 1)),
-        isArchived: false,
-      ),
-      Exercise(
-        id: '4',
-        name: 'Sight Reading Ex. 12',
-        description: 'Intermediate sight reading exercise',
-        category: ExerciseCategory.sightReading,
-        targetBpm: 60,
-        tags: const ['sight reading', 'intermediate'],
-        isFavorite: false,
-        createdAt: DateTime.now().subtract(const Duration(days: 10)),
-        updatedAt: DateTime.now(),
-        isArchived: false,
-      ),
-    ];
   }
 }

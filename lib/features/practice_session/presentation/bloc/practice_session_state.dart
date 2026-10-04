@@ -3,10 +3,11 @@ part of 'practice_session_bloc.dart';
 enum PracticeSessionStatus { initial, loading, success, failure, saved }
 
 class PracticeSessionState extends Equatable {
-
   const PracticeSessionState({
     required this.status,
-    required this.completedExercises, required this.isRunning, this.session,
+    required this.completedExercises,
+    required this.isRunning,
+    this.session,
     this.currentExercise,
     this.currentExerciseStartTime,
     this.errorMessage,
@@ -20,6 +21,9 @@ class PracticeSessionState extends Equatable {
         completedExercises = const [],
         isRunning = false,
         errorMessage = null;
+
+  static const Object _unset = Object();
+
   final PracticeSessionStatus status;
   final PracticeSession? session;
   final Exercise? currentExercise;
@@ -30,21 +34,29 @@ class PracticeSessionState extends Equatable {
 
   PracticeSessionState copyWith({
     PracticeSessionStatus? status,
-    PracticeSession? session,
-    Exercise? currentExercise,
-    DateTime? currentExerciseStartTime,
+    Object? session = _unset,
+    Object? currentExercise = _unset,
+    Object? currentExerciseStartTime = _unset,
     List<ExerciseRecord>? completedExercises,
     bool? isRunning,
-    String? errorMessage,
+    Object? errorMessage = _unset,
   }) {
     return PracticeSessionState(
       status: status ?? this.status,
-      session: session ?? this.session,
-      currentExercise: currentExercise,
-      currentExerciseStartTime: currentExerciseStartTime,
+      session: identical(session, _unset)
+          ? this.session
+          : session as PracticeSession?,
+      currentExercise: identical(currentExercise, _unset)
+          ? this.currentExercise
+          : currentExercise as Exercise?,
+      currentExerciseStartTime: identical(currentExerciseStartTime, _unset)
+          ? this.currentExerciseStartTime
+          : currentExerciseStartTime as DateTime?,
       completedExercises: completedExercises ?? this.completedExercises,
       isRunning: isRunning ?? this.isRunning,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: identical(errorMessage, _unset)
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 

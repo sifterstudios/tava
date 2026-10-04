@@ -47,7 +47,11 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }
 
   ThemeMode _getThemeMode() {
-    final themeModeIndex = _sharedPreferences.getInt('themeMode') ?? 0;
+    final themeModeIndex =
+        _sharedPreferences.getInt('themeMode') ?? ThemeMode.system.index;
+    if (themeModeIndex < 0 || themeModeIndex >= ThemeMode.values.length) {
+      return ThemeMode.system;
+    }
     return ThemeMode.values[themeModeIndex];
   }
 

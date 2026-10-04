@@ -26,15 +26,15 @@ class PracticeSessionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = theme.colorScheme;
 
     return BlocConsumer<PracticeSessionBloc, PracticeSessionState>(
-      listenWhen: (previous, current) =>
-      previous.status != current.status,
+      listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status == PracticeSessionStatus.saved) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Practice session saved successfully'),
+              content: Text('Practice session saved'),
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -44,26 +44,27 @@ class PracticeSessionView extends StatelessWidget {
       builder: (context, state) {
         if (state.status == PracticeSessionStatus.loading) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Practice Session')),
+            appBar: AppBar(title: const Text('Practice session')),
             body: const Center(child: CircularProgressIndicator()),
           );
         }
 
         if (state.status == PracticeSessionStatus.failure) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Practice Session')),
+            appBar: AppBar(title: const Text('Practice session')),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Failed to load session',
+                    'Could not start session',
                     style: theme.textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => context.read<PracticeSessionBloc>()
-                      ..add(LoadPracticeSession()),
+                  FilledButton(
+                    onPressed: () => context
+                        .read<PracticeSessionBloc>()
+                        .add(LoadPracticeSession()),
                     child: const Text('Retry'),
                   ),
                 ],
@@ -74,22 +75,22 @@ class PracticeSessionView extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Practice Session'),
+            title: const Text('Practice session'),
             actions: [
               TextButton.icon(
                 onPressed: state.session == null
                     ? null
                     : () => _showEndSessionDialog(context),
-                icon: const Icon(Icons.save),
-                label: const Text('End Session'),
+                icon: const Icon(Icons.stop_circle_outlined),
+                label: const Text('End'),
               ),
             ],
           ),
           body: Column(
             children: [
-              // Timer section
               Container(
-                color: theme.colorScheme.primaryContainer,
+                width: double.infinity,
+                color: colors.primaryContainer,
                 padding: const EdgeInsets.symmetric(
                   vertical: 24,
                   horizontal: 16,
@@ -98,54 +99,45 @@ class PracticeSessionView extends StatelessWidget {
                   children: [
                     const SessionTimer(),
                     const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 12,
+                      runSpacing: 8,
                       children: [
                         if (state.isRunning)
-                          ElevatedButton.icon(
+                          FilledButton.tonalIcon(
                             onPressed: () => context
                                 .read<PracticeSessionBloc>()
                                 .add(PauseSession()),
-                            icon: const Icon(Icons.pause),
+                            icon: const Icon(Icons.pause_rounded),
                             label: const Text('Pause'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: theme.colorScheme.error,
-                              foregroundColor: theme.colorScheme.onError,
-                            ),
                           )
                         else
-                          ElevatedButton.icon(
+                          FilledButton.icon(
                             onPressed: () => context
                                 .read<PracticeSessionBloc>()
                                 .add(ResumeSession()),
-                            icon: const Icon(Icons.play_arrow),
+                            icon: const Icon(Icons.play_arrow_rounded),
                             label: const Text('Resume'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: theme.colorScheme.primary,
-                              foregroundColor: theme.colorScheme.onPrimary,
-                            ),
                           ),
-                        const SizedBox(width: 16),
                         OutlinedButton.icon(
                           onPressed: () => _showExerciseSelector(context),
-                          icon: const Icon(Icons.add),
-                          label: const Text('Add Exercise'),
+                          icon: const Icon(Icons.add_rounded),
+                          label: const Text('Add exercise'),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-
-              // Active exercise (if any)
-              if (state.currentExercise != null) ...[
+              if (state.currentExercise != null)
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Current Exercise',
+                        'Current exercise',
                         style: theme.textTheme.titleLarge,
                       ),
                       const SizedBox(height: 8),
@@ -158,58 +150,62 @@ class PracticeSessionView extends StatelessWidget {
                     ],
                   ),
                 ),
-              ],
-
-              // Exercise list
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Completed Exercises',
+                        'Completed exercises',
                         style: theme.textTheme.titleLarge,
                       ),
                       const SizedBox(height: 8),
                       Expanded(
                         child: state.completedExercises.isEmpty
                             ? Center(
-                          child: Text(
-                            'No exercises completed yet',
-                            style: theme.textTheme.bodyLarge,
-                          ),
-                        )
-                            : ListView.builder(
-                          itemCount: state.completedExercises.length,
-                          itemBuilder: (context, index) {
-                            final exercise =
-                            state.completedExercises[index];
-                            return ListTile(
-                              title: Text(exercise.name),
-                              subtitle: Text(
-                                'Duration: ${_formatDuration(exercise.duration)}${exercise.bpm != null
-                                        ? ' • ${exercise.bpm} BPM'
-                                        : ''}',
-                              ),
-                              trailing: exercise.rating != null
-                                  ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: List.generate(
-                                  5,
-                                      (i) => Icon(
-                                    i < exercise.rating!
-                                        ? Icons.star
-                                        : Icons.star_border,
-                                    color: theme.colorScheme.primary,
-                                    size: 18,
+                                child: Text(
+                                  'No exercises completed yet',
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                    color: colors.onSurfaceVariant,
                                   ),
                                 ),
                               )
-                                  : null,
-                            );
-                          },
-                        ),
+                            : ListView.builder(
+                                itemCount: state.completedExercises.length,
+                                itemBuilder: (context, index) {
+                                  final exercise =
+                                      state.completedExercises[index];
+                                  return ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    title: Text(
+                                      exercise.name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    subtitle: Text(
+                                      'Duration: '
+                                      '${_formatDuration(exercise.duration)}'
+                                      '${exercise.bpm != null ? ' · ${exercise.bpm} BPM' : ''}',
+                                    ),
+                                    trailing: exercise.rating != null
+                                        ? Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: List.generate(
+                                              5,
+                                              (i) => Icon(
+                                                i < exercise.rating!
+                                                    ? Icons.star_rounded
+                                                    : Icons.star_border_rounded,
+                                                color: colors.primary,
+                                                size: 18,
+                                              ),
+                                            ),
+                                          )
+                                        : null,
+                                  );
+                                },
+                              ),
                       ),
                     ],
                   ),
@@ -219,10 +215,10 @@ class PracticeSessionView extends StatelessWidget {
           ),
           floatingActionButton: state.currentExercise == null
               ? FloatingActionButton.extended(
-            onPressed: () => _showExerciseSelector(context),
-            icon: const Icon(Icons.add),
-            label: const Text('Start Exercise'),
-          )
+                  onPressed: () => _showExerciseSelector(context),
+                  icon: const Icon(Icons.add_rounded),
+                  label: const Text('Start exercise'),
+                )
               : null,
         );
       },
@@ -236,49 +232,64 @@ class PracticeSessionView extends StatelessWidget {
   }
 
   void _showExerciseSelector(BuildContext context) {
-    showModalBottomSheet(
+    final bloc = context.read<PracticeSessionBloc>();
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (context) => const ExerciseSelector(),
+      showDragHandle: true,
+      builder: (sheetContext) => BlocProvider.value(
+        value: bloc,
+        child: const ExerciseSelector(),
+      ),
     );
   }
 
   void _showEndSessionDialog(BuildContext context) {
-    showDialog(
+    final bloc = context.read<PracticeSessionBloc>();
+    showDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('End Practice Session'),
-        content: const Text(
-            'Would you like to add mood and wellness metrics before ending?',),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _showMoodMetricsForm(context);
-            },
-            child: const Text('Add Metrics'),
+      builder: (dialogContext) => BlocProvider.value(
+        value: bloc,
+        child: AlertDialog(
+          title: const Text('End practice session'),
+          content: const Text(
+            'Add mood and wellness notes before ending, or finish now.',
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              context.read<PracticeSessionBloc>().add(EndSession());
-            },
-            child: const Text('End Without Metrics'),
-          ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                _showMoodMetricsForm(context);
+              },
+              child: const Text('Add metrics'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                bloc.add(EndSession());
+              },
+              child: const Text('End now'),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   void _showMoodMetricsForm(BuildContext context) {
-    showModalBottomSheet(
+    final bloc = context.read<PracticeSessionBloc>();
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+      showDragHandle: true,
+      builder: (sheetContext) => BlocProvider.value(
+        value: bloc,
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
+          ),
+          child: const MoodMetricsForm(),
         ),
-        child: const MoodMetricsForm(),
       ),
     );
   }

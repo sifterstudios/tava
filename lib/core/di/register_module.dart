@@ -1,3 +1,3 @@
-// This file is intentionally left empty.
-// We're removing the RegisterModule class as it's causing duplicate registrations.
-// All repository registrations are now handled directly in their respective files.
+// External dependencies (SharedPreferences, SupabaseClient) are registered
+// manually in configureDependencies because injectable_generator currently
+// overflows while sorting this project's graph.

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:tava/core/widgets/tava_mark.dart';
 import 'package:tava/features/auth/presentation/bloc/auth_bloc.dart';
 
 class SplashPage extends StatelessWidget {
@@ -8,17 +8,68 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthAuthenticated) {
-          context.go('/dashboard');
-        } else if (state is AuthUnauthenticated) {
-          context.go('/login');
+        // Navigation is owned by the router redirect.
+        if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: colors.error,
+            ),
+          );
         }
       },
-      child: const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
+      child: Scaffold(
+        body: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                colors.primaryContainer,
+                colors.surface,
+                colors.secondaryContainer.withValues(alpha: 0.45),
+              ],
+            ),
+          ),
+          child: SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TavaMark(size: 72, color: colors.primary),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Tava',
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      color: colors.onSurface,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Practice with intention',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    width: 28,
+                    height: 28,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      color: colors.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

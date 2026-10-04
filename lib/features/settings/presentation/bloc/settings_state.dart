@@ -3,7 +3,6 @@ part of 'settings_bloc.dart';
 enum SettingsStatus { initial, loading, success, failure }
 
 class SettingsState extends Equatable {
-
   const SettingsState({
     required this.status,
     required this.themeMode,
@@ -14,10 +13,13 @@ class SettingsState extends Equatable {
 
   const SettingsState.initial()
       : status = SettingsStatus.initial,
-        themeMode = ThemeMode.dark,
+        themeMode = ThemeMode.system,
         metronomeSound = 'click',
         trackWeather = true,
         errorMessage = null;
+
+  static const Object _unset = Object();
+
   final SettingsStatus status;
   final ThemeMode themeMode;
   final String metronomeSound;
@@ -29,23 +31,25 @@ class SettingsState extends Equatable {
     ThemeMode? themeMode,
     String? metronomeSound,
     bool? trackWeather,
-    String? errorMessage,
+    Object? errorMessage = _unset,
   }) {
     return SettingsState(
       status: status ?? this.status,
       themeMode: themeMode ?? this.themeMode,
       metronomeSound: metronomeSound ?? this.metronomeSound,
       trackWeather: trackWeather ?? this.trackWeather,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: identical(errorMessage, _unset)
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 
   @override
   List<Object?> get props => [
-    status,
-    themeMode,
-    metronomeSound,
-    trackWeather,
-    errorMessage,
-  ];
+        status,
+        themeMode,
+        metronomeSound,
+        trackWeather,
+        errorMessage,
+      ];
 }

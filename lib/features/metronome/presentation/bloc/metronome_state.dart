@@ -3,7 +3,6 @@ part of 'metronome_bloc.dart';
 enum MetronomeStatus { initial, loading, success, failure }
 
 class BpmHistoryEntry extends Equatable {
-
   const BpmHistoryEntry({
     required this.bpm,
     required this.dateTime,
@@ -16,7 +15,6 @@ class BpmHistoryEntry extends Equatable {
 }
 
 class MetronomeState extends Equatable {
-
   const MetronomeState({
     required this.status,
     required this.currentBpm,
@@ -24,6 +22,7 @@ class MetronomeState extends Equatable {
     required this.beatUnit,
     required this.soundType,
     required this.isPlaying,
+    required this.currentBeat,
     required this.presets,
     required this.bpmHistory,
     this.errorMessage,
@@ -36,15 +35,18 @@ class MetronomeState extends Equatable {
         beatUnit = 4,
         soundType = 'click',
         isPlaying = false,
+        currentBeat = 1,
         presets = const [],
         bpmHistory = const [],
         errorMessage = null;
+
   final MetronomeStatus status;
   final int currentBpm;
   final int beatsPerMeasure;
   final int beatUnit;
   final String soundType;
   final bool isPlaying;
+  final int currentBeat;
   final List<MetronomePreset> presets;
   final List<BpmHistoryEntry> bpmHistory;
   final String? errorMessage;
@@ -56,6 +58,7 @@ class MetronomeState extends Equatable {
     int? beatUnit,
     String? soundType,
     bool? isPlaying,
+    int? currentBeat,
     List<MetronomePreset>? presets,
     List<BpmHistoryEntry>? bpmHistory,
     String? errorMessage,
@@ -67,6 +70,7 @@ class MetronomeState extends Equatable {
       beatUnit: beatUnit ?? this.beatUnit,
       soundType: soundType ?? this.soundType,
       isPlaying: isPlaying ?? this.isPlaying,
+      currentBeat: currentBeat ?? this.currentBeat,
       presets: presets ?? this.presets,
       bpmHistory: bpmHistory ?? this.bpmHistory,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -81,6 +85,7 @@ class MetronomeState extends Equatable {
         beatUnit,
         soundType,
         isPlaying,
+        currentBeat,
         presets,
         bpmHistory,
         errorMessage,

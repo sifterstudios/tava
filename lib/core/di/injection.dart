@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
@@ -6,9 +7,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tava/core/di/injection.config.dart';
 
 final getIt = GetIt.instance;
-final logger = GetIt.instance<Logger>();
 
-// Define environments
+Logger get logger => getIt<Logger>();
+
 const dev = Environment('dev');
 const prod = Environment('prod');
 
@@ -17,19 +18,21 @@ const prod = Environment('prod');
   preferRelativeImports: true,
   asExtension: false,
 )
-Future<void> configureDependencies() async {
-  // Register external dependencies
-  final sharedPreferences = await SharedPreferences.getInstance();
-  getIt.registerSingleton<SharedPreferences>(sharedPreferences);
-
-  try {
-    final supabaseClient = Supabase.instance.client;
-    getIt.registerSingleton<SupabaseClient>(supabaseClient);
-  } catch (e) {
-    // Fallback if Supabase is not initialized
-    logger.e('Supabase client not available: $e');
+Future<void> configureDependencies({
+  String environment = Environment.prod,
+}) async {
+  if (!getIt.isRegistered<SharedPreferences>()) {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    getIt.registerSingleton<SharedPreferences>(sharedPreferences);
   }
 
-  // Initialize generated dependencies
-  init(getIt, environment: dev.name);
+  try {
+    if (!getIt.isRegistered<SupabaseClient>()) {
+      getIt.registerSingleton<SupabaseClient>(Supabase.instance.client);
+    }
+  } on Object catch (e) {
+    debugPrint('Supabase client not available: $e');
+  }
+
+  init(getIt, environment: environment);
 }

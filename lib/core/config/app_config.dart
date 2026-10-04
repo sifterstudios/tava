@@ -10,7 +10,8 @@ class AppConfig {
 
   static const supabaseAnonKey = String.fromEnvironment(
     'SUPABASE_ANON_KEY',
-    defaultValue: '',
+    defaultValue:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtcnFzZ3hqbXR4Y2N4Y3RjdHRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEwOTM4ODYsImV4cCI6MjEwNjY2OTg4Nn0.9QbZTpL_e5JKOth-MMieSJ_6PNzcIkHJbBvHFgWZVxg',
   );
 
   /// When true and the user has no BPM history yet, Progress shows seeded

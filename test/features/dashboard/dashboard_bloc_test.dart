@@ -94,7 +94,7 @@ void main() {
       build: () {
         when(() => getActive()).thenAnswer((_) async => const Right(null));
         when(() => getRecent()).thenAnswer((_) async => Right([session]));
-        when(() => getStats()).thenAnswer((_) async => Right(stats));
+        when(() => getStats()).thenAnswer((_) async => const Right(stats));
         when(() => exercises.getExercises()).thenAnswer(
           (_) async => Right([other, favorite, archived]),
         );

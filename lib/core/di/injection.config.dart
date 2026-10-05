@@ -77,7 +77,14 @@ _i174.GetIt init(
   );
   gh.lazySingleton<_i702.WeatherService>(() => _i702.WeatherService());
 
-  gh.factory<_i652.DashboardBloc>(() => _i652.DashboardBloc());
+  gh.factory<_i652.DashboardBloc>(
+    () => _i652.DashboardBloc(
+      getActiveSession: gh<_i879.GetActiveSession>(),
+      getRecentSessions: gh<_i760.GetRecentSessions>(),
+      getPracticeStats: gh<_i1058.GetPracticeStats>(),
+      exerciseRepository: gh<_i901.ExerciseRepository>(),
+    ),
+  );
   gh.factory<_i544.MetronomeBloc>(
     () => _i544.MetronomeBloc(gh<_i701.MetronomeAudioService>()),
   );

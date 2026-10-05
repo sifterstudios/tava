@@ -21,17 +21,27 @@ This project contains 3 flavors:
 To run the desired flavor either use the launch configuration in VSCode/Android Studio or use the following commands:
 
 ```sh
+# One-time: copy secrets (gitignored) — use the sb_publishable_... key
+$ cp dart_defines.example.json dart_defines.json
+# edit dart_defines.json and set SUPABASE_ANON_KEY
+
 # Development
-$ flutter run --flavor development --target lib/main_development.dart
+$ flutter run --flavor development --target lib/main_development.dart \
+    --dart-define-from-file=dart_defines.json
 
 # Staging
-$ flutter run --flavor staging --target lib/main_staging.dart
+$ flutter run --flavor staging --target lib/main_staging.dart \
+    --dart-define-from-file=dart_defines.json
 
 # Production
-$ flutter run --flavor production --target lib/main_production.dart
+$ flutter run --flavor production --target lib/main_production.dart \
+    --dart-define-from-file=dart_defines.json
+
+# TestFlight IPA
+$ ./scripts/ios_archive.sh production
 ```
 
-_\*Tava works on iOS, Android, Web, and Windows._
+_\*Tava works on iOS, Android, Web, and Windows. Always pass `--dart-define-from-file=dart_defines.json` — without it the Supabase key is empty and login fails. Do not use the legacy JWT `anon` key; this project has those disabled._
 
 ---
 

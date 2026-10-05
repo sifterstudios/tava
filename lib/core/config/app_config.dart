@@ -11,7 +11,7 @@ class AppConfig {
     defaultValue: 'https://gmrqsgxjmtxccxctcttf.supabase.co',
   );
 
-  /// Publishable key (`sb_publishable_...`) or legacy anon JWT if still enabled.
+  /// Publishable key (`sb_publishable_...`). Legacy JWT anon keys are disabled.
   static const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
   /// When true and the user has no BPM history yet, Progress shows seeded
@@ -25,5 +25,8 @@ class AppConfig {
       supabaseUrl.contains('supabase.co') &&
       !supabaseUrl.contains('your-supabase-url') &&
       supabaseAnonKey.isNotEmpty &&
-      supabaseAnonKey != 'your-anon-key';
+      supabaseAnonKey != 'your-anon-key' &&
+      !supabaseAnonKey.contains('REPLACE_ME') &&
+      // Legacy JWT anon keys are disabled on this project.
+      !supabaseAnonKey.startsWith('eyJ');
 }

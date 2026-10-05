@@ -10,7 +10,6 @@ abstract class SettingsEvent extends Equatable {
 class LoadSettings extends SettingsEvent {}
 
 class UpdateThemeMode extends SettingsEvent {
-
   const UpdateThemeMode(this.themeMode);
   final ThemeMode themeMode;
 
@@ -19,7 +18,6 @@ class UpdateThemeMode extends SettingsEvent {
 }
 
 class UpdateMetronomeSound extends SettingsEvent {
-
   const UpdateMetronomeSound(this.sound);
   final String sound;
 
@@ -28,7 +26,6 @@ class UpdateMetronomeSound extends SettingsEvent {
 }
 
 class UpdateWeatherTracking extends SettingsEvent {
-
   const UpdateWeatherTracking(this.trackWeather);
   final bool trackWeather;
 

@@ -55,7 +55,8 @@ class _SessionTimerState extends State<SessionTimer> {
     final theme = Theme.of(context);
 
     return BlocListener<PracticeSessionBloc, PracticeSessionState>(
-      listenWhen: (previous, current) => previous.isRunning != current.isRunning,
+      listenWhen: (previous, current) =>
+          previous.isRunning != current.isRunning,
       listener: (context, state) {
         if (state.isRunning) {
           _resume();

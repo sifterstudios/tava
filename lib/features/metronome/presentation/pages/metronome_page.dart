@@ -199,7 +199,8 @@ class MetronomeView extends StatelessWidget {
                               final entry = state.bpmHistory[index];
                               return ListTile(
                                 title: Text('${entry.bpm} BPM'),
-                                subtitle: Text(formatter.format(entry.dateTime)),
+                                subtitle:
+                                    Text(formatter.format(entry.dateTime)),
                                 trailing: IconButton(
                                   tooltip: 'Use this tempo',
                                   icon: const Icon(Icons.play_arrow_rounded),
@@ -251,7 +252,8 @@ class MetronomeView extends StatelessWidget {
                       const SizedBox(height: 12),
                       ...['click', 'wood', 'digital'].map(
                         (sound) => RadioListTile<String>(
-                          title: Text(sound[0].toUpperCase() + sound.substring(1)),
+                          title:
+                              Text(sound[0].toUpperCase() + sound.substring(1)),
                           value: sound,
                           groupValue: state.soundType,
                           onChanged: (value) {

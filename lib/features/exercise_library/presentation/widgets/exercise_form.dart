@@ -5,7 +5,6 @@ import 'package:tava/features/exercise_library/presentation/bloc/exercise_librar
 import 'package:uuid/uuid.dart';
 
 class ExerciseForm extends StatefulWidget {
-
   const ExerciseForm({super.key, this.exercise});
   final Exercise? exercise;
 
@@ -19,14 +18,14 @@ class _ExerciseFormState extends State<ExerciseForm> {
   final _descriptionController = TextEditingController();
   final _bpmController = TextEditingController();
   final _tagsController = TextEditingController();
-  
+
   ExerciseCategory _category = ExerciseCategory.technique;
   bool _isFavorite = false;
 
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.exercise != null) {
       _nameController.text = widget.exercise!.name;
       _descriptionController.text = widget.exercise!.description ?? '';
@@ -57,100 +56,100 @@ class _ExerciseFormState extends State<ExerciseForm> {
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              isEditing ? 'Edit exercise' : 'Add exercise',
-              style: theme.textTheme.titleLarge,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                hintText: 'Enter exercise name',
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                isEditing ? 'Edit exercise' : 'Add exercise',
+                style: theme.textTheme.titleLarge,
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a name';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description (optional)',
-                hintText: 'Enter exercise description',
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  hintText: 'Enter exercise name',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a name';
+                  }
+                  return null;
+                },
               ),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 16),
-            DropdownButtonFormField<ExerciseCategory>(
-              value: _category,
-              decoration: const InputDecoration(
-                labelText: 'Category',
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Description (optional)',
+                  hintText: 'Enter exercise description',
+                ),
+                maxLines: 3,
               ),
-              items: ExerciseCategory.values.map((category) {
-                return DropdownMenuItem(
-                  value: category,
-                  child: Text(_getCategoryName(category)),
-                );
-              }).toList(),
-              onChanged: (value) {
-                if (value != null) {
+              const SizedBox(height: 16),
+              DropdownButtonFormField<ExerciseCategory>(
+                value: _category,
+                decoration: const InputDecoration(
+                  labelText: 'Category',
+                ),
+                items: ExerciseCategory.values.map((category) {
+                  return DropdownMenuItem(
+                    value: category,
+                    child: Text(_getCategoryName(category)),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _category = value;
+                    });
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _bpmController,
+                decoration: const InputDecoration(
+                  labelText: 'Target BPM (optional)',
+                  hintText: 'Enter target BPM',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _tagsController,
+                decoration: const InputDecoration(
+                  labelText: 'Tags (comma separated)',
+                  hintText: 'e.g., scales, beginner, technique',
+                ),
+              ),
+              const SizedBox(height: 16),
+              SwitchListTile(
+                title: const Text('Favorite'),
+                value: _isFavorite,
+                onChanged: (value) {
                   setState(() {
-                    _category = value;
+                    _isFavorite = value;
                   });
-                }
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _bpmController,
-              decoration: const InputDecoration(
-                labelText: 'Target BPM (optional)',
-                hintText: 'Enter target BPM',
+                },
               ),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _tagsController,
-              decoration: const InputDecoration(
-                labelText: 'Tags (comma separated)',
-                hintText: 'e.g., scales, beginner, technique',
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 16),
+                  FilledButton(
+                    onPressed: _saveExercise,
+                    child: Text(isEditing ? 'Update' : 'Save'),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 16),
-            SwitchListTile(
-              title: const Text('Favorite'),
-              value: _isFavorite,
-              onChanged: (value) {
-                setState(() {
-                  _isFavorite = value;
-                });
-              },
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
-                ),
-                const SizedBox(width: 16),
-                FilledButton(
-                  onPressed: _saveExercise,
-                  child: Text(isEditing ? 'Update' : 'Save'),
-                ),
-              ],
-            ),
-          ],
-        ),
+            ],
+          ),
         ),
       ),
     );

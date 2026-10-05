@@ -6,7 +6,6 @@ import 'package:tava/features/settings/domain/entities/app_settings.dart';
 import 'package:tava/features/settings/domain/repositories/settings_repository.dart';
 
 class UpdateSettingsParams extends Equatable {
-
   const UpdateSettingsParams({required this.settings});
   final AppSettings settings;
 
@@ -16,7 +15,6 @@ class UpdateSettingsParams extends Equatable {
 
 @injectable
 class UpdateSettings implements UseCase<void, UpdateSettingsParams> {
-
   UpdateSettings(this.repository);
   final SettingsRepository repository;
 

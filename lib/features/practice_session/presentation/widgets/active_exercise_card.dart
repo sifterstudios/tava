@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 
 class ActiveExerciseCard extends StatelessWidget {
-
   const ActiveExerciseCard({
-    required this.exercise, required this.onComplete, super.key,
+    required this.exercise,
+    required this.onComplete,
+    super.key,
   });
   final Exercise exercise;
   final VoidCallback onComplete;

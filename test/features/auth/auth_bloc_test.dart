@@ -62,7 +62,8 @@ void main() {
       act: (bloc) => bloc.add(CheckAuthStatus()),
       expect: () => [
         isA<AuthLoading>(),
-        isA<AuthAuthenticated>().having((s) => s.user.email, 'email', 'a@b.com'),
+        isA<AuthAuthenticated>()
+            .having((s) => s.user.email, 'email', 'a@b.com'),
       ],
     );
 

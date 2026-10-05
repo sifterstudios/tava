@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppSettings {
-
   const AppSettings({
     required this.themeMode,
     required this.metronomeSound,

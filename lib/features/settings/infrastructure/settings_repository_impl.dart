@@ -10,7 +10,6 @@ import 'package:tava/features/settings/domain/repositories/settings_repository.d
 @prod
 @LazySingleton(as: SettingsRepository)
 class SettingsRepositoryImpl implements SettingsRepository {
-
   SettingsRepositoryImpl(this._sharedPreferences);
   final SharedPreferences _sharedPreferences;
 

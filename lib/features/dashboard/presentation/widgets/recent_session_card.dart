@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/practice_session/domain/entities/practice_session.dart';
 
 class RecentSessionCard extends StatelessWidget {
-
   const RecentSessionCard({required this.session, super.key});
   final PracticeSession session;
 

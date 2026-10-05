@@ -76,11 +76,8 @@ class ExerciseRepositoryImpl implements ExerciseRepository {
         'created_at': exercise.createdAt.toIso8601String(),
       };
 
-      final row = await _client
-          .from('exercises')
-          .upsert(payload)
-          .select()
-          .single();
+      final row =
+          await _client.from('exercises').upsert(payload).select().single();
 
       final saved = _fromRow(row);
       await _refreshCache();

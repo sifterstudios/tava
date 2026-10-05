@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/practice_session/domain/entities/weather_info.dart';
 
 class WeatherCard extends StatelessWidget {
-
   const WeatherCard({required this.weatherInfo, super.key});
   final WeatherInfo weatherInfo;
 

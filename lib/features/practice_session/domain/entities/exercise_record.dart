@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class ExerciseRecord extends Equatable {
-
   const ExerciseRecord({
     required this.id,
     required this.exerciseId,
     required this.name,
-    required this.duration, this.bpm,
+    required this.duration,
+    this.bpm,
     this.rating,
     this.notes,
   });
@@ -20,12 +20,12 @@ class ExerciseRecord extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    exerciseId,
-    name,
-    bpm,
-    duration,
-    rating,
-    notes,
-  ];
+        id,
+        exerciseId,
+        name,
+        bpm,
+        duration,
+        rating,
+        notes,
+      ];
 }

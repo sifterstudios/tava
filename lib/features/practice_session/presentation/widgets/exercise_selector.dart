@@ -75,7 +75,8 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: ExerciseCategory.values.length + 1, // +1 for "All" tab
+                    itemCount:
+                        ExerciseCategory.values.length + 1, // +1 for "All" tab
                     itemBuilder: (context, index) {
                       final isSelected = index == 0
                           ? _selectedCategory == null
@@ -89,7 +90,8 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                             index == 0
                                 ? 'All'
                                 : _getCategoryName(
-                                    ExerciseCategory.values[index - 1],),
+                                    ExerciseCategory.values[index - 1],
+                                  ),
                           ),
                           selected: isSelected,
                           onSelected: (selected) {

@@ -29,7 +29,8 @@ class MetronomeAudioService {
           contentType: AndroidAudioContentType.sonification,
           usage: AndroidAudioUsage.media,
         ),
-        androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientMayDuck,
+        androidAudioFocusGainType:
+            AndroidAudioFocusGainType.gainTransientMayDuck,
       ),
     );
     await setSoundType(_soundType);

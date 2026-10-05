@@ -96,12 +96,13 @@ class ExerciseLibraryView extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: ExerciseCategory.values.length + 1, // +1 for "All" tab
+                  itemCount:
+                      ExerciseCategory.values.length + 1, // +1 for "All" tab
                   itemBuilder: (context, index) {
                     final isSelected = index == 0
                         ? state.selectedCategory == null
                         : state.selectedCategory ==
-                        ExerciseCategory.values[index - 1];
+                            ExerciseCategory.values[index - 1];
 
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
@@ -110,18 +111,19 @@ class ExerciseLibraryView extends StatelessWidget {
                           index == 0
                               ? 'All'
                               : _getCategoryName(
-                              ExerciseCategory.values[index - 1],),
+                                  ExerciseCategory.values[index - 1],
+                                ),
                         ),
                         selected: isSelected,
                         onSelected: (selected) {
                           if (selected) {
                             context.read<ExerciseLibraryBloc>().add(
-                              FilterByCategory(
-                                index == 0
-                                    ? null
-                                    : ExerciseCategory.values[index - 1],
-                              ),
-                            );
+                                  FilterByCategory(
+                                    index == 0
+                                        ? null
+                                        : ExerciseCategory.values[index - 1],
+                                  ),
+                                );
                           }
                         },
                       ),
@@ -247,9 +249,11 @@ class ExerciseLibraryView extends StatelessWidget {
 }
 
 class ExerciseCard extends StatelessWidget {
-
   const ExerciseCard({
-    required this.exercise, required this.onEdit, required this.onToggleFavorite, super.key,
+    required this.exercise,
+    required this.onEdit,
+    required this.onToggleFavorite,
+    super.key,
   });
   final Exercise exercise;
   final VoidCallback onEdit;

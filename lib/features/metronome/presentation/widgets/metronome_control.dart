@@ -29,7 +29,9 @@ class MetronomeControl extends StatelessWidget {
                   }
                 },
                 icon: Icon(
-                  state.isPlaying ? Icons.stop_rounded : Icons.play_arrow_rounded,
+                  state.isPlaying
+                      ? Icons.stop_rounded
+                      : Icons.play_arrow_rounded,
                 ),
                 label: Text(state.isPlaying ? 'Stop' : 'Start'),
                 style: FilledButton.styleFrom(

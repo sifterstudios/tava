@@ -50,8 +50,8 @@ class DashboardView extends StatelessWidget {
             return EmptyState(
               icon: Icons.cloud_off_rounded,
               title: 'Could not load your journal',
-              message: state.errorMessage ??
-                  'Check your connection and try again.',
+              message:
+                  state.errorMessage ?? 'Check your connection and try again.',
               actionLabel: 'Retry',
               onAction: () =>
                   context.read<DashboardBloc>().add(LoadDashboardData()),
@@ -152,8 +152,7 @@ class DashboardView extends StatelessWidget {
                             separatorBuilder: (_, __) =>
                                 const SizedBox(width: 8),
                             itemBuilder: (context, index) {
-                              final exercise =
-                                  state.suggestedExercises[index];
+                              final exercise = state.suggestedExercises[index];
                               return ExerciseCard(
                                 exercise: exercise,
                                 onTap: () => context.go('/library'),

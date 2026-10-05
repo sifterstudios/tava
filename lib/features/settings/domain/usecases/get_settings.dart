@@ -6,7 +6,6 @@ import 'package:tava/features/settings/domain/repositories/settings_repository.d
 
 @injectable
 class GetSettings implements UseCase<AppSettings, NoParams> {
-
   GetSettings(this.repository);
   final SettingsRepository repository;
 

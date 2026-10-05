@@ -13,11 +13,11 @@ class MockAuthRepository implements AuthRepository {
   @override
   FutureEitherResult<User> getCurrentUser() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    
+
     if (_currentUser == null) {
       return const Left(AuthFailure(message: 'No user logged in'));
     }
-    
+
     return Right(_currentUser!);
   }
 
@@ -27,12 +27,13 @@ class MockAuthRepository implements AuthRepository {
     required String password,
   }) async {
     await Future.delayed(const Duration(milliseconds: 800));
-    
+
     // Simple validation
     if (email.isEmpty || password.isEmpty) {
-      return const Left(AuthFailure(message: 'Email and password cannot be empty'));
+      return const Left(
+          AuthFailure(message: 'Email and password cannot be empty'));
     }
-    
+
     // For demo purposes, accept any credentials
     _currentUser = User(
       id: 'user-123',
@@ -41,7 +42,7 @@ class MockAuthRepository implements AuthRepository {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
-    
+
     return Right(_currentUser!);
   }
 
@@ -52,12 +53,12 @@ class MockAuthRepository implements AuthRepository {
     required String name,
   }) async {
     await Future.delayed(const Duration(milliseconds: 1000));
-    
+
     // Simple validation
     if (email.isEmpty || password.isEmpty || name.isEmpty) {
       return const Left(AuthFailure(message: 'All fields are required'));
     }
-    
+
     // For demo purposes, accept any registration
     _currentUser = User(
       id: 'user-${DateTime.now().millisecondsSinceEpoch}',
@@ -66,16 +67,16 @@ class MockAuthRepository implements AuthRepository {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
-    
+
     return Right(_currentUser!);
   }
 
   @override
   FutureEitherUnit logout() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    
+
     _currentUser = null;
-    
+
     return right(unit);
   }
 }

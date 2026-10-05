@@ -5,7 +5,6 @@ import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
 @injectable
 class LogoutUser implements UseCase<void, NoParams> {
-
   LogoutUser(this.repository);
   final AuthRepository repository;
 

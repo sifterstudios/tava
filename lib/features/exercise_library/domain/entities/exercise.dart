@@ -11,11 +11,16 @@ enum ExerciseCategory {
 }
 
 class Exercise extends Equatable {
-
   const Exercise({
     required this.id,
     required this.name,
-    required this.category, required this.tags, required this.isFavorite, required this.createdAt, required this.updatedAt, required this.isArchived, this.description,
+    required this.category,
+    required this.tags,
+    required this.isFavorite,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.isArchived,
+    this.description,
     this.targetBpm,
     this.targetDuration,
     this.source,
@@ -65,17 +70,17 @@ class Exercise extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    name,
-    description,
-    category,
-    targetBpm,
-    targetDuration,
-    source,
-    tags,
-    isFavorite,
-    createdAt,
-    updatedAt,
-    isArchived,
-  ];
+        id,
+        name,
+        description,
+        category,
+        targetBpm,
+        targetDuration,
+        source,
+        tags,
+        isFavorite,
+        createdAt,
+        updatedAt,
+        isArchived,
+      ];
 }

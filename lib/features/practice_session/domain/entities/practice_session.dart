@@ -4,11 +4,13 @@ import 'package:tava/features/practice_session/domain/entities/mood_metrics.dart
 import 'package:tava/features/practice_session/domain/entities/weather_info.dart';
 
 class PracticeSession extends Equatable {
-
   const PracticeSession({
     required this.id,
     required this.startTime,
-    required this.duration, required this.exercises, required this.isActive, this.endTime,
+    required this.duration,
+    required this.exercises,
+    required this.isActive,
+    this.endTime,
     this.notes,
     this.moodMetrics,
     this.weatherInfo,
@@ -49,14 +51,14 @@ class PracticeSession extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    startTime,
-    endTime,
-    duration,
-    notes,
-    exercises,
-    moodMetrics,
-    weatherInfo,
-    isActive,
-  ];
+        id,
+        startTime,
+        endTime,
+        duration,
+        notes,
+        exercises,
+        moodMetrics,
+        weatherInfo,
+        isActive,
+      ];
 }

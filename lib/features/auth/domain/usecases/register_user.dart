@@ -6,7 +6,6 @@ import 'package:tava/features/auth/domain/entities/user.dart';
 import 'package:tava/features/auth/domain/repositories/auth_repository.dart';
 
 class RegisterParams extends Equatable {
-
   const RegisterParams({
     required this.email,
     required this.password,
@@ -22,7 +21,6 @@ class RegisterParams extends Equatable {
 
 @injectable
 class RegisterUser implements UseCase<User, RegisterParams> {
-
   RegisterUser(this.repository);
   final AuthRepository repository;
 

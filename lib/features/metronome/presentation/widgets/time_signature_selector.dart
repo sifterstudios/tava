@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TimeSignatureSelector extends StatelessWidget {
-
   const TimeSignatureSelector({
-    required this.beatsPerMeasure, required this.beatUnit, required this.onChanged, super.key,
+    required this.beatsPerMeasure,
+    required this.beatUnit,
+    required this.onChanged,
+    super.key,
   });
   final int beatsPerMeasure;
   final int beatUnit;
@@ -38,7 +40,6 @@ class TimeSignatureSelector extends StatelessWidget {
 }
 
 class _TimeSignatureDropdown extends StatelessWidget {
-
   const _TimeSignatureDropdown({
     required this.value,
     required this.items,

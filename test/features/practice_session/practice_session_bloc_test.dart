@@ -63,8 +63,7 @@ void main() {
     when(
       () => repo.saveSession(any(), exercises: any(named: 'exercises')),
     ).thenAnswer((invocation) async {
-      final session =
-          invocation.positionalArguments.first as PracticeSession;
+      final session = invocation.positionalArguments.first as PracticeSession;
       return Right(session);
     });
   });

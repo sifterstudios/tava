@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 
 class PracticeHistoryChart extends StatelessWidget {
-
   const PracticeHistoryChart({
-    required this.dailyPracticeTimes, super.key,
+    required this.dailyPracticeTimes,
+    super.key,
   });
   final List<DailyPracticeTime> dailyPracticeTimes;
 
@@ -30,10 +30,12 @@ class PracticeHistoryChart extends StatelessWidget {
     final spots = sortedData
         .asMap()
         .entries
-        .map((entry) => FlSpot(
-              entry.key.toDouble(),
-              entry.value.duration.inMinutes.toDouble(),
-            ),)
+        .map(
+          (entry) => FlSpot(
+            entry.key.toDouble(),
+            entry.value.duration.inMinutes.toDouble(),
+          ),
+        )
         .toList();
 
     return BarChart(
@@ -74,15 +76,9 @@ class PracticeHistoryChart extends StatelessWidget {
               reservedSize: 30,
             ),
           ),
-          leftTitles: const AxisTitles(
-            
-          ),
-          topTitles: const AxisTitles(
-            
-          ),
-          rightTitles: const AxisTitles(
-            
-          ),
+          leftTitles: const AxisTitles(),
+          topTitles: const AxisTitles(),
+          rightTitles: const AxisTitles(),
         ),
         gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
@@ -112,12 +108,12 @@ class PracticeHistoryChart extends StatelessWidget {
 
   double _calculateMaxY(List<DailyPracticeTime> data) {
     if (data.isEmpty) return 60; // Default 1 hour if no data
-    
+
     final maxMinutes = data
         .map((e) => e.duration.inMinutes)
         .reduce((a, b) => a > b ? a : b)
         .toDouble();
-    
+
     // Add 20% padding to the top
     return maxMinutes * 1.2;
   }

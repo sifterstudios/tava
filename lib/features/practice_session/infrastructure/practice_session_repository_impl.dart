@@ -104,7 +104,10 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
           .select()
           .single();
 
-      await _client.from('exercise_records').delete().eq('session_id', session.id);
+      await _client
+          .from('exercise_records')
+          .delete()
+          .eq('session_id', session.id);
       if (exercises.isNotEmpty) {
         await _client.from('exercise_records').insert([
           for (final exercise in exercises)
@@ -123,10 +126,7 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
       }
 
       // Upsert daily BPM sample from completed exercise tempos.
-      final bpms = exercises
-          .map((e) => e.bpm)
-          .whereType<int>()
-          .toList();
+      final bpms = exercises.map((e) => e.bpm).whereType<int>().toList();
       if (bpms.isNotEmpty) {
         final avg = bpms.reduce((a, b) => a + b) / bpms.length;
         final day = DateTime.now().toIso8601String().substring(0, 10);

@@ -1,7 +1,7 @@
 {
-    "@@locale": "es",
-    "counterAppBarTitle": "Contador",
-    "@counterAppBarTitle": {
-        "description": "Texto mostrado en la AppBar de la página del contador"
-    }
+  "@@locale": "es",
+  "appTitle": "Tava",
+  "@appTitle": {
+    "description": "Título de la aplicación en el conmutador de tareas y el splash"
+  }
 }

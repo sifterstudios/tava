@@ -1,7 +1,7 @@
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
+  "@@locale": "en",
+  "appTitle": "Tava",
+  "@appTitle": {
+    "description": "Application title shown in the OS task switcher and splash branding"
+  }
 }

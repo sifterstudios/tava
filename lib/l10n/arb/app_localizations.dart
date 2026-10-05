@@ -98,11 +98,11 @@ abstract class AppLocalizations {
     Locale('es')
   ];
 
-  /// Text shown in the AppBar of the Counter Page
+  /// Application title shown in the OS task switcher and splash branding
   ///
   /// In en, this message translates to:
-  /// **'Counter'**
-  String get counterAppBarTitle;
+  /// **'Tava'**
+  String get appTitle;
 }
 
 class _AppLocalizationsDelegate

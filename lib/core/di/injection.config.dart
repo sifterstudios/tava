@@ -5,7 +5,6 @@
 
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:logger/logger.dart' as _i974;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
@@ -57,7 +56,6 @@ import '../../features/settings/presentation/bloc/settings_bloc.dart';
 import '../cache/hive_cache.dart' as _i700;
 import '../services/metronome_audio_service.dart' as _i701;
 import '../services/weather_service.dart' as _i702;
-import 'logger_module.dart' as _i987;
 
 const String _prod = 'prod';
 const String _dev = 'dev';
@@ -72,9 +70,7 @@ _i174.GetIt init(
     environment,
     environmentFilter,
   );
-  final loggerModule = _$LoggerModule();
 
-  gh.lazySingleton<_i974.Logger>(() => loggerModule.logger);
   gh.lazySingleton<_i700.HiveCache>(() => _i700.HiveCache());
   gh.lazySingleton<_i701.MetronomeAudioService>(
     () => _i701.MetronomeAudioService(),
@@ -197,5 +193,3 @@ _i174.GetIt init(
 
   return getIt;
 }
-
-class _$LoggerModule extends _i987.LoggerModule {}

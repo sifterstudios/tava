@@ -1,21 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tava/core/di/injection.config.dart';
 
-final getIt = GetIt.instance;
-
-Logger get logger => getIt<Logger>();
+final GetIt getIt = GetIt.instance;
 
 const dev = Environment('dev');
 const prod = Environment('prod');
 
 @InjectableInit(
-  initializerName: 'init',
-  preferRelativeImports: true,
   asExtension: false,
 )
 Future<void> configureDependencies({

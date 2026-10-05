@@ -12,7 +12,7 @@ class MockAuthRepository implements AuthRepository {
 
   @override
   FutureEitherResult<User> getCurrentUser() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     if (_currentUser == null) {
       return const Left(AuthFailure(message: 'No user logged in'));
@@ -26,7 +26,7 @@ class MockAuthRepository implements AuthRepository {
     required String email,
     required String password,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 800));
+    await Future<void>.delayed(const Duration(milliseconds: 800));
 
     // Simple validation
     if (email.isEmpty || password.isEmpty) {
@@ -52,7 +52,7 @@ class MockAuthRepository implements AuthRepository {
     required String password,
     required String name,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future<void>.delayed(const Duration(milliseconds: 1000));
 
     // Simple validation
     if (email.isEmpty || password.isEmpty || name.isEmpty) {
@@ -73,7 +73,7 @@ class MockAuthRepository implements AuthRepository {
 
   @override
   FutureEitherUnit logout() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     _currentUser = null;
 

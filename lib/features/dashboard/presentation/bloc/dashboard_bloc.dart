@@ -23,7 +23,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     // In a real app, we'd fetch data from repositories
     // For now, we'll use mock data
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     final mockPracticeStats = PracticeStats(
       totalPracticeTime: const Duration(hours: 10, minutes: 30),

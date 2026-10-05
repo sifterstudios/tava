@@ -39,12 +39,14 @@ Future<void> bootstrap(
   if (AppConfig.supabaseAnonKey.startsWith('eyJ')) {
     debugPrint(
       'Warning: SUPABASE_ANON_KEY is a legacy JWT. This project disabled '
-      'legacy API keys — use sb_publishable_... in dart_defines.json and rebuild.',
+      'legacy API keys — use sb_publishable_... in dart_defines.json '
+      'and rebuild.',
     );
   } else if (!AppConfig.hasSupabaseConfig) {
     debugPrint(
       'Warning: SUPABASE_ANON_KEY missing or invalid. Pass '
-      '--dart-define-from-file=dart_defines.json (see dart_defines.example.json).',
+      '--dart-define-from-file=dart_defines.json '
+      '(see dart_defines.example.json).',
     );
   }
 

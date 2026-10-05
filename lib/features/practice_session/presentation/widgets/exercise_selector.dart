@@ -13,7 +13,6 @@ class ExerciseSelector extends StatefulWidget {
 }
 
 class _ExerciseSelectorState extends State<ExerciseSelector> {
-  String? _searchQuery;
   ExerciseCategory? _selectedCategory;
 
   @override
@@ -60,9 +59,6 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                       prefixIcon: Icon(Icons.search),
                     ),
                     onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value.isEmpty ? null : value;
-                      });
                       context
                           .read<ExerciseLibraryBloc>()
                           .add(SearchExercises(value));

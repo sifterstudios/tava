@@ -9,7 +9,7 @@ class TimeSignatureSelector extends StatelessWidget {
   });
   final int beatsPerMeasure;
   final int beatUnit;
-  final Function(int, int) onChanged;
+  final void Function(int, int) onChanged;
 
   @override
   Widget build(BuildContext context) {

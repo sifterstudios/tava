@@ -16,7 +16,7 @@ class MockSettingsRepository implements SettingsRepository {
   @override
   FutureEitherResult<AppSettings> getSettings() async {
     // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
 
     return Right(
       AppSettings(
@@ -30,7 +30,7 @@ class MockSettingsRepository implements SettingsRepository {
   @override
   FutureEitherUnit updateSettings(AppSettings settings) async {
     // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
 
     _themeMode = settings.themeMode;
     _metronomeSound = settings.metronomeSound;

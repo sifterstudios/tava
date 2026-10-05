@@ -88,7 +88,7 @@ class _ExerciseFormState extends State<ExerciseForm> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<ExerciseCategory>(
-                value: _category,
+                initialValue: _category,
                 decoration: const InputDecoration(
                   labelText: 'Category',
                 ),

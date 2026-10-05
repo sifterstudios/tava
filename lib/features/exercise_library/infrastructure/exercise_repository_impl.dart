@@ -43,8 +43,10 @@ class ExerciseRepositoryImpl implements ExerciseRepository {
     } on Object catch (e) {
       final cached = await _cache.getJson<List<Exercise>>(
         _cacheKey,
-        (decoded) => (decoded as List<dynamic>)
-            .map((e) => _fromCacheMap(e as Map<String, dynamic>))
+        (decoded) => (decoded! as List<dynamic>)
+            .map(
+              (e) => _fromCacheMap(Map<String, dynamic>.from(e as Map)),
+            )
             .toList(),
       );
       if (cached != null) return Right(cached);

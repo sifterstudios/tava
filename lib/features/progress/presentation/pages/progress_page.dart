@@ -53,7 +53,7 @@ class ProgressView extends StatelessWidget {
 
           final stats = state.practiceStats;
           if (stats == null || stats.totalSessions == 0) {
-            return EmptyState(
+            return const EmptyState(
               icon: Icons.music_note_rounded,
               title: 'No practice data yet',
               message: 'Finish a session and your trends will appear here.',

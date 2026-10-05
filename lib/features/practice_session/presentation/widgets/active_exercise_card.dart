@@ -62,7 +62,8 @@ class ActiveExerciseCard extends StatelessWidget {
               children: [
                 Chip(
                   label: Text(_getCategoryName(exercise.category)),
-                  backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
+                  backgroundColor:
+                      theme.colorScheme.primary.withValues(alpha: 0.7),
                   labelStyle: TextStyle(
                     color: theme.colorScheme.onPrimary,
                   ),
@@ -71,7 +72,8 @@ class ActiveExerciseCard extends StatelessWidget {
                 if (exercise.targetBpm != null)
                   Chip(
                     label: Text('${exercise.targetBpm} BPM'),
-                    backgroundColor: theme.colorScheme.primary.withOpacity(0.7),
+                    backgroundColor:
+                        theme.colorScheme.primary.withValues(alpha: 0.7),
                     labelStyle: TextStyle(
                       color: theme.colorScheme.onPrimary,
                     ),

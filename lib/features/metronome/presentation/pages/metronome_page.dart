@@ -250,19 +250,26 @@ class MetronomeView extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 12),
-                      ...['click', 'wood', 'digital'].map(
-                        (sound) => RadioListTile<String>(
-                          title:
-                              Text(sound[0].toUpperCase() + sound.substring(1)),
-                          value: sound,
-                          groupValue: state.soundType,
-                          onChanged: (value) {
-                            if (value != null) {
-                              context
-                                  .read<MetronomeBloc>()
-                                  .add(ChangeSoundType(value));
-                            }
-                          },
+                      RadioGroup<String>(
+                        groupValue: state.soundType,
+                        onChanged: (value) {
+                          if (value != null) {
+                            context
+                                .read<MetronomeBloc>()
+                                .add(ChangeSoundType(value));
+                          }
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            for (final sound in ['click', 'wood', 'digital'])
+                              RadioListTile<String>(
+                                title: Text(
+                                  sound[0].toUpperCase() + sound.substring(1),
+                                ),
+                                value: sound,
+                              ),
+                          ],
                         ),
                       ),
                     ],

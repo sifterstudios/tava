@@ -30,11 +30,13 @@ class WeatherCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${weatherInfo.temperature.toStringAsFixed(1)}°C, ${_getWeatherConditionName(weatherInfo.condition)}',
+                    '${weatherInfo.temperature.toStringAsFixed(1)}°C, '
+                    '${_getWeatherConditionName(weatherInfo.condition)}',
                     style: theme.textTheme.bodyMedium,
                   ),
                   Text(
-                    'Humidity: ${weatherInfo.humidity}%, Pressure: ${weatherInfo.pressure.toStringAsFixed(0)} hPa',
+                    'Humidity: ${weatherInfo.humidity}%, '
+                    'Pressure: ${weatherInfo.pressure.toStringAsFixed(0)} hPa',
                     style: theme.textTheme.bodySmall,
                   ),
                 ],

@@ -176,6 +176,8 @@ class PracticeSessionView extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   final exercise =
                                       state.completedExercises[index];
+                                  final durationLabel = 'Duration: '
+                                      '${_formatDuration(exercise.duration)}';
                                   return ListTile(
                                     contentPadding: EdgeInsets.zero,
                                     title: Text(
@@ -184,9 +186,11 @@ class PracticeSessionView extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     subtitle: Text(
-                                      'Duration: '
-                                      '${_formatDuration(exercise.duration)}'
-                                      '${exercise.bpm != null ? ' · ${exercise.bpm} BPM' : ''}',
+                                      [
+                                        durationLabel,
+                                        if (exercise.bpm != null)
+                                          '${exercise.bpm} BPM',
+                                      ].join(' · '),
                                     ),
                                     trailing: exercise.rating != null
                                         ? Row(

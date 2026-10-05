@@ -30,8 +30,10 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
           .order('start_time', ascending: false)
           .limit(1);
 
-      if ((rows as List).isEmpty) return const Right(null);
-      return Right(_sessionFromRow(rows.first as Map<String, dynamic>));
+      if (rows.isEmpty) return const Right(null);
+      return Right(
+        _sessionFromRow(Map<String, dynamic>.from(rows.first as Map)),
+      );
     } on Object catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -50,8 +52,10 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
           .order('start_time', ascending: false)
           .limit(limit);
 
-      final sessions = (rows as List)
-          .map((row) => _sessionFromRow(row as Map<String, dynamic>))
+      final sessions = rows
+          .map(
+            (row) => _sessionFromRow(Map<String, dynamic>.from(row as Map)),
+          )
           .toList();
       await _cache.putJson(
         'recent_sessions',
@@ -61,8 +65,10 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
     } on Object catch (e) {
       final cached = await _cache.getJson<List<PracticeSession>>(
         'recent_sessions',
-        (decoded) => (decoded as List)
-            .map((e) => _sessionFromCache(e as Map<String, dynamic>))
+        (decoded) => (decoded! as List)
+            .map(
+              (e) => _sessionFromCache(Map<String, dynamic>.from(e as Map)),
+            )
             .toList(),
       );
       if (cached != null) return Right(cached);

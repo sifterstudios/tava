@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Brand mark: metronome triangle over a stem, drawn so it stays crisp at any size.
+/// Brand mark: metronome triangle over a stem, crisp at any size.
 class TavaMark extends StatelessWidget {
   const TavaMark({
     super.key,

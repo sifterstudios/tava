@@ -27,7 +27,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
           trackWeather: trackWeather,
         ),
       );
-    } catch (e) {
+    } on Object catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
   }
@@ -40,7 +40,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
       await _saveTrackWeather(settings.trackWeather);
 
       return right(unit);
-    } catch (e) {
+    } on Object catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
   }

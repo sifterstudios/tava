@@ -26,7 +26,7 @@ class UpdateMetronomeSound extends SettingsEvent {
 }
 
 class UpdateWeatherTracking extends SettingsEvent {
-  const UpdateWeatherTracking(this.trackWeather);
+  const UpdateWeatherTracking({required this.trackWeather});
   final bool trackWeather;
 
   @override

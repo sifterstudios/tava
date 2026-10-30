@@ -39,7 +39,7 @@ dependencies:
   path_provider: ^2.1.6
   rxdart: ^0.28.0
   shared_preferences: ^2.5.5
-  supabase_flutter: ^2.18.0
+  supabase_flutter: ^2.18.3
   uuid: ^4.6.0
 
 dev_dependencies:

@@ -99,7 +99,8 @@ class PracticeSessionBloc
     );
 
     final updatedCompletedExercises =
-        List<ExerciseRecord>.from(state.completedExercises)..add(exerciseRecord);
+        List<ExerciseRecord>.from(state.completedExercises)
+          ..add(exerciseRecord);
 
     final updatedSession = state.session!.copyWith(
       exercises: updatedCompletedExercises,

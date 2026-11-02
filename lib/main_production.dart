@@ -1,7 +1,8 @@
-import 'package:injectable/injectable.dart';
+import 'dart:async';
+
 import 'package:tava/app/app.dart';
 import 'package:tava/bootstrap.dart';
 
 void main() {
-  bootstrap(() => const App(), environment: Environment.prod);
+  unawaited(bootstrap(() => const App()));
 }

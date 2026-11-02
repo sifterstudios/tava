@@ -44,7 +44,8 @@ GoRouter createAppRouter(AuthBloc authBloc) {
         return isSplash ? null : '/splash';
       }
 
-      // Keep the current route during in-flight auth work (login, logout, etc.).
+      // Keep the current route during in-flight auth work (login, logout,
+      // etc.).
       if (authState is AuthLoading) {
         return null;
       }

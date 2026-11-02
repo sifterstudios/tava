@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tava/core/di/injection.dart';
@@ -96,12 +98,13 @@ class ExerciseLibraryView extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: ExerciseCategory.values.length + 1, // +1 for "All" tab
+                  itemCount:
+                      ExerciseCategory.values.length + 1, // +1 for "All" tab
                   itemBuilder: (context, index) {
                     final isSelected = index == 0
                         ? state.selectedCategory == null
                         : state.selectedCategory ==
-                        ExerciseCategory.values[index - 1];
+                            ExerciseCategory.values[index - 1];
 
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
@@ -110,18 +113,19 @@ class ExerciseLibraryView extends StatelessWidget {
                           index == 0
                               ? 'All'
                               : _getCategoryName(
-                              ExerciseCategory.values[index - 1],),
+                                  ExerciseCategory.values[index - 1],
+                                ),
                         ),
                         selected: isSelected,
                         onSelected: (selected) {
                           if (selected) {
                             context.read<ExerciseLibraryBloc>().add(
-                              FilterByCategory(
-                                index == 0
-                                    ? null
-                                    : ExerciseCategory.values[index - 1],
-                              ),
-                            );
+                                  FilterByCategory(
+                                    index == 0
+                                        ? null
+                                        : ExerciseCategory.values[index - 1],
+                                  ),
+                                );
                           }
                         },
                       ),
@@ -188,17 +192,19 @@ class ExerciseLibraryView extends StatelessWidget {
 
   void _showExerciseForm(BuildContext context, [Exercise? exercise]) {
     final bloc = context.read<ExerciseLibraryBloc>();
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (sheetContext) => BlocProvider.value(
-        value: bloc,
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (sheetContext) => BlocProvider.value(
+          value: bloc,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
+            ),
+            child: ExerciseForm(exercise: exercise),
           ),
-          child: ExerciseForm(exercise: exercise),
         ),
       ),
     );
@@ -208,48 +214,52 @@ class ExerciseLibraryView extends StatelessWidget {
     final bloc = context.read<ExerciseLibraryBloc>();
     final controller = TextEditingController(text: bloc.state.searchQuery);
 
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Search exercises'),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Name, description, or tag',
-            prefixIcon: Icon(Icons.search_rounded),
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: const Text('Search exercises'),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            decoration: const InputDecoration(
+              hintText: 'Name, description, or tag',
+              prefixIcon: Icon(Icons.search_rounded),
+            ),
+            textInputAction: TextInputAction.search,
+            onSubmitted: (value) {
+              bloc.add(SearchExercises(value.trim()));
+              Navigator.of(dialogContext).pop();
+            },
           ),
-          textInputAction: TextInputAction.search,
-          onSubmitted: (value) {
-            bloc.add(SearchExercises(value.trim()));
-            Navigator.of(dialogContext).pop();
-          },
+          actions: [
+            TextButton(
+              onPressed: () {
+                bloc.add(const SearchExercises(''));
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text('Clear'),
+            ),
+            FilledButton(
+              onPressed: () {
+                bloc.add(SearchExercises(controller.text.trim()));
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text('Search'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              bloc.add(const SearchExercises(''));
-              Navigator.of(dialogContext).pop();
-            },
-            child: const Text('Clear'),
-          ),
-          FilledButton(
-            onPressed: () {
-              bloc.add(SearchExercises(controller.text.trim()));
-              Navigator.of(dialogContext).pop();
-            },
-            child: const Text('Search'),
-          ),
-        ],
-      ),
-    ).whenComplete(controller.dispose);
+      ).whenComplete(controller.dispose),
+    );
   }
 }
 
 class ExerciseCard extends StatelessWidget {
-
   const ExerciseCard({
-    required this.exercise, required this.onEdit, required this.onToggleFavorite, super.key,
+    required this.exercise,
+    required this.onEdit,
+    required this.onToggleFavorite,
+    super.key,
   });
   final Exercise exercise;
   final VoidCallback onEdit;

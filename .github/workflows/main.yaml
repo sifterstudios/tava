@@ -1,7 +1,7 @@
 name: tava
 
 concurrency:
-  group: $-$
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 on:
@@ -20,6 +20,8 @@ jobs:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
       flutter_channel: stable
+      # Actual coverage is ~33%; raise this as tests are added.
+      min_coverage: 30
 
   spell-check:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1

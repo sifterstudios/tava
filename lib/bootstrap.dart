@@ -39,7 +39,7 @@ Future<void> bootstrap(
   try {
     await Supabase.initialize(
       url: AppConfig.supabaseUrl,
-      anonKey: AppConfig.supabaseAnonKey,
+      publishableKey: AppConfig.supabaseAnonKey,
     );
   } on Object catch (e, stackTrace) {
     debugPrint('Warning: Failed to initialize Supabase: $e\n$stackTrace');

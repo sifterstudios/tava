@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class MoodMetrics extends Equatable {
-
   const MoodMetrics({
     required this.energyLevel,
     required this.focusLevel,
@@ -17,10 +16,10 @@ class MoodMetrics extends Equatable {
 
   @override
   List<Object?> get props => [
-    energyLevel,
-    focusLevel,
-    sleepQuality,
-    hadAlcohol,
-    notes,
-  ];
+        energyLevel,
+        focusLevel,
+        sleepQuality,
+        hadAlcohol,
+        notes,
+      ];
 }

@@ -16,14 +16,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }
 
   Future<void> _onLoadDashboardData(
-      LoadDashboardData event,
-      Emitter<DashboardState> emit,
-      ) async {
+    LoadDashboardData event,
+    Emitter<DashboardState> emit,
+  ) async {
     emit(state.copyWith(status: DashboardStatus.loading));
 
     // In a real app, we'd fetch data from repositories
     // For now, we'll use mock data
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     final mockPracticeStats = PracticeStats(
       totalPracticeTime: const Duration(hours: 10, minutes: 30),
@@ -57,7 +57,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         ),
         DailyPracticeTime(
           date: DateTime.now().subtract(const Duration(days: 2)),
-          duration: const Duration(hours: 1),),
+          duration: const Duration(hours: 1),
+        ),
         DailyPracticeTime(
           date: DateTime.now().subtract(const Duration(days: 1)),
           duration: const Duration(minutes: 30),
@@ -83,11 +84,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       ],
     );
 
-    emit(state.copyWith(
-      status: DashboardStatus.success,
-      practiceStats: mockPracticeStats,
-      suggestedExercises: _getDummySuggestedExercises(),
-    ),);
+    emit(
+      state.copyWith(
+        status: DashboardStatus.success,
+        practiceStats: mockPracticeStats,
+        suggestedExercises: _getDummySuggestedExercises(),
+      ),
+    );
   }
 
   // Temporary method to generate dummy data

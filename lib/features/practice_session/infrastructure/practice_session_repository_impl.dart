@@ -30,8 +30,8 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
           .order('start_time', ascending: false)
           .limit(1);
 
-      if ((rows as List).isEmpty) return const Right(null);
-      return Right(_sessionFromRow(rows.first as Map<String, dynamic>));
+      if (rows.isEmpty) return const Right(null);
+      return Right(_sessionFromRow(rows.first));
     } on Object catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -61,7 +61,7 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
     } on Object catch (e) {
       final cached = await _cache.getJson<List<PracticeSession>>(
         'recent_sessions',
-        (decoded) => (decoded as List)
+        (decoded) => (decoded! as List)
             .map((e) => _sessionFromCache(e as Map<String, dynamic>))
             .toList(),
       );
@@ -104,7 +104,10 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
           .select()
           .single();
 
-      await _client.from('exercise_records').delete().eq('session_id', session.id);
+      await _client
+          .from('exercise_records')
+          .delete()
+          .eq('session_id', session.id);
       if (exercises.isNotEmpty) {
         await _client.from('exercise_records').insert([
           for (final exercise in exercises)
@@ -123,10 +126,7 @@ class PracticeSessionRepositoryImpl implements PracticeSessionRepository {
       }
 
       // Upsert daily BPM sample from completed exercise tempos.
-      final bpms = exercises
-          .map((e) => e.bpm)
-          .whereType<int>()
-          .toList();
+      final bpms = exercises.map((e) => e.bpm).whereType<int>().toList();
       if (bpms.isNotEmpty) {
         final avg = bpms.reduce((a, b) => a + b) / bpms.length;
         final day = DateTime.now().toIso8601String().substring(0, 10);

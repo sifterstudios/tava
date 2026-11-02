@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -186,7 +188,8 @@ class PracticeSessionView extends StatelessWidget {
                                     subtitle: Text(
                                       'Duration: '
                                       '${_formatDuration(exercise.duration)}'
-                                      '${exercise.bpm != null ? ' · ${exercise.bpm} BPM' : ''}',
+                                      '${exercise.bpm != null ? ' · '
+                                          '${exercise.bpm} BPM' : ''}',
                                     ),
                                     trailing: exercise.rating != null
                                         ? Row(
@@ -233,44 +236,48 @@ class PracticeSessionView extends StatelessWidget {
 
   void _showExerciseSelector(BuildContext context) {
     final bloc = context.read<PracticeSessionBloc>();
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (sheetContext) => BlocProvider.value(
-        value: bloc,
-        child: const ExerciseSelector(),
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (sheetContext) => BlocProvider.value(
+          value: bloc,
+          child: const ExerciseSelector(),
+        ),
       ),
     );
   }
 
   void _showEndSessionDialog(BuildContext context) {
     final bloc = context.read<PracticeSessionBloc>();
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) => BlocProvider.value(
-        value: bloc,
-        child: AlertDialog(
-          title: const Text('End practice session'),
-          content: const Text(
-            'Add mood and wellness notes before ending, or finish now.',
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (dialogContext) => BlocProvider.value(
+          value: bloc,
+          child: AlertDialog(
+            title: const Text('End practice session'),
+            content: const Text(
+              'Add mood and wellness notes before ending, or finish now.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  _showMoodMetricsForm(context);
+                },
+                child: const Text('Add metrics'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  bloc.add(EndSession());
+                },
+                child: const Text('End now'),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                _showMoodMetricsForm(context);
-              },
-              child: const Text('Add metrics'),
-            ),
-            FilledButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                bloc.add(EndSession());
-              },
-              child: const Text('End now'),
-            ),
-          ],
         ),
       ),
     );
@@ -278,17 +285,19 @@ class PracticeSessionView extends StatelessWidget {
 
   void _showMoodMetricsForm(BuildContext context) {
     final bloc = context.read<PracticeSessionBloc>();
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      builder: (sheetContext) => BlocProvider.value(
-        value: bloc,
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (sheetContext) => BlocProvider.value(
+          value: bloc,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
+            ),
+            child: const MoodMetricsForm(),
           ),
-          child: const MoodMetricsForm(),
         ),
       ),
     );

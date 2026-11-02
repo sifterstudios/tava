@@ -43,7 +43,7 @@ class ExerciseRepositoryImpl implements ExerciseRepository {
     } on Object catch (e) {
       final cached = await _cache.getJson<List<Exercise>>(
         _cacheKey,
-        (decoded) => (decoded as List<dynamic>)
+        (decoded) => (decoded! as List<dynamic>)
             .map((e) => _fromCacheMap(e as Map<String, dynamic>))
             .toList(),
       );
@@ -76,11 +76,8 @@ class ExerciseRepositoryImpl implements ExerciseRepository {
         'created_at': exercise.createdAt.toIso8601String(),
       };
 
-      final row = await _client
-          .from('exercises')
-          .upsert(payload)
-          .select()
-          .single();
+      final row =
+          await _client.from('exercises').upsert(payload).select().single();
 
       final saved = _fromRow(row);
       await _refreshCache();

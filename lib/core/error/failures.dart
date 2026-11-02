@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
-
   const Failure({required this.message});
   final String message;
 
@@ -26,7 +25,6 @@ class AuthFailure extends Failure {
 }
 
 class ValidationFailure extends Failure {
-
   const ValidationFailure({
     required super.message,
     required this.errors,

@@ -27,7 +27,8 @@ class WeatherService {
     final uri = Uri.https('api.open-meteo.com', '/v1/forecast', {
       'latitude': '${position.latitude}',
       'longitude': '${position.longitude}',
-      'current': 'temperature_2m,relative_humidity_2m,surface_pressure,weather_code',
+      'current':
+          'temperature_2m,relative_humidity_2m,surface_pressure,weather_code',
       'timezone': 'auto',
     });
 

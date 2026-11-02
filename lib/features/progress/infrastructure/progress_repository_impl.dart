@@ -30,10 +30,8 @@ class ProgressRepositoryImpl implements ProgressRepository {
           .eq('user_id', userId)
           .eq('is_active', false);
 
-      final records = await _client
-          .from('exercise_records')
-          .select()
-          .eq('user_id', userId);
+      final records =
+          await _client.from('exercise_records').select().eq('user_id', userId);
 
       final bpmRows = await _client
           .from('bpm_samples')
@@ -59,8 +57,10 @@ class ProgressRepositoryImpl implements ProgressRepository {
       for (final row in recordList) {
         final map = row as Map<String, dynamic>;
         final name = map['name'] as String? ?? 'Exercise';
-        final duration = Duration(milliseconds: map['duration_ms'] as int? ?? 0);
-        timeByExercise[name] = (timeByExercise[name] ?? Duration.zero) + duration;
+        final duration =
+            Duration(milliseconds: map['duration_ms'] as int? ?? 0);
+        timeByExercise[name] =
+            (timeByExercise[name] ?? Duration.zero) + duration;
         final bpm = map['bpm'] as int?;
         if (bpm != null) bpms.add(bpm);
       }
@@ -116,7 +116,8 @@ class ProgressRepositoryImpl implements ProgressRepository {
     return [
       for (var i = 13; i >= 0; i--)
         BpmTrendPoint(
-          date: DateTime(now.year, now.month, now.day).subtract(Duration(days: i)),
+          date: DateTime(now.year, now.month, now.day)
+              .subtract(Duration(days: i)),
           averageBpm: 84 + ((14 - i) * 0.7) + (i.isEven ? 1.5 : -1),
           isSeed: true,
         ),

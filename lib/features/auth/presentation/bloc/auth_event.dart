@@ -10,7 +10,6 @@ abstract class AuthEvent extends Equatable {
 class CheckAuthStatus extends AuthEvent {}
 
 class LoginRequested extends AuthEvent {
-
   const LoginRequested({
     required this.email,
     required this.password,
@@ -25,7 +24,6 @@ class LoginRequested extends AuthEvent {
 class LogoutRequested extends AuthEvent {}
 
 class RegisterRequested extends AuthEvent {
-
   const RegisterRequested({
     required this.email,
     required this.password,

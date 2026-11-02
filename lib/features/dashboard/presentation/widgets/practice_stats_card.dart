@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/progress/domain/entities/practice_stats.dart';
 
 class PracticeStatsCard extends StatelessWidget {
-
   const PracticeStatsCard({super.key, this.stats});
   final PracticeStats? stats;
 
@@ -82,7 +81,6 @@ class PracticeStatsCard extends StatelessWidget {
 }
 
 class _StatItem extends StatelessWidget {
-
   const _StatItem({
     required this.label,
     required this.value,

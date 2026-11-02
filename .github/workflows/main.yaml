@@ -22,6 +22,8 @@ jobs:
       flutter_channel: stable
       # Actual coverage is ~33%; raise this as tests are added.
       min_coverage: 30
+      # v2 changed this input's default from true to false; keep it enabled.
+      run_bloc_lint: true
 
   spell-check:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1

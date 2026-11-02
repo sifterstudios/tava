@@ -13,7 +13,6 @@ class ExerciseSelector extends StatefulWidget {
 }
 
 class _ExerciseSelectorState extends State<ExerciseSelector> {
-  String? _searchQuery;
   ExerciseCategory? _selectedCategory;
 
   @override
@@ -60,9 +59,6 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                       prefixIcon: Icon(Icons.search),
                     ),
                     onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value.isEmpty ? null : value;
-                      });
                       context
                           .read<ExerciseLibraryBloc>()
                           .add(SearchExercises(value));
@@ -75,7 +71,8 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: ExerciseCategory.values.length + 1, // +1 for "All" tab
+                    itemCount:
+                        ExerciseCategory.values.length + 1, // +1 for "All" tab
                     itemBuilder: (context, index) {
                       final isSelected = index == 0
                           ? _selectedCategory == null
@@ -89,7 +86,8 @@ class _ExerciseSelectorState extends State<ExerciseSelector> {
                             index == 0
                                 ? 'All'
                                 : _getCategoryName(
-                                    ExerciseCategory.values[index - 1],),
+                                    ExerciseCategory.values[index - 1],
+                                  ),
                           ),
                           selected: isSelected,
                           onSelected: (selected) {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -165,94 +167,95 @@ class MetronomeView extends StatelessWidget {
     final bloc = context.read<MetronomeBloc>();
     final formatter = DateFormat.yMMMd().add_jm();
 
-    showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      builder: (sheetContext) {
-        return BlocProvider.value(
-          value: bloc,
-          child: SafeArea(
-            child: SizedBox(
-              height: MediaQuery.sizeOf(sheetContext).height * 0.45,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'BPM history',
-                      style: Theme.of(sheetContext).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: BlocBuilder<MetronomeBloc, MetronomeState>(
-                        builder: (context, state) {
-                          if (state.bpmHistory.isEmpty) {
-                            return const Center(
-                              child: Text('No recent tempo changes'),
-                            );
-                          }
-
-                          return ListView.builder(
-                            itemCount: state.bpmHistory.length,
-                            itemBuilder: (context, index) {
-                              final entry = state.bpmHistory[index];
-                              return ListTile(
-                                title: Text('${entry.bpm} BPM'),
-                                subtitle: Text(formatter.format(entry.dateTime)),
-                                trailing: IconButton(
-                                  tooltip: 'Use this tempo',
-                                  icon: const Icon(Icons.play_arrow_rounded),
-                                  onPressed: () {
-                                    context
-                                        .read<MetronomeBloc>()
-                                        .add(ChangeBpm(entry.bpm));
-                                    Navigator.of(sheetContext).pop();
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        },
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) {
+          return BlocProvider.value(
+            value: bloc,
+            child: SafeArea(
+              child: SizedBox(
+                height: MediaQuery.sizeOf(sheetContext).height * 0.45,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'BPM history',
+                        style: Theme.of(sheetContext).textTheme.titleLarge,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 12),
+                      Expanded(
+                        child: BlocBuilder<MetronomeBloc, MetronomeState>(
+                          builder: (context, state) {
+                            if (state.bpmHistory.isEmpty) {
+                              return const Center(
+                                child: Text('No recent tempo changes'),
+                              );
+                            }
+
+                            return ListView.builder(
+                              itemCount: state.bpmHistory.length,
+                              itemBuilder: (context, index) {
+                                final entry = state.bpmHistory[index];
+                                return ListTile(
+                                  title: Text('${entry.bpm} BPM'),
+                                  subtitle:
+                                      Text(formatter.format(entry.dateTime)),
+                                  trailing: IconButton(
+                                    tooltip: 'Use this tempo',
+                                    icon: const Icon(Icons.play_arrow_rounded),
+                                    onPressed: () {
+                                      context
+                                          .read<MetronomeBloc>()
+                                          .add(ChangeBpm(entry.bpm));
+                                      Navigator.of(sheetContext).pop();
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
   void _showMetronomeSettings(BuildContext context) {
     final bloc = context.read<MetronomeBloc>();
 
-    showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      builder: (sheetContext) {
-        return BlocProvider.value(
-          value: bloc,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-              child: BlocBuilder<MetronomeBloc, MetronomeState>(
-                builder: (context, state) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Click sound',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 12),
-                      ...['click', 'wood', 'digital'].map(
-                        (sound) => RadioListTile<String>(
-                          title: Text(sound[0].toUpperCase() + sound.substring(1)),
-                          value: sound,
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) {
+          return BlocProvider.value(
+            value: bloc,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                child: BlocBuilder<MetronomeBloc, MetronomeState>(
+                  builder: (context, state) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Click sound',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 12),
+                        RadioGroup<String>(
                           groupValue: state.soundType,
                           onChanged: (value) {
                             if (value != null) {
@@ -261,16 +264,29 @@ class MetronomeView extends StatelessWidget {
                                   .add(ChangeSoundType(value));
                             }
                           },
+                          child: Column(
+                            children: ['click', 'wood', 'digital']
+                                .map(
+                                  (sound) => RadioListTile<String>(
+                                    title: Text(
+                                      sound[0].toUpperCase() +
+                                          sound.substring(1),
+                                    ),
+                                    value: sound,
+                                  ),
+                                )
+                                .toList(),
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -278,40 +294,42 @@ class MetronomeView extends StatelessWidget {
     final bloc = context.read<MetronomeBloc>();
     final nameController = TextEditingController();
 
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return BlocProvider.value(
-          value: bloc,
-          child: AlertDialog(
-            title: const Text('Save preset'),
-            content: TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Preset name',
-                hintText: 'e.g. Jazz swing, Bach tempo',
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (dialogContext) {
+          return BlocProvider.value(
+            value: bloc,
+            child: AlertDialog(
+              title: const Text('Save preset'),
+              content: TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Preset name',
+                  hintText: 'e.g. Jazz swing, Bach tempo',
+                ),
+                autofocus: true,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _savePreset(
+                  dialogContext,
+                  nameController,
+                ),
               ),
-              autofocus: true,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _savePreset(
-                dialogContext,
-                nameController,
-              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: const Text('Cancel'),
+                ),
+                FilledButton(
+                  onPressed: () => _savePreset(dialogContext, nameController),
+                  child: const Text('Save'),
+                ),
+              ],
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text('Cancel'),
-              ),
-              FilledButton(
-                onPressed: () => _savePreset(dialogContext, nameController),
-                child: const Text('Save'),
-              ),
-            ],
-          ),
-        );
-      },
-    ).whenComplete(nameController.dispose);
+          );
+        },
+      ).whenComplete(nameController.dispose),
+    );
   }
 
   void _savePreset(

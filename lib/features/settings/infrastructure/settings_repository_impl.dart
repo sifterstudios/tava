@@ -10,7 +10,6 @@ import 'package:tava/features/settings/domain/repositories/settings_repository.d
 @prod
 @LazySingleton(as: SettingsRepository)
 class SettingsRepositoryImpl implements SettingsRepository {
-
   SettingsRepositoryImpl(this._sharedPreferences);
   final SharedPreferences _sharedPreferences;
 
@@ -28,7 +27,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
           trackWeather: trackWeather,
         ),
       );
-    } catch (e) {
+    } on Object catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
   }
@@ -41,7 +40,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
       await _saveTrackWeather(settings.trackWeather);
 
       return right(unit);
-    } catch (e) {
+    } on Object catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
   }

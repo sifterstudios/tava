@@ -115,7 +115,7 @@ class SettingsPage extends StatelessWidget {
                 onChanged: (value) {
                   context
                       .read<SettingsBloc>()
-                      .add(UpdateWeatherTracking(value));
+                      .add(UpdateWeatherTracking(trackWeather: value));
                 },
               );
             },
@@ -174,7 +174,7 @@ class SettingsPage extends StatelessWidget {
       ),
     );
 
-    if (confirmed == true) {
+    if (confirmed ?? false) {
       authBloc.add(LogoutRequested());
     }
   }

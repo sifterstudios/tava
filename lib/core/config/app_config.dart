@@ -11,7 +11,8 @@ class AppConfig {
     defaultValue: 'https://gmrqsgxjmtxccxctcttf.supabase.co',
   );
 
-  /// Publishable key (`sb_publishable_...`) or legacy anon JWT if still enabled.
+  /// Publishable key (`sb_publishable_...`) or legacy anon JWT if still
+  /// enabled.
   static const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
   /// When true and the user has no BPM history yet, Progress shows seeded

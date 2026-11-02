@@ -10,7 +10,6 @@ abstract class ExerciseLibraryEvent extends Equatable {
 class LoadExercises extends ExerciseLibraryEvent {}
 
 class AddExercise extends ExerciseLibraryEvent {
-
   const AddExercise(this.exercise);
   final Exercise exercise;
 
@@ -19,7 +18,6 @@ class AddExercise extends ExerciseLibraryEvent {
 }
 
 class UpdateExercise extends ExerciseLibraryEvent {
-
   const UpdateExercise(this.exercise);
   final Exercise exercise;
 
@@ -28,7 +26,6 @@ class UpdateExercise extends ExerciseLibraryEvent {
 }
 
 class DeleteExercise extends ExerciseLibraryEvent {
-
   const DeleteExercise(this.exerciseId);
   final String exerciseId;
 
@@ -37,7 +34,6 @@ class DeleteExercise extends ExerciseLibraryEvent {
 }
 
 class ToggleExerciseFavorite extends ExerciseLibraryEvent {
-
   const ToggleExerciseFavorite(this.exercise);
   final Exercise exercise;
 
@@ -46,7 +42,6 @@ class ToggleExerciseFavorite extends ExerciseLibraryEvent {
 }
 
 class FilterByCategory extends ExerciseLibraryEvent {
-
   const FilterByCategory(this.category);
   final ExerciseCategory? category;
 
@@ -55,7 +50,6 @@ class FilterByCategory extends ExerciseLibraryEvent {
 }
 
 class SearchExercises extends ExerciseLibraryEvent {
-
   const SearchExercises(this.query);
   final String query;
 

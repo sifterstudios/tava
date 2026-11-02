@@ -12,7 +12,6 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthAuthenticated extends AuthState {
-
   const AuthAuthenticated({required this.user});
   final User user;
 
@@ -23,7 +22,6 @@ class AuthAuthenticated extends AuthState {
 class AuthUnauthenticated extends AuthState {}
 
 class AuthError extends AuthState {
-
   const AuthError({required this.message});
   final String message;
 

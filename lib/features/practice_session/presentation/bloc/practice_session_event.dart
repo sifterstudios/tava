@@ -10,7 +10,6 @@ abstract class PracticeSessionEvent extends Equatable {
 class LoadPracticeSession extends PracticeSessionEvent {}
 
 class StartExercise extends PracticeSessionEvent {
-
   const StartExercise(this.exercise);
   final Exercise exercise;
 
@@ -19,7 +18,6 @@ class StartExercise extends PracticeSessionEvent {
 }
 
 class CompleteExercise extends PracticeSessionEvent {
-
   const CompleteExercise({this.rating, this.notes});
   final int? rating;
   final String? notes;
@@ -33,7 +31,6 @@ class PauseSession extends PracticeSessionEvent {}
 class ResumeSession extends PracticeSessionEvent {}
 
 class AddMoodMetrics extends PracticeSessionEvent {
-
   const AddMoodMetrics(this.moodMetrics);
   final MoodMetrics moodMetrics;
 

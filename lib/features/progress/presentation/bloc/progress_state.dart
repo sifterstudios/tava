@@ -3,7 +3,6 @@ part of 'progress_bloc.dart';
 enum ProgressStatus { initial, loading, success, failure }
 
 class ProgressState extends Equatable {
-
   const ProgressState({
     required this.status,
     this.practiceStats,

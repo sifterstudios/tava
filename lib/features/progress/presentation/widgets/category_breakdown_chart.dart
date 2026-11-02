@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tava/features/exercise_library/domain/entities/exercise.dart';
 
 class CategoryBreakdownChart extends StatelessWidget {
-
   const CategoryBreakdownChart({
-    required this.categoryData, super.key,
+    required this.categoryData,
+    super.key,
   });
   final Map<ExerciseCategory, Duration> categoryData;
 
@@ -40,10 +40,9 @@ class CategoryBreakdownChart extends StatelessWidget {
 
     var colorIndex = 0;
     categoryData.forEach((category, duration) {
-      final percentage = totalMinutes > 0
-          ? (duration.inMinutes / totalMinutes * 100)
-          : 0.0;
-      
+      final percentage =
+          totalMinutes > 0 ? (duration.inMinutes / totalMinutes * 100) : 0.0;
+
       sections.add(
         PieChartSectionData(
           color: colors[colorIndex % colors.length],

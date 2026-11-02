@@ -11,7 +11,6 @@ part 'settings_state.dart';
 
 @lazySingleton
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-
   SettingsBloc({
     required GetSettings getSettings,
     required UpdateSettings updateSettings,
@@ -27,31 +26,35 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final UpdateSettings _updateSettings;
 
   Future<void> _onLoadSettings(
-      LoadSettings event,
-      Emitter<SettingsState> emit,
-      ) async {
+    LoadSettings event,
+    Emitter<SettingsState> emit,
+  ) async {
     emit(state.copyWith(status: SettingsStatus.loading));
 
     final result = await _getSettings();
 
     result.fold(
-          (failure) => emit(state.copyWith(
-        status: SettingsStatus.failure,
-        errorMessage: failure.message,
-      ),),
-          (settings) => emit(state.copyWith(
-        status: SettingsStatus.success,
-        themeMode: settings.themeMode,
-        metronomeSound: settings.metronomeSound,
-        trackWeather: settings.trackWeather,
-      ),),
+      (failure) => emit(
+        state.copyWith(
+          status: SettingsStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (settings) => emit(
+        state.copyWith(
+          status: SettingsStatus.success,
+          themeMode: settings.themeMode,
+          metronomeSound: settings.metronomeSound,
+          trackWeather: settings.trackWeather,
+        ),
+      ),
     );
   }
 
   Future<void> _onUpdateThemeMode(
-      UpdateThemeMode event,
-      Emitter<SettingsState> emit,
-      ) async {
+    UpdateThemeMode event,
+    Emitter<SettingsState> emit,
+  ) async {
     final updatedSettings = AppSettings(
       themeMode: event.themeMode,
       metronomeSound: state.metronomeSound,
@@ -63,22 +66,26 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
 
     result.fold(
-          (failure) => emit(state.copyWith(
-        status: SettingsStatus.failure,
-        errorMessage: failure.message,
-      ),),
-          (_) => emit(state.copyWith(
-        status: SettingsStatus.success,
-        themeMode: event.themeMode,
-        errorMessage: null,
-      ),),
+      (failure) => emit(
+        state.copyWith(
+          status: SettingsStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (_) => emit(
+        state.copyWith(
+          status: SettingsStatus.success,
+          themeMode: event.themeMode,
+          errorMessage: null,
+        ),
+      ),
     );
   }
 
   Future<void> _onUpdateMetronomeSound(
-      UpdateMetronomeSound event,
-      Emitter<SettingsState> emit,
-      ) async {
+    UpdateMetronomeSound event,
+    Emitter<SettingsState> emit,
+  ) async {
     final updatedSettings = AppSettings(
       themeMode: state.themeMode,
       metronomeSound: event.sound,
@@ -90,22 +97,26 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
 
     result.fold(
-          (failure) => emit(state.copyWith(
-        status: SettingsStatus.failure,
-        errorMessage: failure.message,
-      ),),
-          (_) => emit(state.copyWith(
-        status: SettingsStatus.success,
-        metronomeSound: event.sound,
-        errorMessage: null,
-      ),),
+      (failure) => emit(
+        state.copyWith(
+          status: SettingsStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (_) => emit(
+        state.copyWith(
+          status: SettingsStatus.success,
+          metronomeSound: event.sound,
+          errorMessage: null,
+        ),
+      ),
     );
   }
 
   Future<void> _onUpdateWeatherTracking(
-      UpdateWeatherTracking event,
-      Emitter<SettingsState> emit,
-      ) async {
+    UpdateWeatherTracking event,
+    Emitter<SettingsState> emit,
+  ) async {
     final updatedSettings = AppSettings(
       themeMode: state.themeMode,
       metronomeSound: state.metronomeSound,
@@ -117,15 +128,19 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
 
     result.fold(
-          (failure) => emit(state.copyWith(
-        status: SettingsStatus.failure,
-        errorMessage: failure.message,
-      ),),
-          (_) => emit(state.copyWith(
-        status: SettingsStatus.success,
-        trackWeather: event.trackWeather,
-        errorMessage: null,
-      ),),
+      (failure) => emit(
+        state.copyWith(
+          status: SettingsStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (_) => emit(
+        state.copyWith(
+          status: SettingsStatus.success,
+          trackWeather: event.trackWeather,
+          errorMessage: null,
+        ),
+      ),
     );
   }
 }

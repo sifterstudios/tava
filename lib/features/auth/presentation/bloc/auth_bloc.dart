@@ -12,7 +12,6 @@ part 'auth_state.dart';
 
 @lazySingleton
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-
   AuthBloc({
     required CheckAuth checkAuth,
     required LoginUser loginUser,
@@ -34,23 +33,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final RegisterUser _registerUser;
 
   Future<void> _onCheckAuthStatus(
-      CheckAuthStatus event,
-      Emitter<AuthState> emit,
-      ) async {
+    CheckAuthStatus event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
 
     final result = await _checkAuth();
 
     result.fold(
-          (failure) => emit(AuthUnauthenticated()),
-          (user) => emit(AuthAuthenticated(user: user)),
+      (failure) => emit(AuthUnauthenticated()),
+      (user) => emit(AuthAuthenticated(user: user)),
     );
   }
 
   Future<void> _onLoginRequested(
-      LoginRequested event,
-      Emitter<AuthState> emit,
-      ) async {
+    LoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
 
     final result = await _loginUser(
@@ -58,29 +57,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     result.fold(
-          (failure) => emit(AuthError(message: failure.message)),
-          (user) => emit(AuthAuthenticated(user: user)),
+      (failure) => emit(AuthError(message: failure.message)),
+      (user) => emit(AuthAuthenticated(user: user)),
     );
   }
 
   Future<void> _onLogoutRequested(
-      LogoutRequested event,
-      Emitter<AuthState> emit,
-      ) async {
+    LogoutRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
 
     final result = await _logoutUser();
 
     result.fold(
-          (failure) => emit(AuthError(message: failure.message)),
-          (_) => emit(AuthUnauthenticated()),
+      (failure) => emit(AuthError(message: failure.message)),
+      (_) => emit(AuthUnauthenticated()),
     );
   }
 
   Future<void> _onRegisterRequested(
-      RegisterRequested event,
-      Emitter<AuthState> emit,
-      ) async {
+    RegisterRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
 
     final result = await _registerUser(
@@ -92,8 +91,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     result.fold(
-          (failure) => emit(AuthError(message: failure.message)),
-          (user) => emit(AuthAuthenticated(user: user)),
+      (failure) => emit(AuthError(message: failure.message)),
+      (user) => emit(AuthAuthenticated(user: user)),
     );
   }
 }

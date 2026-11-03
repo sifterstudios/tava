@@ -21,7 +21,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.3.0
+  flutter_svg: ^2.3.2
   fpdart: ^1.2.0
   geolocator: ^14.1.1
   get_it: ^9.3.0
